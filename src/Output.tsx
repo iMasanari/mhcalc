@@ -33,16 +33,20 @@ export class Output extends React.Component<Output.Props, Output.State> {
     }
 
     render() {
-        return <table> {this.newArray.map(item =>
+        return <table>
             <tr>
+                <th></th>
                 <th>スキル</th>
             </tr>
-            <tr key={item.name}
-                className={this.props.activeSkill[item.group] === item.name ? 'checked' : ''}
-                onClick={item.action}
-                >
-                <td>{item.name}</td>
-            </tr>
-        ) } </table>
+            {this.newArray.map((item, i) =>
+                <tr key={item.name}
+                    className={this.props.activeSkill[item.group] === item.name ? 'checked' : ''}
+                    onClick={item.action}
+                    >
+                    <td>{i + 1}</td>
+                    <td>{item.name}</td>
+                </tr>
+            ) }
+            </table>
     }
 }

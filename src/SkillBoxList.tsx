@@ -14,8 +14,8 @@ export namespace SkillBoxList {
 
 export class SkillBoxList extends React.Component<SkillBoxList.Props, SkillBoxList.State> {
     render() {
-        return (
-            <ul className='SkillBoxList'> {skillData.map(data =>
+        return <ul className='SkillBoxList'>
+            {skillData.map(data =>
                 <li className='SkillBoxList-li'>
                     <SkillBox key={data.name}
                         name={data.name}
@@ -24,7 +24,7 @@ export class SkillBoxList extends React.Component<SkillBoxList.Props, SkillBoxLi
                         skillButtonList={data.item}
                         />
                 </li>
-            ) } </ul>
-        )
+            )}
+        </ul>
     }
 }
