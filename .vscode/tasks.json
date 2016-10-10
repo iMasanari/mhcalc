@@ -1,0 +1,10 @@
+{
+    "version": "0.1.0",
+    "command": "webpack",
+    "args": [
+        "-w"
+    ],
+    "isShellCommand": true,
+    "showOutput": "always",
+    "suppressTaskName": true
+}

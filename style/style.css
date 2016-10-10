@@ -1,0 +1,41 @@
+
+body, input, select {
+	font-family: "游ゴシック体", "Yu Gothic", YuGothic, sans-serif;
+}
+
+.SkillBoxList {
+	padding: 0;
+	margin: 1em 0;
+	list-style: none;
+}
+.SkillBoxList-li {
+	padding: 0 16px;
+    line-height: 2;
+}
+
+.SkillBoxList-li:hover {
+	background: #eee;
+}
+
+.SkillBox-ul {
+	float: right;
+	list-style: none;
+}
+
+.SkillButton {
+	float: left;
+	width: 3em;
+	border-right: 1px solid #bbb;
+	text-align: center;
+	color: #bbb;
+}
+.SkillButton:hover {
+	background: #ddd;
+}
+.SkillButton:first-child {
+	border-left: 1px solid #bbb;
+}
+.SkillButton.checked {
+	background: #4aa3df;
+	color: #fff;
+}
