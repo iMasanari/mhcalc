@@ -4,6 +4,7 @@ body, input, select {
 }
 
 .SkillBoxList {
+	width: 320px;
 	padding: 0;
 	margin: 1em 0;
 	list-style: none;
@@ -36,6 +37,11 @@ body, input, select {
 	border-left: 1px solid #bbb;
 }
 .SkillButton.checked {
+	background: #4aa3df;
+	color: #fff;
+}
+
+.checked {
 	background: #4aa3df;
 	color: #fff;
 }

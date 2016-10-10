@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -74,14 +74,30 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(1);
-	var SkillBoxList_1 = __webpack_require__(5);
+	var SkillBoxList_1 = __webpack_require__(4);
+	var Output_1 = __webpack_require__(8);
 	var MHCalc = (function (_super) {
 	    __extends(MHCalc, _super);
 	    function MHCalc() {
-	        _super.apply(this, arguments);
+	        _super.call(this);
+	        this.state = {
+	            activeSkill: {}
+	        };
 	    }
+	    MHCalc.prototype.setActiveSkill = function (skillBoxName, value) {
+	        var activeSkill = this.state.activeSkill;
+	        if (activeSkill[skillBoxName] === value) {
+	            delete activeSkill[skillBoxName];
+	        }
+	        else {
+	            activeSkill[skillBoxName] = value;
+	        }
+	        this.setState({
+	            activeSkill: activeSkill
+	        });
+	    };
 	    MHCalc.prototype.render = function () {
-	        return (React.createElement("div", {className: "MHCalc"}, React.createElement(SkillBoxList_1.SkillBoxList, null)));
+	        return (React.createElement("div", {className: "MHCalc"}, React.createElement(SkillBoxList_1.SkillBoxList, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)}), React.createElement(Output_1.Output, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)})));
 	    };
 	    return MHCalc;
 	}(React.Component));
@@ -90,6 +106,35 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var SkillBox_1 = __webpack_require__(5);
+	var skilldata_1 = __webpack_require__(7);
+	var SkillBoxList = (function (_super) {
+	    __extends(SkillBoxList, _super);
+	    function SkillBoxList() {
+	        _super.apply(this, arguments);
+	    }
+	    SkillBoxList.prototype.render = function () {
+	        var _this = this;
+	        return (React.createElement("ul", {className: 'SkillBoxList'}, " ", skilldata_1.default.map(function (data) {
+	            return React.createElement("li", {className: 'SkillBoxList-li'}, React.createElement(SkillBox_1.SkillBox, {key: data.name, name: data.name, value: _this.props.activeSkill[data.group] || null, action: _this.props.setActiveSkill.bind(null, data.group), skillButtonList: data.item}));
+	        }), " "));
+	    };
+	    return SkillBoxList;
+	}(React.Component));
+	exports.SkillBoxList = SkillBoxList;
+
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -108,57 +153,12 @@
 	    SkillBox.prototype.render = function () {
 	        var _this = this;
 	        return React.createElement("div", {className: "SkillBox"}, React.createElement("span", null, this.props.name), React.createElement("ul", {className: "SkillBox-ul"}, this.props.skillButtonList.map(function (skillButton) {
-	            return React.createElement(SkillButton_1.SkillButton, {key: skillButton.label, name: skillButton.label, isChecked: _this.props.value == _this.props.name + " " + skillButton.label, action: _this.props.action.bind(null, _this.props.name + " " + skillButton.label)});
+	            return React.createElement(SkillButton_1.SkillButton, {key: skillButton.label, name: skillButton.label, isChecked: _this.props.value == _this.props.name + skillButton.label, action: _this.props.action.bind(null, _this.props.name + skillButton.label)});
 	        })));
 	    };
 	    return SkillBox;
 	}(React.Component));
 	exports.SkillBox = SkillBox;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var React = __webpack_require__(1);
-	var SkillBox_1 = __webpack_require__(4);
-	var skilldata_1 = __webpack_require__(7);
-	var SkillBoxList = (function (_super) {
-	    __extends(SkillBoxList, _super);
-	    function SkillBoxList() {
-	        _super.call(this);
-	        this.state = {
-	            activeSkill: {}
-	        };
-	    }
-	    SkillBoxList.prototype.setValue = function (skillBoxName, value) {
-	        var activeSkill = this.state.activeSkill;
-	        if (activeSkill[skillBoxName] === value) {
-	            delete activeSkill[skillBoxName];
-	        }
-	        else {
-	            activeSkill[skillBoxName] = value;
-	        }
-	        this.setState({
-	            activeSkill: activeSkill
-	        });
-	    };
-	    SkillBoxList.prototype.render = function () {
-	        var _this = this;
-	        console.log(this.state.activeSkill);
-	        return (React.createElement("ul", {className: 'SkillBoxList'}, " ", skilldata_1.default.map(function (data) {
-	            return React.createElement("li", {className: 'SkillBoxList-li'}, React.createElement(SkillBox_1.SkillBox, {key: data.name, name: data.name, value: _this.state.activeSkill[data.group] || null, action: _this.setValue.bind(_this, data.group), skillButtonList: data.item}));
-	        }), " "));
-	    };
-	    return SkillBoxList;
-	}(React.Component));
-	exports.SkillBoxList = SkillBoxList;
 
 
 /***/ },
@@ -252,6 +252,46 @@
 	exports.default = skillData;
 
 
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var skilldata_1 = __webpack_require__(7);
+	var Output = (function (_super) {
+	    __extends(Output, _super);
+	    function Output(props) {
+	        var _this = this;
+	        _super.call(this, props);
+	        this.newArray = [];
+	        skilldata_1.default.forEach(function (skill) {
+	            skill.item.forEach(function (item) {
+	                _this.newArray.push({
+	                    name: skill.name + item.label,
+	                    group: skill.group,
+	                    action: props.setActiveSkill.bind(null, skill.group, skill.name + item.label)
+	                });
+	            });
+	        });
+	    }
+	    Output.prototype.render = function () {
+	        var _this = this;
+	        return React.createElement("table", null, " ", this.newArray.map(function (item) {
+	            return React.createElement("tr", null, React.createElement("th", null, "スキル"))
+	                ,
+	                    React.createElement("tr", {key: item.name, className: _this.props.activeSkill[item.group] === item.name ? 'checked' : '', onClick: item.action}, React.createElement("td", null, item.name));
+	        }), " ");
+	    };
+	    return Output;
+	}(React.Component));
+	exports.Output = Output;
+
+
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle.js.map
