@@ -53,14 +53,23 @@ export class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
 
     render() {
         return <div className="MHCalc">
-            <Weapon
-                type={this.state.weapon.type}
-                name={this.state.weapon.name}
-                level={this.state.weapon.level}
-                setWeapon={this.setWeapon.bind(this)}
+            <div className="input">
+                <Weapon
+                    type={this.state.weapon.type}
+                    name={this.state.weapon.name}
+                    level={this.state.weapon.level}
+                    setWeapon={this.setWeapon.bind(this) }
+                    />
+                <SkillBoxList
+                    activeSkill={this.state.activeSkill}
+                    setActiveSkill={this.setActiveSkill.bind(this) }
+                    />
+            </div>
+            <Output
+                activeSkill={this.state.activeSkill}
+                setActiveSkill={this.setActiveSkill.bind(this) }
+                weapon={this.state.weapon}
                 />
-            <SkillBoxList activeSkill={this.state.activeSkill} setActiveSkill={this.setActiveSkill.bind(this) } />
-            <Output activeSkill={this.state.activeSkill} setActiveSkill={this.setActiveSkill.bind(this) } />
         </div>
     }
 }

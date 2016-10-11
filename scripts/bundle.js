@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -108,7 +108,7 @@
 	        });
 	    };
 	    MHCalc.prototype.render = function () {
-	        return React.createElement("div", {className: "MHCalc"}, React.createElement(Weapon_1.Weapon, {type: this.state.weapon.type, name: this.state.weapon.name, level: this.state.weapon.level, setWeapon: this.setWeapon.bind(this)}), React.createElement(SkillBoxList_1.SkillBoxList, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)}), React.createElement(Output_1.Output, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)}));
+	        return React.createElement("div", {className: "MHCalc"}, React.createElement("div", {className: "input"}, React.createElement(Weapon_1.Weapon, {type: this.state.weapon.type, name: this.state.weapon.name, level: this.state.weapon.level, setWeapon: this.setWeapon.bind(this)}), React.createElement(SkillBoxList_1.SkillBoxList, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)})), React.createElement(Output_1.Output, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this), weapon: this.state.weapon}));
 	    };
 	    return MHCalc;
 	}(React.Component));
@@ -201,30 +201,52 @@
 /***/ function(module, exports) {
 
 	"use strict";
-	function addPowor(value) {
-	    return function (data) {
-	        data['addPowor'].push(value);
-	    };
-	}
+	var attackUp = function (skill, val) {
+	    skill.power += val;
+	    return skill;
+	};
+	var attackMult = function (skill, val) {
+	    skill.mult *= val;
+	    return skill;
+	};
+	var affinityUp = function (skill, val) {
+	    skill.affinity += val;
+	    return skill;
+	};
+	var multValue = function (skill, hash) {
+	    for (var key in hash) {
+	        if (skill[key]) {
+	            skill[key] *= hash[key];
+	        }
+	        else {
+	            skill[key] = hash[key];
+	        }
+	    }
+	    return skill;
+	};
 	var skillData = [
 	    {
 	        name: 'ロング/パワーバレル',
+	        effect: multValue,
 	        item: [
-	            { label: 'on', value: 1.05 }
+	            { label: 'on', value: { parts: 1.05 } }
 	        ]
 	    }, {
 	        name: '【狩技】火薬装填',
+	        effect: attackMult,
 	        item: [
 	            { label: 'on', value: 1.05 }
 	        ]
 	    }, {
 	        name: 'パワーリロード',
+	        effect: attackMult,
 	        item: [
 	            { label: 'on', value: 1.05 }
 	        ]
 	    }, {
 	        name: '攻撃力UP',
 	        group: '攻撃力UP',
+	        effect: attackUp,
 	        item: [
 	            { label: '【小】', value: 10 },
 	            { label: '【中】', value: 15 },
@@ -233,14 +255,88 @@
 	    }, {
 	        name: '見切り',
 	        group: '見切り',
+	        effect: affinityUp,
 	        item: [
 	            { label: '+1', value: 10 },
-	            { label: '+2', value: 15 },
-	            { label: '+3', value: 20 }
+	            { label: '+2', value: 20 },
+	            { label: '+3', value: 30 }
+	        ]
+	    }, {
+	        name: '弱点特効',
+	        effect: multValue,
+	        item: [
+	            { label: 'on', value: { '弱点特効': 50 } }
+	        ]
+	    }, {
+	        name: '力の解放',
+	        group: '腕が光るスキル',
+	        effect: affinityUp,
+	        item: [
+	            { label: '+1', value: 30 },
+	            { label: '+2', value: 50 }
+	        ]
+	    }, {
+	        name: '挑戦者',
+	        group: '腕が光るスキル',
+	        effect: function (skill, val) {
+	            attackUp(skill, val[0]);
+	            affinityUp(skill, val[1]);
+	            return skill;
+	        },
+	        item: [
+	            { label: '+1', value: [10, 10] },
+	            { label: '+2', value: [25, 15] }
+	        ]
+	    }, {
+	        name: 'フルチャージ',
+	        group: '腕が光るスキル',
+	        effect: attackUp,
+	        item: [
+	            { label: 'on', value: 20 }
+	        ]
+	    }, {
+	        name: '火事場',
+	        group: '火事場',
+	        effect: attackMult,
+	        item: [
+	            { label: '+2', value: 1.3 }
+	        ]
+	    }, {
+	        name: '不屈',
+	        effect: attackMult,
+	        item: [
+	            { label: '1乙', value: 1.1 },
+	            { label: '2乙', value: 1.2 }
+	        ]
+	    }, {
+	        name: '逆恨み',
+	        effect: attackUp,
+	        item: [
+	            { label: 'on', value: 20 }
+	        ]
+	    }, {
+	        name: '死中に活',
+	        effect: attackUp,
+	        item: [
+	            { label: 'on', value: 20 }
+	        ]
+	    }, {
+	        name: '研磨術',
+	        effect: attackMult,
+	        item: [
+	            { label: '（仮）', value: 1.75 / 1.5 }
+	        ]
+	    }, {
+	        name: 'ネコの火事場術',
+	        group: '火事場',
+	        effect: attackMult,
+	        item: [
+	            { label: 'on', value: 1.35 }
 	        ]
 	    }, {
 	        name: '攻撃力DOWN',
 	        group: '攻撃力UP',
+	        effect: attackUp,
 	        item: [
 	            { label: '【小】', value: -5 },
 	            { label: '【中】', value: -10 },
@@ -249,10 +345,18 @@
 	    }, {
 	        name: '見切り',
 	        group: '見切り',
+	        effect: affinityUp,
 	        item: [
 	            { label: '-1', value: -5 },
 	            { label: '-2', value: -10 },
 	            { label: '-3', value: -15 }
+	        ]
+	    }, {
+	        name: '心配性',
+	        group: '火事場',
+	        effect: attackMult,
+	        item: [
+	            { label: 'on', value: 0.7 }
 	        ]
 	    }
 	];
@@ -275,6 +379,7 @@
 	};
 	var React = __webpack_require__(1);
 	var skilldata_1 = __webpack_require__(7);
+	var weaponData_1 = __webpack_require__(10);
 	var Output = (function (_super) {
 	    __extends(Output, _super);
 	    function Output(props) {
@@ -286,6 +391,8 @@
 	                _this.newArray.push({
 	                    name: skill.name + item.label,
 	                    group: skill.group,
+	                    value: item.value,
+	                    effect: skill.effect,
 	                    action: props.setActiveSkill.bind(null, skill.group, skill.name + item.label)
 	                });
 	            });
@@ -293,13 +400,81 @@
 	    }
 	    Output.prototype.render = function () {
 	        var _this = this;
-	        return React.createElement("table", null, React.createElement("tr", null, React.createElement("th", null), React.createElement("th", null, "スキル")), this.newArray.map(function (item, i) {
-	            return React.createElement("tr", {key: item.name, className: _this.props.activeSkill[item.group] === item.name ? 'checked' : '', onClick: item.action}, React.createElement("td", null, i + 1), React.createElement("td", null, item.name));
+	        var wep = weaponData_1.default[this.props.weapon.type][this.props.weapon.name][this.props.weapon.level];
+	        var weapon = {
+	            power: wep[0],
+	            affinity: wep[1],
+	            mult: this.props.weapon.type === 'lightbowgun' ? 1.3 : 1.5
+	        };
+	        var skill = {
+	            power: 0,
+	            mult: 1,
+	            affinity: 0
+	        };
+	        var activeSkillList = this.newArray.filter(function (item) {
+	            return _this.props.activeSkill[item.group] === item.name;
+	        });
+	        activeSkillList.forEach(function (item) {
+	            item.effect(skill, item.value);
+	        });
+	        var orgPower = getAttackPower(weapon, skill);
+	        var a = this.newArray.map(function (item) {
+	            var skill = {
+	                power: 0,
+	                mult: 1,
+	                affinity: 0
+	            };
+	            activeSkillList.forEach(function (item_1) {
+	                if (item_1.group === item.group)
+	                    return;
+	                item_1.effect(skill, item_1.value);
+	            });
+	            var group = _this.props.activeSkill[item.group];
+	            var a = {
+	                name: item.name,
+	                isActive: group === item.name,
+	                action: item.action,
+	                disappearance: group && group !== item.name ? group : '',
+	                plus: null,
+	                mult: null
+	            };
+	            if (_this.props.activeSkill[item.group] !== item.name) {
+	                item.effect(skill, item.value);
+	                var power = getAttackPower(weapon, skill);
+	                a.plus = (power - orgPower) | 0;
+	                a.mult = power / orgPower;
+	            }
+	            else {
+	                var power = getAttackPower(weapon, skill);
+	                a.plus = (orgPower - power) | 0;
+	                a.mult = orgPower / power;
+	            }
+	            return a;
+	        }).sort(function (a, b) {
+	            return b.plus - a.plus || b.mult - a.mult;
+	        } // || +b.isActive - +a.isActive
+	         // || +b.isActive - +a.isActive
+	        );
+	        return React.createElement("table", {className: "Output"}, React.createElement("tr", null, React.createElement("th", null, "スキル"), React.createElement("th", null, "上昇値"), React.createElement("th", null, "倍率")), a.map(function (item) {
+	            return React.createElement("tr", {key: item.name, onClick: item.action, className: item.isActive ? 'checked' : ''}, React.createElement("td", null, item.name, React.createElement("small", {style: { float: "right" }}, item.disappearance)), React.createElement("td", null, React.createElement("span", {className: "test", style: {
+	                width: (item.plus < 0 ? 0 : item.plus) + 'px'
+	            }}), ' ', item.plus), React.createElement("td", null, item.mult.toFixed(3)));
 	        }));
 	    };
 	    return Output;
 	}(React.Component));
 	exports.Output = Output;
+	function getAttackPower(weapon, skill) {
+	    var power = weapon.power, affinity = Math.min(Math.max(weapon.affinity + skill.affinity, -100), 100), superAffinity = 1.25 - 1;
+	    if (skill.parts) {
+	        power += Math.floor(power * (skill.parts - 1));
+	    }
+	    if (skill.superAffinity) {
+	        superAffinity = skill.superAffinity - 1;
+	    }
+	    // return (power + skill.power) * weapon.mult * skill.mult * (1 + affinity / 100 * superAffinity);
+	    return (power + skill.power) * skill.mult * (1 + affinity / 100 * superAffinity);
+	}
 
 
 /***/ },
@@ -1465,3 +1640,4 @@
 
 /***/ }
 /******/ ]);
+//# sourceMappingURL=bundle.js.map

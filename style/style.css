@@ -1,8 +1,42 @@
-
 body, input, select {
 	font-family: "游ゴシック体", "Yu Gothic", YuGothic, sans-serif;
 }
-
+table {
+	width: 640px;
+	margin: 1em auto;
+	border-collapse: collapse;
+	white-space: nowrap;
+	table-layout: fixed;
+}
+tr:hover {
+	background: #eee;
+}
+th {
+	width: 150px;
+	padding: 5px 2px;
+	border-right: 1px solid #fff;
+	border-left: 1px solid #fff;
+	background: #84b2e0;
+	color: #fff;
+	text-align: center;
+}
+th:first-child {
+	width: auto;
+	border-left-color: #84b2e0;
+}
+th:last-child {
+	border-right-color: #84b2e0;
+}
+td {
+	padding: .5em 2px;
+	border: 1px solid #bbb;
+}
+td:last-child {
+	text-align: right;
+}
+.input, .Output {
+	float: left;
+}
 .SkillBoxList {
 	width: 320px;
 	padding: 0;
@@ -41,7 +75,18 @@ body, input, select {
 	color: #fff;
 }
 
-.checked {
-	background: #4aa3df;
-	color: #fff;
+.Output td {
+	padding: .5em;
+}
+.Output tr:hover {
+	background: #eee;
+}
+.Output .checked {
+	color: #4aa3df;
+}
+.test {
+	display: inline-block;
+	max-width: 100px;
+	height: 10px;
+	background: #84b2e0;
 }
