@@ -83,7 +83,7 @@ export class Output extends React.Component<Output.Props, Output.State> {
                 name: item.name,
                 isActive: group === item.name,
                 action: item.action,
-                disappearance: group && group !== item.name ? group : '',
+                disappearance: group && group !== item.name ? '- ' + group : '',
                 plus: null,
                 mult: null
             }
@@ -110,7 +110,7 @@ export class Output extends React.Component<Output.Props, Output.State> {
             <tr>
                 <th>スキル</th>
                 <th>上昇値</th>
-                <th>倍率</th>
+                <th>上昇率</th>
             </tr>
             {a.map(item => {
                 return <tr key={item.name}
@@ -118,15 +118,18 @@ export class Output extends React.Component<Output.Props, Output.State> {
                     className={item.isActive ? 'checked' : ''}
                     >
                     <td>
+                    <span className="skillName">
                         {item.name}
-                        <small style={{ float: "right" }}>
+                    </span>
+                        <span className="disappearance">
                             {item.disappearance}
-                        </small>
+                        </span>
                     </td>
                     <td>
-                        <span className="test" style={{
-                            width: (item.plus < 0 ? 0 : item.plus) + 'px'
-                        }} />
+                        <span
+                            className={'test' + (item.plus < 0 ? ' minus' : '') }
+                            style={{ width: Math.abs(item.plus) + 'px' }}
+                            />
                         {' '}
                         {item.plus}
                     </td>

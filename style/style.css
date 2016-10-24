@@ -1,5 +1,9 @@
 body, input, select {
 	font-family: "游ゴシック体", "Yu Gothic", YuGothic, sans-serif;
+	font-size: 1em;
+}
+body {
+	width: 960px;
 }
 table {
 	width: 640px;
@@ -36,6 +40,11 @@ td:last-child {
 }
 .input, .Output {
 	float: left;
+}
+.input {
+	width: 320px;
+	padding: 0;
+	margin: 1em 0;
 }
 .SkillBoxList {
 	width: 320px;
@@ -82,11 +91,22 @@ td:last-child {
 	background: #eee;
 }
 .Output .checked {
+	color: #bbb;
+}
+.Output .checked .skillName {
 	color: #4aa3df;
+}
+.disappearance {
+	float: right;
+	color: #bbb;
 }
 .test {
 	display: inline-block;
 	max-width: 100px;
 	height: 10px;
 	background: #84b2e0;
+}
+.Output .checked .test,
+.test.minus {
+	background: #bbb;
 }

@@ -76,7 +76,7 @@
 	var React = __webpack_require__(1);
 	var SkillBoxList_1 = __webpack_require__(4);
 	var Output_1 = __webpack_require__(8);
-	var Weapon_1 = __webpack_require__(9);
+	var Weapon_1 = __webpack_require__(10);
 	var MHCalc = (function (_super) {
 	    __extends(MHCalc, _super);
 	    function MHCalc() {
@@ -108,7 +108,11 @@
 	        });
 	    };
 	    MHCalc.prototype.render = function () {
-	        return React.createElement("div", {className: "MHCalc"}, React.createElement("div", {className: "input"}, React.createElement(Weapon_1.Weapon, {type: this.state.weapon.type, name: this.state.weapon.name, level: this.state.weapon.level, setWeapon: this.setWeapon.bind(this)}), React.createElement(SkillBoxList_1.SkillBoxList, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)})), React.createElement(Output_1.Output, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this), weapon: this.state.weapon}));
+	        return React.createElement("div", {className: "MHCalc"}, 
+	            React.createElement("div", {className: "input"}, 
+	                React.createElement(Weapon_1.Weapon, {type: this.state.weapon.type, name: this.state.weapon.name, level: this.state.weapon.level, setWeapon: this.setWeapon.bind(this)}), 
+	                React.createElement(SkillBoxList_1.SkillBoxList, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)})), 
+	            React.createElement(Output_1.Output, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this), weapon: this.state.weapon}));
 	    };
 	    return MHCalc;
 	}(React.Component));
@@ -136,7 +140,9 @@
 	    SkillBoxList.prototype.render = function () {
 	        var _this = this;
 	        return React.createElement("ul", {className: 'SkillBoxList'}, skilldata_1.default.map(function (data) {
-	            return React.createElement("li", {className: 'SkillBoxList-li'}, React.createElement(SkillBox_1.SkillBox, {key: data.name, name: data.name, value: _this.props.activeSkill[data.group] || null, action: _this.props.setActiveSkill.bind(null, data.group), skillButtonList: data.item}));
+	            return React.createElement("li", {className: 'SkillBoxList-li'}, 
+	                React.createElement(SkillBox_1.SkillBox, {key: data.name, name: data.name, value: _this.props.activeSkill[data.group] || null, action: _this.props.setActiveSkill.bind(null, data.group), skillButtonList: data.item})
+	            );
 	        }));
 	    };
 	    return SkillBoxList;
@@ -163,9 +169,11 @@
 	    }
 	    SkillBox.prototype.render = function () {
 	        var _this = this;
-	        return React.createElement("div", {className: "SkillBox"}, React.createElement("span", null, this.props.name), React.createElement("ul", {className: "SkillBox-ul"}, this.props.skillButtonList.map(function (skillButton) {
-	            return React.createElement(SkillButton_1.SkillButton, {key: skillButton.label, name: skillButton.label, isChecked: _this.props.value == _this.props.name + skillButton.label, action: _this.props.action.bind(null, _this.props.name + skillButton.label)});
-	        })));
+	        return React.createElement("div", {className: "SkillBox"}, 
+	            React.createElement("span", null, this.props.name), 
+	            React.createElement("ul", {className: "SkillBox-ul"}, this.props.skillButtonList.map(function (skillButton) {
+	                return React.createElement(SkillButton_1.SkillButton, {key: skillButton.label, name: skillButton.label, isChecked: _this.props.value == _this.props.name + skillButton.label, action: _this.props.action.bind(null, _this.props.name + skillButton.label)});
+	            })));
 	    };
 	    return SkillBox;
 	}(React.Component));
@@ -379,7 +387,7 @@
 	};
 	var React = __webpack_require__(1);
 	var skilldata_1 = __webpack_require__(7);
-	var weaponData_1 = __webpack_require__(10);
+	var weaponData_1 = __webpack_require__(9);
 	var Output = (function (_super) {
 	    __extends(Output, _super);
 	    function Output(props) {
@@ -434,7 +442,7 @@
 	                name: item.name,
 	                isActive: group === item.name,
 	                action: item.action,
-	                disappearance: group && group !== item.name ? group : '',
+	                disappearance: group && group !== item.name ? '- ' + group : '',
 	                plus: null,
 	                mult: null
 	            };
@@ -453,13 +461,23 @@
 	        }).sort(function (a, b) {
 	            return b.plus - a.plus || b.mult - a.mult;
 	        } // || +b.isActive - +a.isActive
-	         // || +b.isActive - +a.isActive
 	        );
-	        return React.createElement("table", {className: "Output"}, React.createElement("tr", null, React.createElement("th", null, "スキル"), React.createElement("th", null, "上昇値"), React.createElement("th", null, "倍率")), a.map(function (item) {
-	            return React.createElement("tr", {key: item.name, onClick: item.action, className: item.isActive ? 'checked' : ''}, React.createElement("td", null, item.name, React.createElement("small", {style: { float: "right" }}, item.disappearance)), React.createElement("td", null, React.createElement("span", {className: "test", style: {
-	                width: (item.plus < 0 ? 0 : item.plus) + 'px'
-	            }}), ' ', item.plus), React.createElement("td", null, item.mult.toFixed(3)));
-	        }));
+	        return React.createElement("table", {className: "Output"}, 
+	            React.createElement("tr", null, 
+	                React.createElement("th", null, "スキル"), 
+	                React.createElement("th", null, "上昇値"), 
+	                React.createElement("th", null, "上昇率")), 
+	            a.map(function (item) {
+	                return React.createElement("tr", {key: item.name, onClick: item.action, className: item.isActive ? 'checked' : ''}, 
+	                    React.createElement("td", null, 
+	                        React.createElement("span", {className: "skillName"}, item.name), 
+	                        React.createElement("span", {className: "disappearance"}, item.disappearance)), 
+	                    React.createElement("td", null, 
+	                        React.createElement("span", {className: 'test' + (item.plus < 0 ? ' minus' : ''), style: { width: Math.abs(item.plus) + 'px' }}), 
+	                        ' ', 
+	                        item.plus), 
+	                    React.createElement("td", null, item.mult.toFixed(3)));
+	            }));
 	    };
 	    return Output;
 	}(React.Component));
@@ -479,61 +497,6 @@
 
 /***/ },
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var React = __webpack_require__(1);
-	var weaponData_1 = __webpack_require__(10);
-	function getFirstKey(obj) {
-	    for (var key in obj) {
-	        if (obj.hasOwnProperty(key)) {
-	            return key;
-	        }
-	    }
-	    return null;
-	}
-	var Weapon = (function (_super) {
-	    __extends(Weapon, _super);
-	    function Weapon() {
-	        _super.apply(this, arguments);
-	    }
-	    Weapon.prototype.setType = function () {
-	        var type = this.refs['type'].value;
-	        var name = getFirstKey(weaponData_1.default[type]);
-	        var level = weaponData_1.default[type][name].length - 1;
-	        this.props.setWeapon(type, name, level);
-	    };
-	    Weapon.prototype.setName = function () {
-	        var type = this.props.type;
-	        var name = this.refs['name'].value;
-	        var level = weaponData_1.default[type][name].length - 1;
-	        this.props.setWeapon(type, name, level);
-	    };
-	    Weapon.prototype.setLevel = function () {
-	        var type = this.props.type;
-	        var name = this.props.name;
-	        var level = +this.refs['level'].value;
-	        this.props.setWeapon(type, name, level);
-	    };
-	    Weapon.prototype.render = function () {
-	        return React.createElement("div", {className: "Weapon"}, React.createElement("select", {ref: 'type', value: this.props.type, onChange: this.setType.bind(this)}, React.createElement("option", {value: "lightbowgun"}, "ライト"), React.createElement("option", {value: "heavybowgun"}, "ヘビィ")), React.createElement("select", {ref: 'name', value: this.props.name, onChange: this.setName.bind(this)}, Object.keys(weaponData_1.default[this.props.type]).map(function (value) {
-	            return React.createElement("option", {value: value}, value);
-	        })), React.createElement("select", {ref: 'level', value: this.props.level, onChange: this.setLevel.bind(this)}, weaponData_1.default[this.props.type][this.props.name].map(function (value, i) {
-	            return React.createElement("option", {value: i}, "LV", i + 1);
-	        })), React.createElement("p", null, weaponData_1.default[this.props.type][this.props.name][this.props.level][0], "/", weaponData_1.default[this.props.type][this.props.name][this.props.level][1], "%"));
-	    };
-	    return Weapon;
-	}(React.Component));
-	exports.Weapon = Weapon;
-
-
-/***/ },
-/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1636,6 +1599,73 @@
 	        ]
 	    }
 	};
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(1);
+	var weaponData_1 = __webpack_require__(9);
+	function getFirstKey(obj) {
+	    for (var key in obj) {
+	        if (obj.hasOwnProperty(key)) {
+	            return key;
+	        }
+	    }
+	    return null;
+	}
+	var Weapon = (function (_super) {
+	    __extends(Weapon, _super);
+	    function Weapon() {
+	        _super.apply(this, arguments);
+	    }
+	    Weapon.prototype.setType = function () {
+	        var type = this.refs['type'].value;
+	        var name = getFirstKey(weaponData_1.default[type]);
+	        var level = weaponData_1.default[type][name].length - 1;
+	        this.props.setWeapon(type, name, level);
+	    };
+	    Weapon.prototype.setName = function () {
+	        var type = this.props.type;
+	        var name = this.refs['name'].value;
+	        var level = weaponData_1.default[type][name].length - 1;
+	        this.props.setWeapon(type, name, level);
+	    };
+	    Weapon.prototype.setLevel = function () {
+	        var type = this.props.type;
+	        var name = this.props.name;
+	        var level = +this.refs['level'].value;
+	        this.props.setWeapon(type, name, level);
+	    };
+	    Weapon.prototype.render = function () {
+	        return React.createElement("div", {className: "Weapon"}, 
+	            React.createElement("select", {ref: 'type', value: this.props.type, onChange: this.setType.bind(this)}, 
+	                React.createElement("option", {value: "lightbowgun"}, "ライト"), 
+	                React.createElement("option", {value: "heavybowgun"}, "ヘビィ")), 
+	            React.createElement("select", {ref: 'name', value: this.props.name, onChange: this.setName.bind(this)}, Object.keys(weaponData_1.default[this.props.type]).map(function (value) {
+	                return React.createElement("option", {value: value}, value);
+	            })), 
+	            React.createElement("select", {ref: 'level', value: this.props.level + '', onChange: this.setLevel.bind(this)}, weaponData_1.default[this.props.type][this.props.name].map(function (value, i) {
+	                return React.createElement("option", {value: i}, 
+	                    "LV", 
+	                    i + 1);
+	            })), 
+	            React.createElement("p", null, 
+	                weaponData_1.default[this.props.type][this.props.name][this.props.level][0], 
+	                "/", 
+	                weaponData_1.default[this.props.type][this.props.name][this.props.level][1], 
+	                "%"));
+	    };
+	    return Weapon;
+	}(React.Component));
+	exports.Weapon = Weapon;
 
 
 /***/ }

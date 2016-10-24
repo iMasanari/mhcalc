@@ -53,7 +53,7 @@ export class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                     <option value={value}>{value}</option>
                 ) }
             </select>
-            <select ref='level' value={this.props.level} onChange={this.setLevel.bind(this) }>
+            <select ref='level' value={this.props.level + ''} onChange={this.setLevel.bind(this) }>
                 {weaponData[this.props.type][this.props.name].map((value, i) =>
                     <option value={i}>LV{i + 1}</option>
                 ) }
