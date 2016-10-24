@@ -1,9 +1,7 @@
-import * as React from 'react';
+/// <reference path="SkillBox.tsx" />
+/// <reference path="skillData.ts" />
 
-import {SkillBox} from './SkillBox'
-import skillData from './skilldata'
-
-export namespace SkillBoxList {
+namespace SkillBoxList {
     export interface Props extends React.Props<SkillBoxList> {
         activeSkill: { [skillName: string]: string }
         setActiveSkill: () => void
@@ -12,7 +10,7 @@ export namespace SkillBoxList {
     }
 }
 
-export class SkillBoxList extends React.Component<SkillBoxList.Props, SkillBoxList.State> {
+class SkillBoxList extends React.Component<SkillBoxList.Props, SkillBoxList.State> {
     render() {
         return <ul className='SkillBoxList'>
             {skillData.map(data =>

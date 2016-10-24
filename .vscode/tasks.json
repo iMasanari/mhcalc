@@ -1,10 +1,9 @@
 {
     "version": "0.1.0",
-    "command": "webpack",
-    "args": [
-        "-w"
-    ],
+    "command": "tsc",
     "isShellCommand": true,
-    "showOutput": "always",
-    "suppressTaskName": true
+    "args": ["-w", "-p", "."],
+    "showOutput": "silent",
+    "isWatching": true,
+    "problemMatcher": "$tsc-watch"
 }

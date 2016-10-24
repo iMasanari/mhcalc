@@ -1,8 +1,6 @@
-import * as React from 'react';
+/// <reference path="weaponData.ts" />
 
-import weaponData from './weaponData'
-
-export namespace Weapon {
+namespace Weapon {
     export interface Props extends React.Props<Weapon> {
         type: string
         name: string
@@ -20,7 +18,7 @@ function getFirstKey(obj: {}) {
     }
     return null
 }
-export class Weapon extends React.Component<Weapon.Props, Weapon.State> {
+class Weapon extends React.Component<Weapon.Props, Weapon.State> {
     setType() {
         let type = (this.refs['type'] as HTMLSelectElement).value
         let name = getFirstKey(weaponData[type])

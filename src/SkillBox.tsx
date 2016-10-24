@@ -1,8 +1,6 @@
-import * as React from 'react';
+/// <reference path="SkillButton.tsx" />
 
-import {SkillButton} from './SkillButton'
-
-export namespace SkillBox {
+namespace SkillBox {
     export interface Props extends React.Props<SkillBox> {
         name: string
         value: string
@@ -13,7 +11,7 @@ export namespace SkillBox {
     }
 }
 
-export class SkillBox extends React.Component<SkillBox.Props, SkillBox.State> {
+class SkillBox extends React.Component<SkillBox.Props, SkillBox.State> {
     render() {
         return <div className="SkillBox">
             <span>{this.props.name}</span>

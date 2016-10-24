@@ -1,9 +1,7 @@
-import * as React from 'react';
+/// <reference path="skilldata.ts" />
+/// <reference path="weaponData.ts" />
 
-import skillData from './skilldata'
-import weaponData from './weaponData'
-
-export namespace Output {
+namespace Output {
     export interface Props extends React.Props<Output> {
         activeSkill: { [skillName: string]: string }
         setActiveSkill: () => void
@@ -17,7 +15,7 @@ export namespace Output {
     }
 }
 
-export class Output extends React.Component<Output.Props, Output.State> {
+class Output extends React.Component<Output.Props, Output.State> {
     newArray: {
         name: string
         group: string

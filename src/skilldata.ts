@@ -176,5 +176,3 @@ let skillData: {
 skillData.forEach(value => {
     value.group = value.group || value.name
 })
-
-export default skillData

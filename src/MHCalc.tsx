@@ -1,10 +1,9 @@
-import * as React from 'react';
+/// <reference path="SkillBoxList.tsx" />
+/// <reference path="Output.tsx" />
+/// <reference path="Weapon.tsx" />
 
-import {SkillBoxList} from './SkillBoxList';
-import {Output} from './Output';
-import {Weapon} from './Weapon';
 
-export namespace MHCalc {
+namespace MHCalc {
     export interface Props extends React.Props<MHCalc> {
     }
     export interface State {
@@ -19,7 +18,7 @@ export namespace MHCalc {
     }
 }
 
-export class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
+class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
     constructor() {
         super()
 

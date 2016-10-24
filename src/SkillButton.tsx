@@ -1,6 +1,4 @@
-import * as React from 'react';
-
-export namespace SkillButton {
+namespace SkillButton {
     export interface Data {
         label: string
         value: any
@@ -15,7 +13,7 @@ export namespace SkillButton {
     }
 }
 
-export class SkillButton extends React.Component<SkillButton.Props, SkillButton.State> {
+class SkillButton extends React.Component<SkillButton.Props, SkillButton.State> {
     render() {
         return <li
             className={'SkillButton' + (this.props.isChecked ? ' checked' : '')}
