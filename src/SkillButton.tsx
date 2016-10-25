@@ -1,5 +1,6 @@
 namespace SkillButton {
     export interface Data {
+        name: string
         label: string
         value: any
     }
@@ -23,3 +24,4 @@ class SkillButton extends React.Component<SkillButton.Props, SkillButton.State> 
         </li>
     }
 }
+

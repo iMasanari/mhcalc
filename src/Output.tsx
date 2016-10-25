@@ -1,4 +1,4 @@
-/// <reference path="skilldata.ts" />
+/// <reference path="skillData.ts" />
 /// <reference path="weaponData.ts" />
 
 namespace Output {
@@ -30,11 +30,11 @@ class Output extends React.Component<Output.Props, Output.State> {
         skillData.forEach(skill => {
             skill.item.forEach(item => {
                 this.newArray.push({
-                    name: skill.name + item.label,
+                    name: item.name,
                     group: skill.group,
                     value: item.value,
                     effect: skill.effect,
-                    action: props.setActiveSkill.bind(null, skill.group, skill.name + item.label)
+                    action: props.setActiveSkill.bind(null, skill.group, item.name)
                 })
             })
         })

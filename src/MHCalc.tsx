@@ -2,7 +2,6 @@
 /// <reference path="Output.tsx" />
 /// <reference path="Weapon.tsx" />
 
-
 namespace MHCalc {
     export interface Props extends React.Props<MHCalc> {
     }

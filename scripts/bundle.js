@@ -24,7 +24,7 @@ var SkillBox = (function (_super) {
         return React.createElement("div", {className: "SkillBox"}, 
             React.createElement("span", null, this.props.name), 
             React.createElement("ul", {className: "SkillBox-ul"}, this.props.skillButtonList.map(function (skillButton) {
-                return React.createElement(SkillButton, {key: skillButton.label, name: skillButton.label, isChecked: _this.props.value == _this.props.name + skillButton.label, action: _this.props.action.bind(null, _this.props.name + skillButton.label)});
+                return React.createElement(SkillButton, {key: skillButton.label, name: skillButton.label, isChecked: _this.props.value == skillButton.name, action: _this.props.action.bind(null, skillButton.name)});
             })));
     };
     return SkillBox;
@@ -52,24 +52,24 @@ var multValue = function (skill, hash) {
     }
     return skill;
 };
-var skillData = [
+var _skillData = [
     {
         name: 'ロング/パワーバレル',
         effect: multValue,
         item: [
-            { label: 'on', value: { parts: 1.05 } }
+            { value: { parts: 1.05 } }
         ]
     }, {
         name: '【狩技】火薬装填',
         effect: attackMult,
         item: [
-            { label: 'on', value: 1.05 }
+            { value: 1.05 }
         ]
     }, {
         name: 'パワーリロード',
         effect: attackMult,
         item: [
-            { label: 'on', value: 1.05 }
+            { value: 1.05 }
         ]
     }, {
         name: '攻撃力UP',
@@ -91,9 +91,9 @@ var skillData = [
         ]
     }, {
         name: '弱点特効',
-        effect: multValue,
+        effect: affinityUp,
         item: [
-            { label: 'on', value: { '弱点特効': 50 } }
+            { value: 50 }
         ]
     }, {
         name: '力の解放',
@@ -120,7 +120,7 @@ var skillData = [
         group: '腕が光るスキル',
         effect: attackUp,
         item: [
-            { label: 'on', value: 20 }
+            { value: 20 }
         ]
     }, {
         name: '火事場',
@@ -140,13 +140,13 @@ var skillData = [
         name: '逆恨み',
         effect: attackUp,
         item: [
-            { label: 'on', value: 20 }
+            { value: 20 }
         ]
     }, {
         name: '死中に活',
         effect: attackUp,
         item: [
-            { label: 'on', value: 20 }
+            { value: 20 }
         ]
     }, {
         name: '研磨術',
@@ -155,11 +155,131 @@ var skillData = [
             { label: '（仮）', value: 1.75 / 1.5 }
         ]
     }, {
+        name: '弾強化（通常 貫通 重撃）',
+        group: '弾強化',
+        effect: attackMult,
+        item: [
+            { value: 1.1 }
+        ]
+    }, {
+        name: '弾強化（散弾）',
+        group: '弾強化',
+        effect: attackMult,
+        item: [
+            { value: 1.2 }
+        ]
+    }, {
+        name: '変則射撃',
+        effect: attackMult,
+        item: [
+            { value: 1.2 }
+        ]
+    }, {
+        name: 'ネコの射撃術',
+        effect: attackMult,
+        item: [
+            { value: 1.1 }
+        ]
+    }, {
+        name: 'ネコの暴れ撃ち',
+        effect: attackMult,
+        item: [
+            { value: 1.1 }
+        ]
+    }, {
         name: 'ネコの火事場術',
         group: '火事場',
         effect: attackMult,
         item: [
-            { label: 'on', value: 1.35 }
+            { value: 1.35 }
+        ]
+    }, {
+        name: 'ネコの短期催眠術',
+        effect: attackUp,
+        item: [
+            { value: 3 }
+        ]
+    }, {
+        name: '力の護符',
+        effect: attackUp,
+        item: [
+            { label: '所持', value: 6 }
+        ]
+    }, {
+        name: '力の爪',
+        effect: attackUp,
+        item: [
+            { label: '所持', value: 9 }
+        ]
+    }, {
+        name: '食事',
+        effect: attackUp,
+        item: [
+            { label: '【小】', value: 3 },
+            { label: '【中】', value: 5 },
+            { label: '【大】', value: 7 }
+        ]
+    }, {
+        name: '鬼人薬',
+        effect: attackUp,
+        item: [
+            { value: 3 },
+            { label: 'G', value: 7 }
+        ]
+    }, {
+        name: 'ネコの休憩術',
+        group: '怪力の種',
+        effect: attackUp,
+        item: [
+            { value: 15 }
+        ]
+    }, {
+        name: '怪力の種',
+        group: '怪力の種',
+        effect: attackUp,
+        item: [
+            { name: '怪力の種（広域1）', label: '広域1', value: 5 },
+            { name: '怪力の種', label: '種', value: 10 },
+            { name: '怪力の丸薬', label: '丸薬', value: 25 },
+        ]
+    }, {
+        name: '北風/南風の狩人',
+        effect: attackUp,
+        item: [
+            { value: 15 }
+        ]
+    }, {
+        name: '北風の狩人（クーラードリンク）',
+        effect: attackUp,
+        item: [
+            { value: 5 }
+        ]
+    }, {
+        name: '狂竜症',
+        effect: affinityUp,
+        item: [
+            { value: 15 }
+        ]
+    }, {
+        name: '連撃の心得',
+        effect: affinityUp,
+        item: [
+            { label: '2hit~', value: 25 },
+            { label: '6hit', value: 30 }
+        ]
+    }, {
+        name: '超会心',
+        effect: multValue,
+        item: [
+            { value: { superAffinity: 1.4 } }
+        ]
+    }, {
+        name: '狩猟笛【攻撃】',
+        effect: attackMult,
+        item: [
+            { label: '小', value: 1.1 },
+            { label: '大/小2', value: 1.15 },
+            { label: '大', value: 1.2 }
         ]
     }, {
         name: '攻撃力DOWN',
@@ -184,13 +304,18 @@ var skillData = [
         group: '火事場',
         effect: attackMult,
         item: [
-            { label: 'on', value: 0.7 }
+            { value: 0.7 }
         ]
     }
 ];
-skillData.forEach(function (value) {
-    value.group = value.group || value.name;
+_skillData.forEach(function (skill) {
+    skill.group = skill.group || skill.name;
+    skill.item.forEach(function (item) {
+        item.name = item.name || skill.name + (item.label || '');
+        item.label = item.label || 'on';
+    });
 });
+var skillData = _skillData;
 /// <reference path="SkillBox.tsx" />
 /// <reference path="skillData.ts" />
 var SkillBoxList = (function (_super) {
@@ -200,9 +325,9 @@ var SkillBoxList = (function (_super) {
     }
     SkillBoxList.prototype.render = function () {
         var _this = this;
-        return React.createElement("ul", {className: 'SkillBoxList'}, skillData.map(function (data) {
+        return React.createElement("ul", {className: 'SkillBoxList'}, skillData.map(function (skill) {
             return React.createElement("li", {className: 'SkillBoxList-li'}, 
-                React.createElement(SkillBox, {key: data.name, name: data.name, value: _this.props.activeSkill[data.group] || null, action: _this.props.setActiveSkill.bind(null, data.group), skillButtonList: data.item})
+                React.createElement(SkillBox, {key: skill.name, name: skill.name, value: _this.props.activeSkill[skill.group] || null, action: _this.props.setActiveSkill.bind(null, skill.group), skillButtonList: skill.item})
             );
         }));
     };
@@ -1306,7 +1431,7 @@ var weaponData = {
         ]
     }
 };
-/// <reference path="skilldata.ts" />
+/// <reference path="skillData.ts" />
 /// <reference path="weaponData.ts" />
 var Output = (function (_super) {
     __extends(Output, _super);
@@ -1317,11 +1442,11 @@ var Output = (function (_super) {
         skillData.forEach(function (skill) {
             skill.item.forEach(function (item) {
                 _this.newArray.push({
-                    name: skill.name + item.label,
+                    name: item.name,
                     group: skill.group,
                     value: item.value,
                     effect: skill.effect,
-                    action: props.setActiveSkill.bind(null, skill.group, skill.name + item.label)
+                    action: props.setActiveSkill.bind(null, skill.group, item.name)
                 });
             });
         });

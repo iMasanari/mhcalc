@@ -19,8 +19,8 @@ class SkillBox extends React.Component<SkillBox.Props, SkillBox.State> {
                 {this.props.skillButtonList.map(skillButton =>
                     <SkillButton key={skillButton.label}
                         name={skillButton.label}
-                        isChecked={this.props.value == this.props.name + skillButton.label}
-                        action={this.props.action.bind(null, this.props.name + skillButton.label) }
+                        isChecked={this.props.value == skillButton.name}
+                        action={this.props.action.bind(null, skillButton.name) }
                         />
                 ) }
             </ul>

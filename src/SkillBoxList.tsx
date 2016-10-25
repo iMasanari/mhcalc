@@ -13,13 +13,13 @@ namespace SkillBoxList {
 class SkillBoxList extends React.Component<SkillBoxList.Props, SkillBoxList.State> {
     render() {
         return <ul className='SkillBoxList'>
-            {skillData.map(data =>
+            {skillData.map(skill =>
                 <li className='SkillBoxList-li'>
-                    <SkillBox key={data.name}
-                        name={data.name}
-                        value={this.props.activeSkill[data.group] || null}
-                        action={this.props.setActiveSkill.bind(null, data.group) }
-                        skillButtonList={data.item}
+                    <SkillBox key={skill.name}
+                        name={skill.name}
+                        value={this.props.activeSkill[skill.group] || null}
+                        action={this.props.setActiveSkill.bind(null, skill.group) }
+                        skillButtonList={skill.item}
                         />
                 </li>
             )}

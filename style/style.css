@@ -2,9 +2,6 @@ body, input, select {
 	font-family: "游ゴシック体", "Yu Gothic", YuGothic, sans-serif;
 	font-size: 1em;
 }
-body {
-	width: 960px;
-}
 table {
 	width: 640px;
 	margin: 1em auto;
@@ -38,6 +35,10 @@ td {
 td:last-child {
 	text-align: right;
 }
+.MHCalc {
+	width: 960px;
+	margin: 0 auto;
+}
 .input, .Output {
 	float: left;
 }
@@ -53,6 +54,7 @@ td:last-child {
 	list-style: none;
 }
 .SkillBoxList-li {
+	overflow: hidden;
 	padding: 0 16px;
     line-height: 2;
 }
