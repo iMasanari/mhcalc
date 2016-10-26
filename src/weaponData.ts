@@ -1,3 +1,9 @@
+interface WeaponData {
+	type: 'lightbowgun' | 'heavybowgun'
+	name: string
+	level: number
+}
+
 const weaponData = {
 	lightbowgun: {
 		"ベルダーバレット": [

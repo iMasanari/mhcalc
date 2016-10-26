@@ -29,17 +29,14 @@ th:last-child {
 	border-right-color: #84b2e0;
 }
 td {
-	padding: .5em 2px;
+	padding: .5em;
 	border: 1px solid #bbb;
-}
-td:last-child {
-	text-align: right;
 }
 .MHCalc {
 	width: 960px;
 	margin: 0 auto;
 }
-.input, .Output {
+.input, .output {
 	float: left;
 }
 .input {
@@ -86,16 +83,13 @@ td:last-child {
 	color: #fff;
 }
 
-.Output td {
-	padding: .5em;
+.SkillLanking td:last-child {
+	text-align: right;
 }
-.Output tr:hover {
-	background: #eee;
-}
-.Output .checked {
+.SkillLanking .checked {
 	color: #bbb;
 }
-.Output .checked .skillName {
+.SkillLanking .checked .skillName {
 	color: #4aa3df;
 }
 .disappearance {
@@ -108,7 +102,7 @@ td:last-child {
 	height: 10px;
 	background: #84b2e0;
 }
-.Output .checked .test,
+.SkillLanking .checked .test,
 .test.minus {
 	background: #bbb;
 }

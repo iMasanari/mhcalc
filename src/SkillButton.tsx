@@ -1,16 +1,10 @@
 namespace SkillButton {
-    export interface Data {
-        name: string
-        label: string
-        value: any
-    }
     export interface Props extends React.Props<SkillButton> {
         name: string
         isChecked: boolean
         action: () => void
     }
     export interface State {
-        value?: string
     }
 }
 

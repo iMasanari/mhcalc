@@ -13,7 +13,7 @@ namespace SkillBoxList {
 class SkillBoxList extends React.Component<SkillBoxList.Props, SkillBoxList.State> {
     render() {
         return <ul className='SkillBoxList'>
-            {skillData.map(skill =>
+            {skillList.map(skill =>
                 <li className='SkillBoxList-li'>
                     <SkillBox key={skill.name}
                         name={skill.name}

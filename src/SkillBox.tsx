@@ -1,11 +1,12 @@
 /// <reference path="SkillButton.tsx" />
+/// <reference path="SkillData.ts" />
 
 namespace SkillBox {
     export interface Props extends React.Props<SkillBox> {
         name: string
         value: string
         action: () => void
-        skillButtonList: SkillButton.Data[]
+        skillButtonList: SkillData.item[]
     }
     export interface State {
     }
