@@ -3,7 +3,7 @@
 
 namespace SkillBoxList {
     export interface Props extends React.Props<SkillBoxList> {
-        activeSkill: { [skillName: string]: string }
+        activeSkill: { [skillGroup: string]: string }
         setActiveSkill: () => void
     }
     export interface State {

@@ -2,7 +2,7 @@
 /// <reference path="weaponData.ts" />
 
 function calc(_weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
-    const wep = weaponData[_weapon.type][_weapon.name][_weapon.level]
+    const wep = getWeapon(_weapon)
     const weapon = {
         power: wep[0],
         affinity: wep[1],
@@ -18,7 +18,6 @@ function calc(_weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
         item.effect(skill, item.value)
     })
 
-    console.log(getAttackPower(weapon, skill))
     return getAttackPower(weapon, skill)
 }
 function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: string }) {
@@ -28,7 +27,7 @@ function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: str
 
     const orgPower = calc(_weapon, activeSkillList)
 
-    const trDataList = skillNameList.map(item => {
+    const trDataList = skillNameList.map((item, index) => {
         const skill = {
             power: 0,
             mult: 1,
@@ -47,7 +46,8 @@ function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: str
             // action: item.action,
             disappearance: (activeSkill[item.group] && !isActiveSkill) ? activeSkill[item.group] : null,
             plus: null as number,
-            mult: null as number
+            mult: null as number,
+            index
         }
 
         if (activeSkill[item.group] !== item.name) {
@@ -64,7 +64,7 @@ function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: str
         }
 
         return trData
-    }).sort((a, b) => b.plus - a.plus || b.mult - a.mult)
+    }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index)
     // }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || +b.isActive - +a.isActive)
 
     return trDataList
@@ -83,5 +83,5 @@ function getAttackPower(weapon, skill) {
         superAffinity = skill.superAffinity - 1;
     }
 
-    return (power + skill.power) * skill.mult * (1 + affinity / 100 * superAffinity);
+    return (power + skill.power) * weapon.mult * skill.mult * (1 + affinity / 100 * superAffinity);
 }

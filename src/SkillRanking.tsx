@@ -4,7 +4,7 @@
 
 namespace SkillRanking {
     export interface Props extends React.Props<SkillRanking> {
-        activeSkill: { [skillName: string]: string }
+        activeSkill: { [skillGroup: string]: string }
         setActiveSkill: () => void
         weapon: WeaponData
     }
@@ -46,14 +46,14 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
                             {item.name}
                         </span>
                         {(item.disappearance) ? <span className="disappearance">
-                            {'－' + item.disappearance}
+                            {'- ' + item.disappearance}
                         </span> : null
                         }
                     </td>
                     <td>
                         <span
                             className={'test' + (item.plus < 0 ? ' minus' : '')}
-                            style={{ width: Math.abs(item.plus) + 'px' }}
+                            style={{ width: Math.abs(item.plus) / weaponData[this.props.weapon.type].typeMult + 'px' }}
                             />
                         {' '}
                         {item.plus}

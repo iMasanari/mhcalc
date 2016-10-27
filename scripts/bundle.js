@@ -167,7 +167,7 @@ var _skillList = [{
         name: 'ネコの暴れ撃ち',
         effect: attackMult,
         item: [
-            { value: 1.1 }
+            { value: 1.05 }
         ]
     }, {
         name: 'ネコの火事場術',
@@ -206,7 +206,7 @@ var _skillList = [{
         name: '鬼人薬',
         effect: attackUp,
         item: [
-            { value: 3 },
+            { name: '鬼人薬', label: '薬', value: 3 },
             { label: 'G', value: 7 }
         ]
     }, {
@@ -341,8 +341,9 @@ var SkillBoxList = (function (_super) {
     };
     return SkillBoxList;
 }(React.Component));
-var weaponData = {
-    lightbowgun: {
+var weaponList;
+(function (weaponList) {
+    weaponList.lightbowgun = {
         "ベルダーバレット": [
             [80, 0, "なし", "普通", "中", 0, 0, [4, 3, 4, 3, 3, -3, -3, -2, -2, -1, -1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0]],
             [90, 0, "なし", "普通", "中", 0, 0, [4, 4, 5, 3, 3, -3, -3, -2, -2, 1, -1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0]],
@@ -897,8 +898,11 @@ var weaponData = {
             [200, 0, "なし", "普通", "中", 3, 15, [8, -7, 6, -3, 3, 3, -4, 2, 3, 2, 1, -1, -1, 1, 1, 2, 3, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 3, 3, 1]],
             [210, 0, "なし", "普通", "中", 3, 20, [9, -8, 7, -3, 3, 3, -4, 3, 3, 2, 2, -1, -1, 1, 1, 2, 3, 0, 0, 0, 1, 0, 0, 0, 0, 3, 0, 4, 3, 1]]
         ]
-    },
-    heavybowgun: {
+    };
+})(weaponList || (weaponList = {}));
+var weaponList;
+(function (weaponList) {
+    weaponList.heavybowgun = {
         "ベルダーキャノン": [
             [80, 0, "なし", "やや遅い", "中", 0, 0, [4, 3, 4, 3, 3, -3, -3, -2, -2, -1, -1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0]],
             [90, 0, "なし", "やや遅い", "中", 0, 0, [4, 4, 5, 3, 3, -3, -3, -2, -2, 1, -1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0]],
@@ -1437,12 +1441,33 @@ var weaponData = {
             [200, 0, "左右/小", "やや遅い", "中", 1, 0, [6, 5, 8, -3, -3, -3, -3, -3, 4, 2, 1, 1, 2, 1, 1, 2, 2, 0, 0, 2, 1, 0, 0, 0, 0, 4, 0, 0, 0, 0]],
             [210, 0, "左右/小", "やや遅い", "中", 1, 0, [6, 6, 9, -3, -3, -3, -3, -3, 4, 2, 2, 1, 2, 2, 1, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 5, 0, 0, 0, 0]]
         ]
+    };
+})(weaponList || (weaponList = {}));
+/// <reference path="weaponList/lightbowgun.ts" />
+/// <reference path="weaponList/heavybowgun.ts" />
+var weaponData = {
+    lightbowgun: {
+        typeMult: 1.3,
+        list: weaponList.lightbowgun
+    },
+    heavybowgun: {
+        typeMult: 1.5,
+        list: weaponList.heavybowgun
     }
 };
+function getWeaponList(type) {
+    return Object.keys(weaponData[type].list);
+}
+function getWeaponLevelList(weapon) {
+    return weaponData[weapon.type].list[weapon.name];
+}
+function getWeapon(weapon) {
+    return weaponData[weapon.type].list[weapon.name][weapon.level - 1];
+}
 /// <reference path="skillData.ts" />
 /// <reference path="weaponData.ts" />
 function calc(_weapon, activeSkillList) {
-    var wep = weaponData[_weapon.type][_weapon.name][_weapon.level];
+    var wep = getWeapon(_weapon);
     var weapon = {
         power: wep[0],
         affinity: wep[1],
@@ -1456,7 +1481,6 @@ function calc(_weapon, activeSkillList) {
     activeSkillList.forEach(function (item) {
         item.effect(skill, item.value);
     });
-    console.log(getAttackPower(weapon, skill));
     return getAttackPower(weapon, skill);
 }
 function getRanking(_weapon, activeSkill) {
@@ -1464,7 +1488,7 @@ function getRanking(_weapon, activeSkill) {
         return activeSkill[item.group] === item.name;
     });
     var orgPower = calc(_weapon, activeSkillList);
-    var trDataList = skillNameList.map(function (item) {
+    var trDataList = skillNameList.map(function (item, index) {
         var skill = {
             power: 0,
             mult: 1,
@@ -1480,7 +1504,8 @@ function getRanking(_weapon, activeSkill) {
             // action: item.action,
             disappearance: (activeSkill[item.group] && !isActiveSkill) ? activeSkill[item.group] : null,
             plus: null,
-            mult: null
+            mult: null,
+            index: index
         };
         if (activeSkill[item.group] !== item.name) {
             activeSkillList.push(item);
@@ -1494,7 +1519,7 @@ function getRanking(_weapon, activeSkill) {
             trData.mult = orgPower / power;
         }
         return trData;
-    }).sort(function (a, b) { return b.plus - a.plus || b.mult - a.mult; });
+    }).sort(function (a, b) { return b.plus - a.plus || b.mult - a.mult || a.index - b.index; });
     // }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || +b.isActive - +a.isActive)
     return trDataList;
 }
@@ -1506,7 +1531,7 @@ function getAttackPower(weapon, skill) {
     if (skill.superAffinity) {
         superAffinity = skill.superAffinity - 1;
     }
-    return (power + skill.power) * skill.mult * (1 + affinity / 100 * superAffinity);
+    return (power + skill.power) * weapon.mult * skill.mult * (1 + affinity / 100 * superAffinity);
 }
 /// <reference path="skillData.ts" />
 /// <reference path="weaponData.ts" />
@@ -1533,9 +1558,9 @@ var SkillRanking = (function (_super) {
                 return React.createElement("tr", {key: item.name, onClick: _this.skillActionList[item.name], className: item.isActive ? 'checked' : ''}, 
                     React.createElement("td", null, 
                         React.createElement("span", {className: "skillName"}, item.name), 
-                        (item.disappearance) ? React.createElement("span", {className: "disappearance"}, '－' + item.disappearance) : null), 
+                        (item.disappearance) ? React.createElement("span", {className: "disappearance"}, '- ' + item.disappearance) : null), 
                     React.createElement("td", null, 
-                        React.createElement("span", {className: 'test' + (item.plus < 0 ? ' minus' : ''), style: { width: Math.abs(item.plus) + 'px' }}), 
+                        React.createElement("span", {className: 'test' + (item.plus < 0 ? ' minus' : ''), style: { width: Math.abs(item.plus) / weaponData[_this.props.weapon.type].typeMult + 'px' }}), 
                         ' ', 
                         item.plus), 
                     React.createElement("td", null, item.mult.toFixed(3)));
@@ -1544,14 +1569,6 @@ var SkillRanking = (function (_super) {
     return SkillRanking;
 }(React.Component));
 /// <reference path="weaponData.ts" />
-function getFirstKey(obj) {
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            return key;
-        }
-    }
-    return null;
-}
 var Weapon = (function (_super) {
     __extends(Weapon, _super);
     function Weapon() {
@@ -1559,14 +1576,18 @@ var Weapon = (function (_super) {
     }
     Weapon.prototype.setType = function () {
         var type = this.refs['type'].value;
-        var name = getFirstKey(weaponData[type]);
-        var level = weaponData[type][name].length - 1;
+        var name = getWeaponList(type)[0];
+        var level = getWeaponLevelList({
+            type: type, name: name, level: 1
+        }).length;
         this.props.setWeapon({ type: type, name: name, level: level });
     };
     Weapon.prototype.setName = function () {
         var type = this.props.weapon.type;
         var name = this.refs['name'].value;
-        var level = weaponData[type][name].length - 1;
+        var level = getWeaponLevelList({
+            type: type, name: name, level: 1
+        }).length;
         this.props.setWeapon({ type: type, name: name, level: level });
     };
     Weapon.prototype.setLevel = function () {
@@ -1576,23 +1597,23 @@ var Weapon = (function (_super) {
         this.props.setWeapon({ type: type, name: name, level: level });
     };
     Weapon.prototype.render = function () {
+        var _this = this;
+        var weapon = getWeapon(this.props.weapon);
+        var activeSkillList = skillNameList.filter(function (item) { return _this.props.activeSkill[item.group] === item.name; });
+        var power = calc(this.props.weapon, activeSkillList);
         return React.createElement("div", {className: "Weapon"}, 
             React.createElement("select", {ref: 'type', value: this.props.weapon.type, onChange: this.setType.bind(this)}, 
                 React.createElement("option", {value: "lightbowgun"}, "ライト"), 
                 React.createElement("option", {value: "heavybowgun"}, "ヘビィ")), 
-            React.createElement("select", {ref: 'name', value: this.props.weapon.name, onChange: this.setName.bind(this)}, Object.keys(weaponData[this.props.weapon.type]).map(function (value) {
+            React.createElement("select", {ref: 'name', value: this.props.weapon.name, onChange: this.setName.bind(this)}, getWeaponList(this.props.weapon.type).map(function (value) {
                 return React.createElement("option", {value: value}, value);
             })), 
-            React.createElement("select", {ref: 'level', value: this.props.weapon.level + '', onChange: this.setLevel.bind(this)}, weaponData[this.props.weapon.type][this.props.weapon.name].map(function (value, i) {
-                return React.createElement("option", {value: i}, 
+            React.createElement("select", {ref: 'level', value: this.props.weapon.level + '', onChange: this.setLevel.bind(this)}, getWeaponLevelList(this.props.weapon).map(function (value, i) {
+                return React.createElement("option", {value: i + 1}, 
                     "LV", 
                     i + 1);
             })), 
-            React.createElement("p", null, 
-                weaponData[this.props.weapon.type][this.props.weapon.name][this.props.weapon.level][0], 
-                "/", 
-                weaponData[this.props.weapon.type][this.props.weapon.name][this.props.weapon.level][1], 
-                "%"));
+            React.createElement("p", {className: "weapon-power"}, +weapon[0] * weaponData[this.props.weapon.type].typeMult + " / " + weapon[1] + "% => " + (power | 0)));
     };
     return Weapon;
 }(React.Component));
@@ -1607,7 +1628,7 @@ var MHCalc = (function (_super) {
             weapon: {
                 type: 'heavybowgun',
                 name: 'ベルダーキャノン',
-                level: 7
+                level: 8
             },
             activeSkill: {}
         };
@@ -1628,7 +1649,7 @@ var MHCalc = (function (_super) {
     MHCalc.prototype.render = function () {
         return React.createElement("div", {className: "MHCalc"}, 
             React.createElement("div", {className: "input"}, 
-                React.createElement(Weapon, {weapon: this.state.weapon, setWeapon: this.setWeapon.bind(this)}), 
+                React.createElement(Weapon, {weapon: this.state.weapon, setWeapon: this.setWeapon.bind(this), activeSkill: this.state.activeSkill}), 
                 React.createElement(SkillBoxList, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this)})), 
             React.createElement("div", {className: "output"}, 
                 React.createElement(SkillRanking, {activeSkill: this.state.activeSkill, setActiveSkill: this.setActiveSkill.bind(this), weapon: this.state.weapon})

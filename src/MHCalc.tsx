@@ -9,7 +9,7 @@ namespace MHCalc {
         weapon?: WeaponData
         weaponStatas?: string
         activeSkill?: {
-            [skillName: string]: string
+            [skillGroup: string]: string
         }
     }
 }
@@ -22,7 +22,7 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
             weapon: {
                 type: 'heavybowgun',
                 name: 'ベルダーキャノン',
-                level: 7
+                level: 8
             },
             activeSkill: {}
         }
@@ -48,6 +48,7 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
                 <Weapon
                     weapon={this.state.weapon}
                     setWeapon={this.setWeapon.bind(this)}
+                    activeSkill={this.state.activeSkill}
                     />
                 <SkillBoxList
                     activeSkill={this.state.activeSkill}

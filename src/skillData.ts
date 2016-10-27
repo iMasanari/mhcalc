@@ -201,7 +201,7 @@ let _skillList = [{
     name: 'ネコの暴れ撃ち',
     effect: attackMult,
     item: [
-        { value: 1.1 }
+        { value: 1.05 }
     ]
 }, {
     name: 'ネコの火事場術',
@@ -240,7 +240,7 @@ let _skillList = [{
     name: '鬼人薬',
     effect: attackUp,
     item: [
-        { value: 3 },
+        { name: '鬼人薬', label: '薬', value: 3 },
         { label: 'G', value: 7 }
     ]
 }, {
