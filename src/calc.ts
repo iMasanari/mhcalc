@@ -83,5 +83,5 @@ function getAttackPower(weapon, skill) {
         superAffinity = skill.superAffinity - 1;
     }
 
-    return (power + skill.power) * weapon.mult * skill.mult * (1 + affinity / 100 * superAffinity);
+    return (power + skill.power) * skill.mult * (1 + affinity / 100 * superAffinity);
 }

@@ -19,7 +19,12 @@ const weaponData = {
 } as {
 	[type: string]: {
 		typeMult: number
-		list: {[name: string]: (string | number | number[])[]}
+		list: {
+			[name: string]: {
+				lastName: string
+				list: number[][]
+			}
+		}
 	}
 }
 
@@ -27,9 +32,11 @@ function getWeaponList(type: string) {
 	return Object.keys(weaponData[type].list)
 }
 function getWeaponLevelList(weapon: WeaponData) {
-	return weaponData[weapon.type].list[weapon.name]
+	return weaponData[weapon.type].list[weapon.name].list
 }
-
 function getWeapon(weapon: WeaponData) {
-	return weaponData[weapon.type].list[weapon.name][weapon.level - 1] as (string | number | number[])[]
+	return weaponData[weapon.type].list[weapon.name].list[weapon.level - 1]
+}
+function getWeaponLastName(type: string, name: string) {
+	return weaponData[type].list[name].lastName
 }

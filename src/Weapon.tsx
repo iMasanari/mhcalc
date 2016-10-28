@@ -9,10 +9,20 @@ namespace Weapon {
         }
     }
     export interface State {
+        isLastName?: boolean
     }
 }
 
 class Weapon extends React.Component<Weapon.Props, Weapon.State> {
+    constructor(props) {
+        super(props)
+
+        this.state = { isLastName: true }
+        this.toggleLastName = this.toggleLastName.bind(this)
+    }
+    toggleLastName() {
+        this.setState({ isLastName: !this.state.isLastName })
+    }
     setType() {
         const type = (this.refs['type'] as HTMLSelectElement).value as any
         const name = getWeaponList(type)[0]
@@ -50,7 +60,9 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             </select>
             <select ref='name' value={this.props.weapon.name} onChange={this.setName.bind(this)}>
                 {getWeaponList(this.props.weapon.type).map(value =>
-                    <option value={value}>{value}</option>
+                    <option value={value}>
+                        {this.state.isLastName ? getWeaponLastName(this.props.weapon.type, value) : value}
+                    </option>
                 )}
             </select>
             <select ref='level' value={this.props.weapon.level + ''} onChange={this.setLevel.bind(this)}>
@@ -58,8 +70,13 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                     <option value={i + 1}>LV{i + 1}</option>
                 )}
             </select>
+            <br />
+            <label>
+                <input type="checkbox" checked={this.state.isLastName} onChange={this.toggleLastName} />
+                <small>最終強化名で表示</small>
+            </label>
             <p className="weapon-power">
-                {`${+weapon[0] * weaponData[this.props.weapon.type].typeMult} / ${weapon[1]}% => ${power | 0}`}
+                {`${weapon[0]} / ${weapon[1]}% => ${power | 0}`}
             </p>
         </div>
     }
