@@ -53,7 +53,7 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
                     <td>
                         <span
                             className={'test' + (item.plus < 0 ? ' minus' : '')}
-                            style={{ width: Math.abs(item.plus) / weaponData[this.props.weapon.type].typeMult + 'px' }}
+                            style={{ width: Math.abs(item.plus) + 'px' }}
                             />
                         {' '}
                         {item.plus}

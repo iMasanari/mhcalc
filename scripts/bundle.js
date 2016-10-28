@@ -2058,7 +2058,7 @@ var SkillRanking = (function (_super) {
                         React.createElement("span", {className: "skillName"}, item.name), 
                         (item.disappearance) ? React.createElement("span", {className: "disappearance"}, '- ' + item.disappearance) : null), 
                     React.createElement("td", null, 
-                        React.createElement("span", {className: 'test' + (item.plus < 0 ? ' minus' : ''), style: { width: Math.abs(item.plus) / weaponData[_this.props.weapon.type].typeMult + 'px' }}), 
+                        React.createElement("span", {className: 'test' + (item.plus < 0 ? ' minus' : ''), style: { width: Math.abs(item.plus) + 'px' }}), 
                         ' ', 
                         item.plus), 
                     React.createElement("td", null, item.mult.toFixed(3)));
