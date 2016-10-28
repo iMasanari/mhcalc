@@ -7,7 +7,6 @@ namespace MHCalc {
     }
     export interface State {
         weapon?: WeaponData
-        weaponStatas?: string
         activeSkill?: {
             [skillGroup: string]: string
         }
@@ -21,8 +20,8 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
         this.state = {
             weapon: {
                 type: 'lightbowgun',
-                name: 'ベルダーバレット',
-                level: 8
+                power: null,
+                affinity: null
             },
             activeSkill: {}
         }
@@ -30,13 +29,13 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
     setWeapon(weapon: WeaponData) {
         this.setState({ weapon })
     }
-    setActiveSkill(skillBoxName: string, value: string) {
+    setActiveSkill(skillGroup: string, skillName: string) {
         let activeSkill = this.state.activeSkill
 
-        if (activeSkill[skillBoxName] === value) {
-            delete activeSkill[skillBoxName]
+        if (activeSkill[skillGroup] === skillName) {
+            delete activeSkill[skillGroup]
         } else {
-            activeSkill[skillBoxName] = value
+            activeSkill[skillGroup] = skillName
         }
 
         this.setState({ activeSkill })

@@ -1,14 +1,8 @@
 /// <reference path="skillData.ts" />
 /// <reference path="weaponData.ts" />
 
-function calc(_weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
-    const wep = getWeapon(_weapon)
-    const weapon = {
-        power: wep[0],
-        affinity: wep[1],
-        // mult: weaponData[_weapon.type].typeMult
-    }
-    const skill = {
+function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
+    const skill: Skill = {
         power: 0,
         mult: 1,
         affinity: 0
@@ -20,12 +14,13 @@ function calc(_weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
 
     return getAttackPower(weapon, skill)
 }
-function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: string }) {
+
+function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: string }) {
     const activeSkillList = skillNameList.filter(item => {
         return activeSkill[item.group] === item.name
     })
 
-    const orgPower = calc(_weapon, activeSkillList)
+    const orgPower = calc(weapon, activeSkillList)
 
     return skillNameList.map((item, index) => {
         const isActiveSkill = activeSkill[item.group] === item.name
@@ -47,12 +42,12 @@ function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: str
         if (activeSkill[item.group] !== item.name) {
             activeSkillList.push(item)
 
-            const power = calc(_weapon, activeSkillList)
+            const power = calc(weapon, activeSkillList)
 
             result.plus = (power - orgPower) | 0
             result.mult = power / orgPower
         } else {
-            const power = calc(_weapon, activeSkillList)
+            const power = calc(weapon, activeSkillList)
             result.plus = (orgPower - power) | 0
             result.mult = orgPower / power;
         }
@@ -62,17 +57,17 @@ function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: str
     // }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || +b.isActive - +a.isActive)
 }
 
-function getAttackPower(weapon, skill) {
+function getAttackPower(weapon: WeaponData, skill: Skill) {
     let power = weapon.power,
         affinity = Math.min(Math.max(weapon.affinity + skill.affinity, -100), 100),
         superAffinity = 1.25 - 1;
 
-    if (skill.parts) {
-        power += Math.floor(power * (skill.parts - 1));
+    if (skill['parts']) {
+        power += Math.floor(power * (skill['parts'] - 1));
     }
 
-    if (skill.superAffinity) {
-        superAffinity = skill.superAffinity - 1;
+    if (skill['superAffinity']) {
+        superAffinity = skill['superAffinity'] - 1;
     }
 
     return (power + skill.power) * skill.mult * (1 + affinity / 100 * superAffinity);

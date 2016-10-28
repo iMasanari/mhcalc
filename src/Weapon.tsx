@@ -4,21 +4,30 @@ namespace Weapon {
     export interface Props extends React.Props<Weapon> {
         weapon: WeaponData
         setWeapon: (weapon: WeaponData) => void
-        activeSkill: {
-            [skillGroup: string]: string
-        }
+        activeSkill: { [skillGroup: string]: string }
     }
     export interface State {
         isLastName?: boolean
+        name?: string
+        level?: number
     }
 }
 
 class Weapon extends React.Component<Weapon.Props, Weapon.State> {
-    constructor(props) {
+    constructor(props: Weapon.Props) {
         super(props)
 
-        this.state = { isLastName: true }
+        this.state = {
+            isLastName: true,
+            name: 'ベルダーバレット',
+            level: 8
+        }
         this.toggleLastName = this.toggleLastName.bind(this)
+
+        const type = this.props.weapon.type
+        const [power, affinity] = getWeapon(type, this.state.name, this.state.level)
+
+        this.props.setWeapon({ type, power, affinity })
     }
     toggleLastName() {
         this.setState({ isLastName: !this.state.isLastName })
@@ -26,32 +35,35 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
     setType() {
         const type = (this.refs['type'] as HTMLSelectElement).value as any
         const name = getWeaponList(type)[0]
-        const level = getWeaponLevelList({
-            type, name, level: 1
-        }).length
+        const level = getWeaponLevelList(type, name).length
+        const [power, affinity] = getWeapon(type, name, level)
 
-        this.props.setWeapon({ type, name, level })
+        this.setState({ name, level })
+        this.props.setWeapon({ type, power, affinity })
     }
     setName() {
         const type = this.props.weapon.type
         const name = (this.refs['name'] as HTMLSelectElement).value
-        const level = getWeaponLevelList({
-            type, name, level: 1
-        }).length
+        const level = getWeaponLevelList(type, name).length
+        const [power, affinity] = getWeapon(type, name, level)
 
-        this.props.setWeapon({ type, name, level })
+        this.setState({ name, level })
+        this.props.setWeapon({ type, power, affinity })
     }
     setLevel() {
         const type = this.props.weapon.type
-        const name = this.props.weapon.name
+        const name = this.state.name
         const level = +(this.refs['level'] as HTMLSelectElement).value
+        const [power, affinity] = getWeapon(type, name, level)
 
-        this.props.setWeapon({ type, name, level })
+        this.setState({ level })
+        this.props.setWeapon({ type, power, affinity })
     }
     render() {
-        const weapon = getWeapon(this.props.weapon)
         const activeSkillList = skillNameList.filter(item => this.props.activeSkill[item.group] === item.name)
         const power = calc(this.props.weapon, activeSkillList)
+
+        if (this.props.weapon.power == null) return null
 
         return <section className="Weapon">
             <h2>Choose a Weapon</h2>
@@ -65,7 +77,7 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             </select>
             <select ref="name"
                 className="weapon-name"
-                value={this.props.weapon.name}
+                value={this.state.name}
                 onChange={this.setName.bind(this)}
                 >
                 {getWeaponList(this.props.weapon.type).map(value =>
@@ -76,10 +88,10 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             </select>
             <select ref="level"
                 className="weapon-level"
-                value={this.props.weapon.level + ''}
+                value={this.state.level + ''}
                 onChange={this.setLevel.bind(this)}
                 >
-                {getWeaponLevelList(this.props.weapon).map((value, i) =>
+                {getWeaponLevelList(this.props.weapon.type, this.state.name).map((value, i) =>
                     <option value={i + 1}>LV{i + 1}</option>
                 )}
             </select>
@@ -91,7 +103,7 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                 </small>
             </label>
             <p className="weapon-power">
-                {`${weapon[0]} / ${weapon[1]}% => ${power | 0}`}
+                {`${this.props.weapon.power} / ${this.props.weapon.affinity}% => ${power | 0}`}
             </p>
         </section>
     }

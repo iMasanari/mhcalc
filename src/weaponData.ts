@@ -3,8 +3,8 @@
 
 interface WeaponData {
 	type: 'lightbowgun' | 'heavybowgun'
-	name: string
-	level: number
+	power: number
+	affinity: number
 }
 
 const weaponData = {
@@ -31,11 +31,11 @@ const weaponData = {
 function getWeaponList(type: string) {
 	return Object.keys(weaponData[type].list)
 }
-function getWeaponLevelList(weapon: WeaponData) {
-	return weaponData[weapon.type].list[weapon.name].list
+function getWeaponLevelList(type: string, name: string) {
+	return weaponData[type].list[name].list
 }
-function getWeapon(weapon: WeaponData) {
-	return weaponData[weapon.type].list[weapon.name].list[weapon.level - 1]
+function getWeapon(type: string, name: string, level: number) {
+	return weaponData[type].list[name].list[level - 1]
 }
 function getWeaponLastName(type: string, name: string) {
 	return weaponData[type].list[name].lastName

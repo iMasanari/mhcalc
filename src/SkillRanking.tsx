@@ -30,6 +30,8 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
     render() {
         const skillRanking = getRanking(this.props.weapon, this.props.activeSkill)
 
+        if (this.props.weapon.power == null) return null
+        
         return <div className="SkillRanking">
             <table>
                 <tr>
