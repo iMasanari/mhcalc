@@ -291,7 +291,7 @@ let _skillList = [{
         { value: { superAffinity: 1.4 } }
     ]
 }, {
-    name: '狩猟笛【攻撃】',
+    name: '【狩猟笛】攻撃',
     effect: attackMult,
     item: [
         { label: '小', value: 1.1 },

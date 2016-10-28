@@ -53,31 +53,46 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         const activeSkillList = skillNameList.filter(item => this.props.activeSkill[item.group] === item.name)
         const power = calc(this.props.weapon, activeSkillList)
 
-        return <div className="Weapon">
-            <select ref='type' value={this.props.weapon.type} onChange={this.setType.bind(this)}>
+        return <section className="Weapon">
+            <h2>Choose a Weapon</h2>
+            <select ref="type"
+                className="weapon-type"
+                value={this.props.weapon.type}
+                onChange={this.setType.bind(this)}
+                >
                 <option value="lightbowgun">ライト</option>
                 <option value="heavybowgun">ヘビィ</option>
             </select>
-            <select ref='name' value={this.props.weapon.name} onChange={this.setName.bind(this)}>
+            <select ref="name"
+                className="weapon-name"
+                value={this.props.weapon.name}
+                onChange={this.setName.bind(this)}
+                >
                 {getWeaponList(this.props.weapon.type).map(value =>
                     <option value={value}>
                         {this.state.isLastName ? getWeaponLastName(this.props.weapon.type, value) : value}
                     </option>
                 )}
             </select>
-            <select ref='level' value={this.props.weapon.level + ''} onChange={this.setLevel.bind(this)}>
+            <select ref="level"
+                className="weapon-level"
+                value={this.props.weapon.level + ''}
+                onChange={this.setLevel.bind(this)}
+                >
                 {getWeaponLevelList(this.props.weapon).map((value, i) =>
                     <option value={i + 1}>LV{i + 1}</option>
                 )}
             </select>
             <br />
             <label>
-                <input type="checkbox" checked={this.state.isLastName} onChange={this.toggleLastName} />
-                <small>最終強化名で表示</small>
+                <small>
+                    <input type="checkbox" checked={this.state.isLastName} onChange={this.toggleLastName} />
+                    最終強化名で表示
+                </small>
             </label>
             <p className="weapon-power">
                 {`${weapon[0]} / ${weapon[1]}% => ${power | 0}`}
             </p>
-        </div>
+        </section>
     }
 }

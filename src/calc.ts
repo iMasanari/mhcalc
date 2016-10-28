@@ -6,7 +6,7 @@ function calc(_weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
     const weapon = {
         power: wep[0],
         affinity: wep[1],
-        mult: _weapon.type === 'lightbowgun' ? 1.3 : 1.5
+        // mult: weaponData[_weapon.type].typeMult
     }
     const skill = {
         power: 0,
@@ -27,20 +27,10 @@ function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: str
 
     const orgPower = calc(_weapon, activeSkillList)
 
-    const trDataList = skillNameList.map((item, index) => {
-        const skill = {
-            power: 0,
-            mult: 1,
-            affinity: 0
-        };
+    return skillNameList.map((item, index) => {
         const isActiveSkill = activeSkill[item.group] === item.name
 
-        const activeSkillList = skillNameList.filter(_item => {
-            return activeSkill[_item.group] === _item.name && _item.group !== item.group
-        })
-
-
-        const trData = {
+        const result = {
             name: item.name,
             isActive: isActiveSkill,
             // action: item.action,
@@ -50,24 +40,26 @@ function getRanking(_weapon: WeaponData, activeSkill: { [skillName: string]: str
             index
         }
 
+        const activeSkillList = skillNameList.filter(simulateItem => {
+            return activeSkill[simulateItem.group] === simulateItem.name && simulateItem.group !== item.group
+        })
+
         if (activeSkill[item.group] !== item.name) {
-        activeSkillList.push(item)
+            activeSkillList.push(item)
 
-        const power = calc(_weapon, activeSkillList)
+            const power = calc(_weapon, activeSkillList)
 
-            trData.plus = (power - orgPower) | 0
-            trData.mult = power / orgPower
+            result.plus = (power - orgPower) | 0
+            result.mult = power / orgPower
         } else {
-        const power = calc(_weapon, activeSkillList)
-            trData.plus = (orgPower - power) | 0
-            trData.mult = orgPower / power;
+            const power = calc(_weapon, activeSkillList)
+            result.plus = (orgPower - power) | 0
+            result.mult = orgPower / power;
         }
 
-        return trData
+        return result
     }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index)
     // }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || +b.isActive - +a.isActive)
-
-    return trDataList
 }
 
 function getAttackPower(weapon, skill) {

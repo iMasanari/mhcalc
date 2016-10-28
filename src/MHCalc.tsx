@@ -20,8 +20,8 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
 
         this.state = {
             weapon: {
-                type: 'heavybowgun',
-                name: 'ベルダーキャノン',
+                type: 'lightbowgun',
+                name: 'ベルダーバレット',
                 level: 8
             },
             activeSkill: {}
@@ -44,24 +44,25 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
 
     render() {
         return <div className="MHCalc">
-            <div className="input">
-                <Weapon
-                    weapon={this.state.weapon}
-                    setWeapon={this.setWeapon.bind(this)}
-                    activeSkill={this.state.activeSkill}
-                    />
-                <SkillBoxList
-                    activeSkill={this.state.activeSkill}
-                    setActiveSkill={this.setActiveSkill.bind(this)}
-                    />
-            </div>
-            <div className="output">
-                <SkillRanking
-                    activeSkill={this.state.activeSkill}
-                    setActiveSkill={this.setActiveSkill.bind(this)}
-                    weapon={this.state.weapon}
-                    />
-            </div>
+            <Weapon
+                weapon={this.state.weapon}
+                setWeapon={this.setWeapon.bind(this)}
+                activeSkill={this.state.activeSkill}
+                />
+            <section>
+                <h2>Skill Ranking</h2>
+                <div className="skill">
+                    <SkillBoxList
+                        activeSkill={this.state.activeSkill}
+                        setActiveSkill={this.setActiveSkill.bind(this)}
+                        />
+                    <SkillRanking
+                        activeSkill={this.state.activeSkill}
+                        setActiveSkill={this.setActiveSkill.bind(this)}
+                        weapon={this.state.weapon}
+                        />
+                </div>
+            </section>
         </div>
     }
 }

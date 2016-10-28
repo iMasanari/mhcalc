@@ -15,7 +15,7 @@ select {
 	/*appearance: none;*/
 	border-radius: 5px;
 	border: 1px solid #bbb;
-	margin: 1px;
+	margin: 0 2px;
 	padding: 2px 5px;
 	background: #fff;
 	vertical-align: middle;
@@ -23,6 +23,11 @@ select {
 	color: inherit;
 	box-sizing: content-box;
 }
+
+section {
+	margin-bottom: 32px;
+}
+
 a {
 	color: #84b2e0;
 	text-decoration: none;
@@ -67,9 +72,11 @@ header {
 	border-bottom: 1px solid #84b2e0;
 }
 h1 {
-	/*width: 960px;*/
-	/*margin: 10px auto 10px;*/
 	font-size: 20px;
+}
+h2 {
+	font-size: 20px;
+	text-align: center;
 }
 
 footer {
@@ -80,17 +87,16 @@ footer {
 .MHCalc {
 	width: 960px;
 	margin: 0 auto;
+}
+.skill {
 	display: flex;
+	justify-content: space-between;
 }
-.input {
-	width: 320px;
-	padding: 0;
-	margin: 1em 0;
-}
+
 .SkillBoxList {
 	width: 320px;
 	padding: 0;
-	margin: 1em 0;
+	margin: 0;
 	list-style: none;
 }
 .SkillBoxList-li {
@@ -129,7 +135,9 @@ footer {
 }
 .SkillRanking {
 	width: 624px;
-	margin: 1em 0 1em 16px;
+}
+.SkillRanking table {
+	width: 100%;
 }
 .SkillRanking th:first-child {
 	width: auto;
@@ -159,4 +167,13 @@ footer {
 }
 .Weapon {
 	text-align: center;
+}
+.weapon-type {
+	width: 60px;
+}
+.weapon-name {
+	width: 200px;
+}
+.weapon-level {
+	width: 60px;
 }
