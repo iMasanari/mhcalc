@@ -1,7 +1,14 @@
+interface Skill {
+    power: number,
+    affinity: number,
+    mult: number,
+    [skillName: string]: number
+}
+
 interface SkillData {
     name: string,
     group: string,
-    effect: (a, b) => void,
+    effect: (skill: Skill, value: any) => void,
     item: SkillData.item[]
 }
 
@@ -13,27 +20,27 @@ namespace SkillData {
     }
 }
 
-const attackUp = function (skill, val) {
-    skill.power += val;
+const attackUp = function (skill: Skill, value: any) {
+    skill.power += value;
     return skill;
 };
 
-const attackMult = function (skill, val) {
-    skill.mult *= val;
+const attackMult = function (skill: Skill, value: any) {
+    skill.mult *= value;
     return skill;
 };
 
-const affinityUp = function (skill, val) {
-    skill.affinity += val;
+const affinityUp = function (skill: Skill, value: any) {
+    skill.affinity += value;
     return skill;
 };
 
-const multValue = function (skill, hash) {
-    for (var key in hash) {
+const multValue = function (skill: Skill, value: {[skillName: string]: any}) {
+    for (var key in value) {
         if (skill[key]) {
-            skill[key] *= hash[key];
+            skill[key] *= value[key];
         } else {
-            skill[key] = hash[key];
+            skill[key] = value[key];
         }
     }
     return skill;
@@ -98,9 +105,9 @@ let _skillList = [{
 }, {
     name: '挑戦者',
     group: '腕が光るスキル',
-    effect: function (skill, val) {
-        attackUp(skill, val[0])
-        affinityUp(skill, val[1])
+    effect: function (skill: Skill, value: any) {
+        attackUp(skill, value[0])
+        affinityUp(skill, value[1])
 
         return skill
     },
@@ -328,7 +335,7 @@ let _skillList = [{
 }] as {
     name: string,
     group?: string,
-    effect: (a, b) => void,
+    effect: (skill: Skill, value: any) => void,
     item: {
         name?: string,
         label?: string,
@@ -340,7 +347,7 @@ const skillNameList = [] as {
     name: string
     group: string
     value: any
-    effect: (a, b) => void
+    effect: (skill: Skill, value: any) => void
 }[]
 
 for (const skill of _skillList) {

@@ -2,7 +2,7 @@
     "compilerOptions": {
         "outFile": "./scripts/bundle.js",
         "sourceMap": true,
-        // "noImplicitAny": true,
+        "noImplicitAny": true,
         "target": "es5",
         "jsx": "react"
     },
