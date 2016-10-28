@@ -2,5 +2,5 @@
 
 ReactDOM.render(
     <MHCalc />,
-    document.body
+    document.getElementById('reactroot')
 )

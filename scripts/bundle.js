@@ -1946,7 +1946,7 @@ var weaponData = {
         list: weaponList.lightbowgun
     },
     heavybowgun: {
-        typeMult: 1.5,
+        typeMult: 1.48,
         list: weaponList.heavybowgun
     }
 };
@@ -2165,5 +2165,5 @@ var MHCalc = (function (_super) {
     return MHCalc;
 }(React.Component));
 /// <reference path="MHCalc.tsx" />
-ReactDOM.render(React.createElement(MHCalc, null), document.body);
+ReactDOM.render(React.createElement(MHCalc, null), document.getElementById('reactroot'));
 //# sourceMappingURL=bundle.js.map
