@@ -1,50 +1,57 @@
 interface Skill {
-    power: number,
-    affinity: number,
-    mult: number,
+    power: number
+    affinity: number
+    mult: number
     [skillName: string]: number
 }
 
 interface SkillData {
-    name: string,
-    group: string,
-    effect: (skill: Skill, value: any) => void,
+    name: string
+    group: string
+    effect: (skill: Skill, value: any) => void
     item: SkillData.item[]
 }
 
 namespace SkillData {
     export interface item {
-        name: string,
-        label: string,
+        name: string
+        label: string
         value: any
     }
 }
 
 const attackUp = function (skill: Skill, value: any) {
-    skill.power += value;
-    return skill;
-};
+    skill.power += value
+    return skill
+}
 
 const attackMult = function (skill: Skill, value: any) {
-    skill.mult *= value;
-    return skill;
-};
+    skill.mult *= value
+    return skill
+}
 
 const affinityUp = function (skill: Skill, value: any) {
-    skill.affinity += value;
-    return skill;
-};
+    skill.affinity += value
+    return skill
+}
 
-const multValue = function (skill: Skill, value: {[skillName: string]: any}) {
-    for (var key in value) {
+const multValue = function (skill: Skill, value: { [skillName: string]: any }) {
+    for (const key in value) {
         if (skill[key]) {
-            skill[key] *= value[key];
+            skill[key] *= value[key]
         } else {
-            skill[key] = value[key];
+            skill[key] = value[key]
         }
     }
-    return skill;
-};
+    return skill
+}
+
+const attackAndAffinityUp = function (skill: Skill, value: any) {
+    attackUp(skill, value[0])
+    affinityUp(skill, value[1])
+
+    return skill
+}
 
 let _skillList = [{
     name: 'ロング/パワーバレル',
@@ -105,12 +112,7 @@ let _skillList = [{
 }, {
     name: '挑戦者',
     group: '腕が光るスキル',
-    effect: function (skill: Skill, value: any) {
-        attackUp(skill, value[0])
-        affinityUp(skill, value[1])
-
-        return skill
-    },
+    effect: attackAndAffinityUp,
     item: [
         { label: '+1', value: [10, 10] },
         { label: '+2', value: [25, 15] }
@@ -149,6 +151,12 @@ let _skillList = [{
         { value: 20 }
     ]
 }, {
+    name: '北風/南風の狩人',
+    effect: attackUp,
+    item: [
+        { value: 15 }
+    ]
+}, {
     name: '研磨術',
     effect: attackMult,
     item: [
@@ -168,35 +176,24 @@ let _skillList = [{
     item: [
         { value: 1.2 }
     ]
-    // }, {
-    //     name: '通常弾・連射矢UP',
-    //     effect: attackMult,
-    //     item: [
-    //         { value: 1.1 }
-    //     ]
-    // }, {
-    //     name: '貫通弾・貫通矢UP',
-    //     effect: attackMult,
-    //     item: [
-    //         { value: 1.1 }
-    //     ]
-    // }, {
-    //     name: '散弾・拡散矢UP',
-    //     effect: attackMult,
-    //     item: [
-    //         { value: 1.2 }
-    //     ]
-    // }, {
-    //     name: '重撃弾・重矢UP',
-    //     effect: attackMult,
-    //     item: [
-    //         { value: 1.1 }
-    //     ]
 }, {
     name: '変則射撃',
     effect: attackMult,
     item: [
         { value: 1.2 }
+    ]
+}, {
+    name: '連撃の心得',
+    effect: affinityUp,
+    item: [
+        { label: '2hit~', value: 25 },
+        { label: '6hit', value: 30 }
+    ]
+}, {
+    name: '超会心',
+    effect: multValue,
+    item: [
+        { value: { superAffinity: 1.4 } }
     ]
 }, {
     name: 'ネコの射撃術',
@@ -224,6 +221,21 @@ let _skillList = [{
         { value: 3 }
     ]
 }, {
+    name: 'ネコの休憩術',
+    group: '怪力の種',
+    effect: attackUp,
+    item: [
+        { value: 15 }
+    ]
+}, {
+    name: '食事',
+    effect: attackUp,
+    item: [
+        { label: '【小】', value: 3 },
+        { label: '【中】', value: 5 },
+        { label: '【大】', value: 7 }
+    ]
+}, {
     name: '力の護符',
     effect: attackUp,
     item: [
@@ -236,14 +248,6 @@ let _skillList = [{
         { label: '所持', value: 9 }
     ]
 }, {
-    name: '食事',
-    effect: attackUp,
-    item: [
-        { label: '【小】', value: 3 },
-        { label: '【中】', value: 5 },
-        { label: '【大】', value: 7 }
-    ]
-}, {
     name: '鬼人薬',
     effect: attackUp,
     item: [
@@ -251,29 +255,16 @@ let _skillList = [{
         { label: 'G', value: 7 }
     ]
 }, {
-    name: 'ネコの休憩術',
-    group: '怪力の種',
-    effect: attackUp,
-    item: [
-        { value: 15 }
-    ]
-}, {
     name: '怪力の種',
     group: '怪力の種',
     effect: attackUp,
     item: [
-        { name: '怪力の種（広域1）', label: '広域1', value: 5 },
-        { name: '怪力の種', label: '種', value: 10 },
+        { name: '怪力の種（広域+1）', label: '広域1', value: 5 },
+        { name: '怪力の種/鬼人笛/ドキドキノコ', label: '種など', value: 10 },
         { name: '怪力の丸薬', label: '丸薬', value: 25 },
     ]
 }, {
-    name: '北風/南風の狩人',
-    effect: attackUp,
-    item: [
-        { value: 15 }
-    ]
-}, {
-    name: '北風の狩人（クーラー）',
+    name: 'クーラードリンク（北風）',
     effect: attackUp,
     item: [
         { value: 5 }
@@ -282,31 +273,46 @@ let _skillList = [{
     name: '狂竜症',
     effect: affinityUp,
     item: [
-        { value: 15 }
+        { label: '克服', value: 15 },
+        { name: '狂竜症克服（無我の境地）', label: '無我', value: 30 }
     ]
 }, {
-    name: '連撃の心得',
-    effect: affinityUp,
-    item: [
-        { label: '2hit~', value: 25 },
-        { label: '6hit', value: 30 }
-    ]
-}, {
-    name: '超会心',
-    effect: multValue,
-    item: [
-        { value: { superAffinity: 1.4 } }
-    ]
-}, {
-    name: '【狩猟笛】攻撃',
+    name: '【狩猟笛】攻撃力',
     effect: attackMult,
     item: [
         { label: '小', value: 1.1 },
         { label: '大/小2', value: 1.15 },
         { label: '大2', value: 1.2 }
     ]
-
-
+}, {
+    name: '【狩猟笛】会心率',
+    effect: affinityUp,
+    item: [
+        { label: 'UP', value: 10 },
+        { label: 'UP2', value: 15 }
+    ]
+}, {
+    name: '【操虫棍】広域エキス',
+    group: '【操虫棍】広域エキス 赤',
+    effect: attackUp,
+    item: [
+        { label: '赤', value: 5 }
+    ]
+}, {
+    name: '【操虫棍】広域エキス',
+    group: '【操虫棍】広域エキス 白',
+    effect: affinityUp,
+    item: [
+        { label: '白', value: 10 }
+    ]
+}, {
+    name: '鬼人弾（crt補正なし）',
+    group: '怪力の種',
+    effect: attackAndAffinityUp,
+    item: [
+        { name: '鬼人弾/鬼人硬化弾', label: '鬼人', value: [10, 0] },
+        { name: '鬼人会心弾', label: '会心', value: [15, 10] }
+    ]
 }, {
     name: '攻撃力DOWN',
     group: '攻撃力UP',
