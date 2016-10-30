@@ -115,7 +115,7 @@ let _skillList = [{
     effect: attackAndAffinityUp,
     item: [
         { label: '+1', value: [10, 10] },
-        { label: '+2', value: [25, 15] }
+        { label: '+2', value: [20, 15] }
     ]
 }, {
     name: 'フルチャージ',

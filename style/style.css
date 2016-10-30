@@ -7,7 +7,11 @@ body {
 	padding: 0;
 	margin: 0;
 }
-select {
+input[type=number] {
+	text-align: right;
+	width: 6em;
+}
+input[type=number], select {
 	-o-appearance: none;
 	-ms-appearance: none;
 	-moz-appearance: none;
@@ -176,7 +180,6 @@ footer {
 }
 .skillName {
 	display: flex;
-	display: inline-flex;
 	justify-content: space-between;
 	align-items: baseline;
 }
