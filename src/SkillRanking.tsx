@@ -28,43 +28,92 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
     }
 
     render() {
-        const skillRanking = getRanking(this.props.weapon, this.props.activeSkill)
-
         if (this.props.weapon.power == null) return null
-        
+
+        const skillRanking = getRanking(this.props.weapon, this.props.activeSkill)
+        const testSkillRanking = {} as { [name: string]: any }
+
+        for (let i = skillRanking.length; i--;) {
+            skillRanking[i].index = i
+            testSkillRanking[skillRanking[i].name] = skillRanking[i]
+        }
+
+        const TableRows = Object.keys(this.skillActionList).map((itemName, i) => {
+            const item = testSkillRanking[itemName]
+
+            return <TableRow key={item.name}
+                item={item}
+                action={this.skillActionList[item.name]}
+                />
+        })
+
         return <div className="SkillRanking">
-            <table>
+            <table style={{ height: 40 * (skillRanking.length + 1) }}>
                 <tr>
                     <th>スキル</th>
                     <th>上昇値</th>
                     <th>上昇率</th>
                 </tr>
-                {skillRanking.map(item => {
-                    return <tr key={item.name}
-                        onClick={this.skillActionList[item.name]}
-                        className={item.isActive ? 'checked' : ''}
-                        >
-                        <td>
-                            <span className="skillName">
-                                {item.name}
-                            </span>
-                            {(item.disappearance) ? <span className="disappearance">
-                                {'- ' + item.disappearance}
-                            </span> : null
-                            }
-                        </td>
-                        <td>
-                            <span
-                                className={'test' + (item.plus < 0 ? ' minus' : '')}
-                                style={{ width: Math.abs(item.plus) + 'px' }}
-                                />
-                            {' '}
-                            {item.plus}
-                        </td>
-                        <td>{item.mult.toFixed(3)}</td>
-                    </tr>
-                })}
+                {TableRows}
             </table>
         </div>
     }
+}
+
+namespace TableRow {
+    export interface Props extends React.Props<null> {
+        item: any
+        action: () => void
+    }
+}
+
+const TableRow = (props: TableRow.Props) =>
+    <tr className={props.item.isActive ? 'checked' : ''}
+        onClick={props.action}
+        style={{
+            transform: `translateY(${(props.item.index + 1) * 40}px)`,
+            zIndex: props.item.index
+        }}
+        >
+        <SkillNameCell name={props.item.name} disappearance={props.item.disappearance} />
+        <AddPowerCell power={props.item.plus} />
+        <td>{props.item.mult.toFixed(3)}</td>
+    </tr>
+
+namespace SkillNameCell {
+    export interface Props extends React.Props<null> {
+        name: string
+        disappearance: string
+    }
+}
+
+const SkillNameCell = (props: SkillNameCell.Props) =>
+    <td>
+        <div className="skillName">
+            <span>{props.name}</span>
+            <span className={"disappearance" + (props.disappearance ? '' : ' opacity0')}>
+                {props.disappearance ? ' - ' + props.disappearance : ''}
+            </span>
+        </div>
+    </td>
+
+namespace AddPowerCell {
+    export interface Props extends React.Props<null> {
+        power: number
+    }
+}
+
+const AddPowerCell = (props: AddPowerCell.Props) =>{
+    const value = Math.min(Math.abs(props.power), 100)
+
+    return <td>
+        <div className="AddPower">
+            <span className={"AddPower-graph" + (props.power < 0 ? ' minus' : '')}
+                style={{ transform: `scaleX(${value / 100})` }}
+                />
+            <span className='AddPower-value' style={{ transform: `translateX(${value - 92}px)` }}>
+                {props.power}
+            </span>
+        </div>
+    </td>
 }

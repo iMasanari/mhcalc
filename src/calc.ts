@@ -23,13 +23,12 @@ function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: stri
     const orgPower = calc(weapon, activeSkillList)
 
     return skillNameList.map((item, index) => {
-        const isActiveSkill = activeSkill[item.group] === item.name
+        const isActive = activeSkill[item.group] === item.name
 
         const result = {
             name: item.name,
-            isActive: isActiveSkill,
-            // action: item.action,
-            disappearance: (activeSkill[item.group] && !isActiveSkill) ? activeSkill[item.group] : null,
+            isActive: isActive,
+            disappearance: (activeSkill[item.group] && !isActive) ? activeSkill[item.group] : null,
             plus: null as number,
             mult: null as number,
             index
@@ -39,22 +38,22 @@ function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: stri
             return activeSkill[simulateItem.group] === simulateItem.name && simulateItem.group !== item.group
         })
 
-        if (activeSkill[item.group] !== item.name) {
+        if (isActive) {
+            const power = calc(weapon, activeSkillList)
+
+            result.plus = (orgPower - power) | 0
+            result.mult = orgPower / power
+        } else {
             activeSkillList.push(item)
 
             const power = calc(weapon, activeSkillList)
 
             result.plus = (power - orgPower) | 0
             result.mult = power / orgPower
-        } else {
-            const power = calc(weapon, activeSkillList)
-            result.plus = (orgPower - power) | 0
-            result.mult = orgPower / power;
         }
 
         return result
     }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index)
-    // }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || +b.isActive - +a.isActive)
 }
 
 function getAttackPower(weapon: WeaponData, skill: Skill) {
