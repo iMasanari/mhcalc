@@ -2,29 +2,24 @@
 /// <reference path="SkillData.ts" />
 
 namespace SkillBox {
-    export interface Props extends React.Props<SkillBox> {
+    export interface Props extends React.ClassAttributes<null> {
         name: string
-        value: string
+        value: string | null
         action: () => void
         skillButtonList: SkillData.item[]
     }
-    export interface State {
-    }
 }
 
-class SkillBox extends React.Component<SkillBox.Props, SkillBox.State> {
-    render() {
-        return <div className="SkillBox">
-            <span>{this.props.name}</span>
-            <ul className="SkillBox-ul">
-                {this.props.skillButtonList.map(skillButton =>
-                    <SkillButton key={skillButton.label}
-                        name={skillButton.label}
-                        isChecked={this.props.value == skillButton.name}
-                        action={this.props.action.bind(null, skillButton.name) }
-                        />
-                ) }
-            </ul>
-        </div>
-    }
-}
+const SkillBox = (props: SkillBox.Props) =>
+    <div className="SkillBox">
+        <span>{props.name}</span>
+        <ul className="SkillBox-ul">
+            {props.skillButtonList.map(skillButton =>
+                <SkillButton key={skillButton.label}
+                    name={skillButton.label}
+                    isChecked={props.value == skillButton.name}
+                    action={props.action.bind(null, skillButton.name)}
+                    />
+            )}
+        </ul>
+    </div>

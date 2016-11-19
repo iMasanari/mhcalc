@@ -15,6 +15,15 @@ function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
     return getAttackPower(weapon, skill)
 }
 
+interface CalcData {
+    name: string
+    isActive: boolean
+    disappearance: string | null
+    plus: number
+    mult: number
+    index: number
+}
+
 function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: string }) {
     const activeSkillList = skillNameList.filter(item => {
         return activeSkill[item.group] === item.name
@@ -29,10 +38,8 @@ function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: stri
             name: item.name,
             isActive: isActive,
             disappearance: (activeSkill[item.group] && !isActive) ? activeSkill[item.group] : null,
-            plus: null as number,
-            mult: null as number,
             index
-        }
+        } as CalcData
 
         const activeSkillList = skillNameList.filter(simulateItem => {
             return activeSkill[simulateItem.group] === simulateItem.name && simulateItem.group !== item.group

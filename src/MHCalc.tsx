@@ -3,33 +3,28 @@
 /// <reference path="Weapon.tsx" />
 
 namespace MHCalc {
-    export interface Props extends React.Props<MHCalc> {
+    export interface Props extends React.ClassAttributes<MHCalc> {
     }
     export interface State {
-        weapon?: WeaponData
-        activeSkill?: {
-            [skillGroup: string]: string
-        }
+        weapon: WeaponData
+        activeSkill: { [skillGroup: string]: string }
     }
 }
 
 class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
-    constructor() {
-        super()
+    state: MHCalc.State = {
+        weapon: {
+            type: 'lightbowgun',
+            power: 0,
+            affinity: 0
+        },
+        activeSkill: {}
+    }
 
-        this.state = {
-            weapon: {
-                type: 'lightbowgun',
-                power: null,
-                affinity: null
-            },
-            activeSkill: {}
-        }
+    setWeapon = (weapon: WeaponData) => {
+        this.setState({ weapon } as MHCalc.State)
     }
-    setWeapon(weapon: WeaponData) {
-        this.setState({ weapon })
-    }
-    setActiveSkill(skillGroup: string, skillName: string) {
+    setActiveSkill = (skillGroup: string, skillName: string) => {
         let activeSkill = this.state.activeSkill
 
         if (activeSkill[skillGroup] === skillName) {
@@ -38,14 +33,14 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
             activeSkill[skillGroup] = skillName
         }
 
-        this.setState({ activeSkill })
+        this.setState({ activeSkill } as MHCalc.State)
     }
 
     render() {
         return <div className="MHCalc">
             <Weapon
                 weapon={this.state.weapon}
-                setWeapon={this.setWeapon.bind(this)}
+                setWeapon={this.setWeapon}
                 activeSkill={this.state.activeSkill}
                 />
             <section>
@@ -53,11 +48,11 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
                 <div className="skill">
                     <SkillBoxList
                         activeSkill={this.state.activeSkill}
-                        setActiveSkill={this.setActiveSkill.bind(this)}
+                        setActiveSkill={this.setActiveSkill}
                         />
                     <SkillRanking
                         activeSkill={this.state.activeSkill}
-                        setActiveSkill={this.setActiveSkill.bind(this)}
+                        setActiveSkill={this.setActiveSkill}
                         weapon={this.state.weapon}
                         />
                 </div>

@@ -3,9 +3,9 @@
 /// <reference path="calc.ts" />
 
 namespace SkillRanking {
-    export interface Props extends React.Props<SkillRanking> {
+    export interface Props extends React.ClassAttributes<SkillRanking> {
         activeSkill: { [skillGroup: string]: string }
-        setActiveSkill: () => void
+        setActiveSkill: (skillGroup: string, skillName: string) => void
         weapon: WeaponData
     }
     export interface State {
@@ -28,18 +28,16 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
     }
 
     render() {
-        if (this.props.weapon.power == null) return null
-
         const skillRanking = getRanking(this.props.weapon, this.props.activeSkill)
-        const testSkillRanking = {} as { [name: string]: any }
+        const skillRankingHash = {} as { [name: string]: CalcData }
 
         for (let i = skillRanking.length; i--;) {
             skillRanking[i].index = i
-            testSkillRanking[skillRanking[i].name] = skillRanking[i]
+            skillRankingHash[skillRanking[i].name] = skillRanking[i]
         }
 
-        const TableRows = Object.keys(this.skillActionList).map((itemName, i) => {
-            const item = testSkillRanking[itemName]
+        const TableRows = Object.keys(this.skillActionList).map(itemName => {
+            const item = skillRankingHash[itemName]
 
             return <TableRow key={item.name}
                 item={item}
@@ -61,8 +59,8 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
 }
 
 namespace TableRow {
-    export interface Props extends React.Props<null> {
-        item: any
+    export interface Props extends React.ClassAttributes<null> {
+        item: CalcData
         action: () => void
     }
 }
@@ -81,9 +79,9 @@ const TableRow = (props: TableRow.Props) =>
     </tr>
 
 namespace SkillNameCell {
-    export interface Props extends React.Props<null> {
+    export interface Props extends React.ClassAttributes<null> {
         name: string
-        disappearance: string
+        disappearance: string | null
     }
 }
 
@@ -98,7 +96,7 @@ const SkillNameCell = (props: SkillNameCell.Props) =>
     </td>
 
 namespace AddPowerCell {
-    export interface Props extends React.Props<null> {
+    export interface Props extends React.ClassAttributes<null> {
         power: number
     }
 }

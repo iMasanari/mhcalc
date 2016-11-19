@@ -2,14 +2,19 @@
     "version": "0.1.0",
     "command": "npm",
     "isShellCommand": true,
-    "showOutput": "always",
     "suppressTaskName": true,
     "args": ["run"],
     "tasks": [
         {
+            "taskName": "build:w",
+            "args": ["build:w"],
+            "problemMatcher": "$tsc-watch",
+            "isBuildCommand": true
+        },
+        {
             "taskName": "build",
-            "args": ["build"],
-            "problemMatcher": "$tsc-watch"
+            "problemMatcher": "$tsc",
+            "args": ["build"]
         },
         {
             "taskName": "uglify",

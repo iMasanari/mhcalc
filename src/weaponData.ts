@@ -1,8 +1,9 @@
 /// <reference path="weaponList/lightbowgun.ts" />
 /// <reference path="weaponList/heavybowgun.ts" />
 
+type wepnoType = 'lightbowgun' | 'heavybowgun'
 interface WeaponData {
-	type: 'lightbowgun' | 'heavybowgun'
+	type: wepnoType
 	power: number
 	affinity: number
 }
@@ -28,15 +29,15 @@ const weaponData = {
 	}
 }
 
-function getWeaponList(type: string) {
+function getWeaponList(type: wepnoType) {
 	return Object.keys(weaponData[type].list)
 }
-function getWeaponLevelList(type: string, name: string) {
+function getWeaponLevelList(type: wepnoType, name: string) {
 	return weaponData[type].list[name].list
 }
-function getWeapon(type: string, name: string, level: number) {
+function getWeapon(type: wepnoType, name: string, level: number) {
 	return weaponData[type].list[name].list[level - 1]
 }
-function getWeaponLastName(type: string, name: string) {
+function getWeaponLastName(type: wepnoType, name: string) {
 	return weaponData[type].list[name].lastName
 }

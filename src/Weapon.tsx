@@ -1,52 +1,43 @@
 /// <reference path="weaponData.ts" />
 
 namespace Weapon {
-    export interface Props extends React.Props<Weapon> {
+    export interface Props extends React.ClassAttributes<Weapon> {
         weapon: WeaponData
         setWeapon: (weapon: WeaponData) => void
         activeSkill: { [skillGroup: string]: string }
     }
     export interface State {
-        isLastName?: boolean
-        name?: string
-        level?: number
-        powerText?: string
-        affinityText?: string
+        isLastName: boolean
+        name: string
+        level: number
+        powerText: string | null
+        affinityText: string | null
     }
 }
 
 class Weapon extends React.Component<Weapon.Props, Weapon.State> {
     timer: number
+    state: Weapon.State = {
+        isLastName: true,
+        name: 'ベルダーバレット',
+        level: 8,
+        powerText: null,
+        affinityText: null
+    }
 
     constructor(props: Weapon.Props) {
         super(props)
-
-        this.state = {
-            isLastName: true,
-            name: 'ベルダーバレット',
-            level: 8,
-            powerText: null,
-            affinityText: null
-        }
-        this.toggleLastName = this.toggleLastName.bind(this)
 
         const type = this.props.weapon.type
         const [power, affinity] = getWeapon(type, this.state.name, this.state.level)
 
         this.props.setWeapon({ type, power, affinity })
-
-        this.changeType = this.changeType.bind(this)
-        this.changeName = this.changeName.bind(this)
-        this.changeLevel = this.changeLevel.bind(this)
-
-        this.changePower = this.changePower.bind(this)
-        this.changeAffinity = this.changeAffinity.bind(this)
     }
-    toggleLastName() {
-        this.setState({ isLastName: !this.state.isLastName })
+    toggleLastName = () => {
+        this.setState({ isLastName: !this.state.isLastName } as Weapon.State)
     }
-    changeType(e: React.FormEvent<HTMLSelectElement>) {
-        const type = e.currentTarget.value as any
+    changeType = (e: React.FormEvent<HTMLSelectElement>) => {
+        const type = e.currentTarget.value as wepnoType
         const name = getWeaponList(type)[0]
         const level = getWeaponLevelList(type, name).length
         const [power, affinity] = getWeapon(type, name, level)
@@ -55,10 +46,11 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             name, level,
             powerText: null,
             affinityText: null
-        })
+        } as Weapon.State)
+
         this.props.setWeapon({ type, power, affinity })
     }
-    changeName(e: React.FormEvent<HTMLSelectElement>) {
+    changeName = (e: React.FormEvent<HTMLSelectElement>) => {
         const type = this.props.weapon.type
         const name = e.currentTarget.value
         const level = getWeaponLevelList(type, name).length
@@ -68,10 +60,11 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             name, level,
             powerText: null,
             affinityText: null
-        })
+        } as Weapon.State)
+
         this.props.setWeapon({ type, power, affinity })
     }
-    changeLevel(e: React.FormEvent<HTMLSelectElement>) {
+    changeLevel = (e: React.FormEvent<HTMLSelectElement>) => {
         const type = this.props.weapon.type
         const name = this.state.name
         const level = +e.currentTarget.value
@@ -81,13 +74,14 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             level,
             powerText: null,
             affinityText: null
-        })
+        } as Weapon.State)
+
         this.props.setWeapon({ type, power, affinity })
     }
-    changePower(e: React.FormEvent<HTMLInputElement>) {
+    changePower = (e: React.FormEvent<HTMLInputElement>) => {
         this.setPower(e.currentTarget.value, (this.refs['affinity'] as HTMLInputElement).value)
     }
-    changeAffinity(e: React.FormEvent<HTMLInputElement>) {
+    changeAffinity = (e: React.FormEvent<HTMLInputElement>) => {
         this.setPower((this.refs['power'] as HTMLInputElement).value, e.currentTarget.value)
     }
     setPower(powerText: string, affinityText: string) {
@@ -108,7 +102,7 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             }
         }
 
-        this.setState({ name, level, powerText, affinityText })
+        this.setState({ name, level, powerText, affinityText } as Weapon.State)
 
         // 計算を遅らせる
         clearTimeout(this.timer)
@@ -124,13 +118,11 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                 this.setState({
                     powerText: null,
                     affinityText: null
-                })
+                } as Weapon.State)
             }
         }, 500);
     }
     render() {
-        if (this.props.weapon.power == null) return null
-
         const activeSkillList = skillNameList.filter(item => this.props.activeSkill[item.group] === item.name)
         const power = calc(this.props.weapon, activeSkillList)
 
@@ -148,7 +140,7 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                 )}
             </select>
             <select className="weapon-level" value={this.state.level + ''} onChange={this.changeLevel}>
-                {getWeaponLevelList(this.props.weapon.type, this.state.name).map((value, i) =>
+                {getWeaponLevelList(this.props.weapon.type, this.state.name).map((_, i) =>
                     <option value={i + 1}>LV{i + 1}</option>
                 )}
             </select>
@@ -161,11 +153,11 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             </label>
             <p className="weapon-power">
                 <input ref="power" type="number" pattern="[0-9]*" placeholder="200" step="10" max="1000" min="10"
-                    value={this.state.powerText !== null ? this.state.powerText : this.props.weapon.power}
+                    value={(this.state.powerText !== null) ? this.state.powerText : this.props.weapon.power}
                     onChange={this.changePower} />
                 /
                 <input ref="affinity" type="number" pattern="-?[0-9]*" placeholder="0" step="10" max="100" min="-100"
-                    value={this.state.affinityText !== null ? this.state.affinityText : this.props.weapon.affinity}
+                    value={(this.state.affinityText !== null) ? this.state.affinityText : this.props.weapon.affinity}
                     onChange={this.changeAffinity} />
                 %
                 <br />
