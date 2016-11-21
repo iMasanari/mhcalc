@@ -149,17 +149,15 @@ footer {
 	width: 100%;
 }
 .SkillRanking tr {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	transition: transform .2s linear;
+	position: relative;
+}
+.SkillRanking.animation tr {
+	transition: transform .2s ease-out;
 }
 .SkillRanking th,
 .SkillRanking td {
 	box-sizing: border-box;
 	overflow: hidden;
-	width: 150px;
 	height: 40px;
 }
 .SkillRanking th:first-child,
@@ -183,7 +181,7 @@ footer {
 .disappearance {
 	font-size: 12px;
 	color: #bbb;
-	transition: opacity .2s linear;
+	transition: opacity .2s ease-out;
 }
 .opacity0 {
 	opacity: 0;
@@ -198,11 +196,11 @@ footer {
 	width: 100px;
 	height: 10px;
 	background: #84b2e0;
-	/*transition: transform .2s linear;*/
+	transition: transform .2s ease-out;
 }
 .AddPower-value {
 	display: inline-block;
-	/*transition: transform .2s linear;*/
+	transition: transform .2s ease-out;
 }
 .SkillRanking .checked .AddPower-graph,
 .SkillRanking .AddPower-graph.minus {

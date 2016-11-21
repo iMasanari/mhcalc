@@ -60,7 +60,7 @@ function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: stri
         }
 
         return result
-    }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index)
+    }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index).map((v, i) => (v.index = i, v))
 }
 
 function getAttackPower(weapon: WeaponData, skill: Skill) {

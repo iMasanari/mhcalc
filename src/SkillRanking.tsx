@@ -9,43 +9,55 @@ namespace SkillRanking {
         weapon: WeaponData
     }
     export interface State {
+        rowOrder: string[]
+        isAnimationEnd: boolean
     }
 }
 
 class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.State> {
-    skillActionList: {
-        [skillName: string]: () => void
-    }
+    private animationTimer_: number | undefined
+    private skillActionList_ = skillNameList.reduce(
+        (hash, skill) => (hash[skill.name] = this.props.setActiveSkill.bind(null, skill.group, skill.name), hash),
+        {} as { [skillName: string]: () => void }
+    )
 
-    constructor(props: SkillRanking.Props) {
-        super(props)
-
-        this.skillActionList = {}
-
-        for (const skill of skillNameList) {
-            this.skillActionList[skill.name] = props.setActiveSkill.bind(null, skill.group, skill.name)
-        }
+    state: SkillRanking.State = {
+        rowOrder: skillNameList.map(v => v.name),
+        isAnimationEnd: true
     }
 
     render() {
+        if (this.props.weapon.power === 0) return null
+
         const skillRanking = getRanking(this.props.weapon, this.props.activeSkill)
-        const skillRankingHash = {} as { [name: string]: CalcData }
+        const skillRankingHash = skillRanking.reduce((h, v) => (h[v.name] = v, h), {} as { [name: string]: CalcData })
 
-        for (let i = skillRanking.length; i--;) {
-            skillRanking[i].index = i
-            skillRankingHash[skillRanking[i].name] = skillRanking[i]
-        }
-
-        const TableRows = Object.keys(this.skillActionList).map(itemName => {
-            const item = skillRankingHash[itemName]
+        const TableRows = this.state.rowOrder.map((skillName, i) => {
+            const item = skillRankingHash[skillName]
 
             return <TableRow key={item.name}
                 item={item}
-                action={this.skillActionList[item.name]}
+                rankUp={item.index - i}
+                action={this.skillActionList_[item.name]}
                 />
         })
 
-        return <div className="SkillRanking">
+        const isAnimationEnd = this.state.isAnimationEnd
+
+        if (this.state.isAnimationEnd) {
+            this.state.isAnimationEnd = false
+        }
+        else {
+            clearTimeout(this.animationTimer_!)
+            this.animationTimer_ = setTimeout(_ => {
+                this.setState({
+                    isAnimationEnd: true,
+                    rowOrder: skillRanking.map(v => v.name)
+                })
+            }, 200)
+        }
+
+        return <div className={"SkillRanking" + (!isAnimationEnd ? ' animation' : '')}>
             <table style={{ height: 40 * (skillRanking.length + 1) }}>
                 <tr>
                     <th>スキル</th>
@@ -62,15 +74,15 @@ namespace TableRow {
     export interface Props extends React.ClassAttributes<null> {
         item: CalcData
         action: () => void
+        rankUp: number
     }
 }
 
 const TableRow = (props: TableRow.Props) =>
     <tr className={props.item.isActive ? 'checked' : ''}
         onClick={props.action}
-        style={{
-            transform: `translateY(${(props.item.index + 1) * 40}px)`,
-            zIndex: props.item.index
+        style={!props.rankUp ? {} : {
+            transform: `translateY(${props.rankUp * 40}px)`
         }}
         >
         <SkillNameCell name={props.item.name} disappearance={props.item.disappearance} />
@@ -101,7 +113,7 @@ namespace AddPowerCell {
     }
 }
 
-const AddPowerCell = (props: AddPowerCell.Props) =>{
+const AddPowerCell = (props: AddPowerCell.Props) => {
     const value = Math.min(Math.abs(props.power), 100)
 
     return <td>
