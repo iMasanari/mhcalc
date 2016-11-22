@@ -1,5 +1,4 @@
 const initValue = {
     type: 'lightbowgun',
-    name: 'ベルダーバレット',
-    level: 8
+    name: 'サージュバレット LV8'
 }

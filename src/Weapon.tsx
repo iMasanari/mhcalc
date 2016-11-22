@@ -8,9 +8,8 @@ namespace Weapon {
         activeSkill: { [skillGroup: string]: string }
     }
     export interface State {
-        isLastName: boolean
+        isLastOnly: boolean
         name: string
-        level: number
         power: string | number
         affinity: string | number
     }
@@ -19,42 +18,31 @@ namespace Weapon {
 class Weapon extends React.Component<Weapon.Props, Weapon.State> {
     timer: number
     state: Weapon.State = {
-        isLastName: true,
+        isLastOnly: true,
         name: initValue.name,
-        level: initValue.level,
         power: this.props.weapon.power,
         affinity: this.props.weapon.affinity
     }
 
-    toggleLastName = () => {
-        this.setState({ isLastName: !this.state.isLastName } as Weapon.State)
+    toggleLastOnly = () => {
+        const isLastOnly = !this.state.isLastOnly
+
+        this.setState({ isLastOnly } as Weapon.State)
     }
     changeType = (e: React.FormEvent<HTMLSelectElement>) => {
         const type = e.currentTarget.value as wepnonType
-        const name = getWeaponList(type)[0]
-        const level = getWeaponLevelList(type, name).length
-        const [power, affinity] = getWeapon(type, name, level)
+        const name = getWeaponList(type, this.state.isLastOnly)[0]
+        const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, level, power, affinity } as Weapon.State)
+        this.setState({ name, power, affinity } as Weapon.State)
         this.props.setWeapon({ type, power, affinity })
     }
     changeName = (e: React.FormEvent<HTMLSelectElement>) => {
         const type = this.props.weapon.type
         const name = e.currentTarget.value
-        const level = getWeaponLevelList(type, name).length
-        const [power, affinity] = getWeapon(type, name, level)
+        const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, level, power, affinity } as Weapon.State)
-        this.props.setWeapon({ type, power, affinity })
-    }
-    changeLevel = (e: React.FormEvent<HTMLSelectElement>) => {
-        const type = this.props.weapon.type
-        const name = this.state.name
-        const level = +e.currentTarget.value
-        const [power, affinity] = getWeapon(type, name, level)
-
-        this.setState({ level, power, affinity } as Weapon.State)
-
+        this.setState({ name, power, affinity } as Weapon.State)
         this.props.setWeapon({ type, power, affinity })
     }
     changePower = (e: React.FormEvent<HTMLInputElement>) => {
@@ -73,9 +61,9 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         this.props.setWeapon({ type: this.props.weapon.type, power, affinity } as WeaponData)
     }
     setPower(power: string | number, affinity: string | number) {
-        const {name, level} = this.searchWeapon(+power, +affinity)
+        const name = this.searchWeapon(+power, +affinity)
 
-        this.setState({ name, level, power, affinity } as Weapon.State)
+        this.setState({ name, power, affinity } as Weapon.State)
 
         // 計算を遅らせる
         clearTimeout(this.timer)
@@ -89,36 +77,29 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         }, 500);
     }
     searchWeapon(power: number, affinity: number) {
-        for (const name of getWeaponList(this.props.weapon.type)) {
-            const levelList = getWeaponLevelList(this.props.weapon.type, name)
+        for (const isLast of [true, false]) {
+            for (const name of getWeaponList(this.props.weapon.type, v => v.isLast === isLast)) {
+                const weapon = getWeapon(this.props.weapon.type, name)
 
-            for (let i = levelList.length; i--;) {
-                const weapon = levelList[i]
-
-                if (weapon[0] === power && weapon[1] === affinity) {
-                    return { name, level: i + 1 }
+                if (weapon.power === power && weapon.affinity === affinity) {
+                    return name
                 }
             }
         }
 
-        return {
-            name: '（カスタマイズ）',
-            level: 1
-        }
+        return 'カスタマイズ'
     }
     render() {
         const activeSkillList = skillNameList.filter(item => this.props.activeSkill[item.group] === item.name)
         const {power, weapon} = calc(this.props.weapon, activeSkillList)
 
-        const weaponNameOptions = getWeaponList(this.props.weapon.type).map(value =>
-            <option value={value}>
-                {this.state.isLastName ? getWeaponLastName(this.props.weapon.type, value) : value}
-            </option>
-        )
+        const weaponList = getWeaponList(this.props.weapon.type, this.state.isLastOnly)
+        const weaponNameOptions = weaponList.map(value => <option value={value}>{value}</option>)
+        const weaponValue = this.state.name
 
-        const weaponLevelOptions = getWeaponLevelList(this.props.weapon.type, this.state.name).map((_, i) =>
-            <option value={i + 1}>LV{i + 1}</option>
-        )
+        if (weaponList.indexOf(weaponValue) === -1) {
+            weaponNameOptions.unshift(<option value={weaponValue}>（{weaponValue}）</option>)
+        }
 
         return <section className="Weapon">
             <h2>Choose a Weapon</h2>
@@ -127,18 +108,13 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                     <option value="lightbowgun">ライト</option>
                     <option value="heavybowgun">ヘビィ</option>
                 </select>
-                <select className="weapon-name" value={this.state.name} onChange={this.changeName}>
+                <select className="weapon-name" value={weaponValue} onChange={this.changeName}>
                     {weaponNameOptions}
-                </select>
-                <select className="weapon-level" value={this.state.level} onChange={this.changeLevel}>
-                    {weaponLevelOptions}
                 </select>
                 <br />
                 <label>
-                    <small>
-                        <input type="checkbox" checked={this.state.isLastName} onChange={this.toggleLastName} />
-                        最終強化名で表示
-                </small>
+                    <input type="checkbox" checked={this.state.isLastOnly} onChange={this.toggleLastOnly} />
+                    最終強化のみを表示
                 </label>
             </p>
             <p>
@@ -147,14 +123,14 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                     onChange={this.changePower}
                     onBlur={this.blurHandler} />
                 /
-                <input ref="affinity" type="number" pattern="-?[0-9]*" placeholder="0" step="10" max="100" min="-100"
+                <input ref="affinity" type="number" pattern="-?[0-9]*" placeholder="0" step="5" max="100" min="-100"
                     value={(this.refs['affinity'] === document.activeElement) ? this.state.affinity : this.props.weapon.affinity}
                     onChange={this.changeAffinity}
                     onBlur={this.blurHandler} />
                 %
             </p>
             <p>
-                {weapon[0] | 0}/ {weapon[1]}% => {power | 0}
+                {weapon.power | 0}/ {weapon.affinity}% => {power | 0}
             </p>
         </section>
     }

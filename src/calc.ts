@@ -77,6 +77,10 @@ function getAttackPower(weapon: WeaponData, skill: Skill) {
 
     return {
         power: power * mult * (1 + affinity / 100 * superAffinity),
-        weapon: [power * mult, affinity]
+        weapon: {
+            power: power * mult,
+            affinity,
+            type: weapon.type
+        } as WeaponData
     }
 }

@@ -9,46 +9,29 @@ interface WeaponData {
 	affinity: number
 }
 
-const weaponsData: WeaponsData = {
+interface WeaponsData {
+	typeMult: number
+	list: { [name: string]: weaponList.Weapon }
+}
+
+const weaponsData: { [name: string]: WeaponsData } = {
 	lightbowgun: {
 		typeMult: 1.3,
-		list: weaponList.lightbowgun as _Wepnons as Wepnons
+		list: weaponList.lightbowgun
 	},
 	heavybowgun: {
 		typeMult: 1.48,
-		list: weaponList.heavybowgun as _Wepnons as Wepnons
+		list: weaponList.heavybowgun
 	}
 }
 
-function getWeaponList(type: wepnonType) {
-	return Object.keys(weaponsData[type].list)
-}
-function getWeaponLevelList(type: wepnonType, name: string) {
-	return weaponsData[type].list[name].list
-}
-function getWeapon(type: wepnonType, name: string, level: number) {
-	return weaponsData[type].list[name].list[level - 1]
-}
-function getWeaponLastName(type: wepnonType, name: string) {
-	return weaponsData[type].list[name].lastName
+function getWeaponList(type: wepnonType, filter: boolean | ((skill: weaponList.Weapon) => boolean)) {
+	const ref = weaponsData[type].list
+	const list = Object.keys(ref)
+
+	return filter ? list.filter((filter === true) ? v => ref[v].isLast : v => filter(ref[v])) : list
 }
 
-// TypeScriptのバグ?により一度この型を経由
-type _Wepnons = {
-	[name: string]: {
-		lastName: string
-		list: number[][]
-	}
-}
-type Wepnons = {
-	[name: string]: {
-		lastName: string
-		list: [number, number][]
-	}
-}
-type WeaponsData = {
-	[name: string]: {
-		typeMult: number
-		list: Wepnons
-	}
+function getWeapon(type: wepnonType, name: string) {
+	return weaponsData[type].list[name]
 }

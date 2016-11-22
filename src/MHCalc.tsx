@@ -16,7 +16,7 @@ class MHCalc extends React.Component<MHCalc.Props, MHCalc.State> {
     state: MHCalc.State = {
         weapon: (() => {
             const type = initValue.type as wepnonType
-            const [power, affinity] = getWeapon(type, initValue.name, initValue.level)
+            const {power, affinity} = getWeapon(type, initValue.name)
             
             return { type, power, affinity }
         })(),
