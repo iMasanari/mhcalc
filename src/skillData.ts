@@ -20,23 +20,23 @@ namespace SkillData {
     }
 }
 
-const attackUp = function (skill: Skill, value: any) {
+const attackUp = (skill: Skill, value: number) => {
     skill.power += value
     return skill
 }
 
-const attackMult = function (skill: Skill, value: any) {
+const attackMult = (skill: Skill, value: number) => {
     skill.mult *= value
     return skill
 }
 
-const affinityUp = function (skill: Skill, value: any) {
+const affinityUp = (skill: Skill, value: number) => {
     skill.affinity += value
     return skill
 }
 
-const multValue = function (skill: Skill, value: { [skillName: string]: any }) {
-    for (const key in value) {
+const multValue = (skill: Skill, value: { [skillName: string]: any }) => {
+    for (const key in value) if (value.hasOwnProperty(key)) {
         if (skill[key]) {
             skill[key] *= value[key]
         } else {
@@ -46,14 +46,7 @@ const multValue = function (skill: Skill, value: { [skillName: string]: any }) {
     return skill
 }
 
-const attackAndAffinityUp = function (skill: Skill, value: any) {
-    attackUp(skill, value[0])
-    affinityUp(skill, value[1])
-
-    return skill
-}
-
-let _skillList = [{
+const skillList = [{
     name: 'ロング/パワーバレル',
     effect: multValue,
     item: [
@@ -89,12 +82,6 @@ let _skillList = [{
         { label: '+2', value: 20 },
         { label: '+3', value: 30 }
     ]
-    // }, {
-    //     name: '弱点特効',
-    //     effect: multValue,
-    //     item: [
-    //         { value: { '弱点特効': 50 } }
-    //     ]
 }, {
     name: '弱点特効',
     effect: affinityUp,
@@ -112,7 +99,8 @@ let _skillList = [{
 }, {
     name: '挑戦者',
     group: '腕が光るスキル',
-    effect: attackAndAffinityUp,
+    effect: (skill: Skill, [powor, affinity]: [number, number]) =>
+        attackUp(affinityUp(skill, affinity), powor),
     item: [
         { label: '+1', value: [10, 10] },
         { label: '+2', value: [20, 15] }
@@ -158,9 +146,9 @@ let _skillList = [{
     ]
 }, {
     name: '研磨術',
-    effect: attackMult,
+    effect: multValue,
     item: [
-        { label: '（仮）', value: 1.75 / 1.5 }
+        { value: { criticalUp: 1 } }
     ]
 }, {
     name: '弾強化（通常 貫通 重撃）',
@@ -306,12 +294,13 @@ let _skillList = [{
         { label: '白', value: 10 }
     ]
 }, {
-    name: '鬼人弾（crt補正なし）',
+    name: '【ボウガン】鬼人弾',
     group: '怪力の種',
-    effect: attackAndAffinityUp,
+    effect: (skill: Skill, [powor, affinity, value]: [number, number, { criticalUp: number }]) =>
+        attackUp(affinityUp(multValue(skill, value), affinity), powor),
     item: [
-        { name: '鬼人弾/鬼人硬化弾', label: '鬼人', value: [10, 0] },
-        { name: '鬼人会心弾', label: '会心', value: [15, 10] }
+        { name: '【ボウガン】鬼人弾/鬼人硬化弾', label: '鬼人', value: [10, 0, { criticalUp: 1 }] },
+        { name: '【ボウガン】鬼人会心弾', label: '会心', value: [15, 10, { criticalUp: 1 }] }
     ]
 }, {
     name: '攻撃力DOWN',
@@ -338,25 +327,18 @@ let _skillList = [{
     item: [
         { value: 0.7 }
     ]
-}] as {
-    name: string,
-    group?: string,
-    effect: (skill: Skill, value: any) => void,
-    item: {
-        name?: string,
-        label?: string,
-        value: any
-    }[]
-}[]
+}] as SkillData[]
 
-const skillNameList = [] as {
+interface  SkillNameList {
     name: string
     group: string
     value: any
     effect: (skill: Skill, value: any) => void
-}[]
+}
 
-for (const skill of _skillList) {
+const skillNameList: SkillNameList[] = []
+
+for (const skill of skillList) {
     skill.group = skill.group || skill.name
 
     for (const item of skill.item) {
@@ -371,5 +353,3 @@ for (const skill of _skillList) {
         })
     }
 }
-
-const skillList = _skillList as SkillData[]
