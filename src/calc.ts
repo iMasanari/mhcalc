@@ -31,35 +31,33 @@ function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: stri
 
     const orgPower = calc(weapon, activeSkillList)
 
-    return skillNameList.map((item, index) => {
+    return skillNameList.map((item, index): CalcData => {
         const isActive = activeSkill[item.group] === item.name
-
-        const result = {
-            name: item.name,
-            isActive: isActive,
-            disappearance: (activeSkill[item.group] && !isActive) ? activeSkill[item.group] : null,
-            index
-        } as CalcData
 
         const activeSkillList = skillNameList.filter(simulateItem => {
             return activeSkill[simulateItem.group] === simulateItem.name && simulateItem.group !== item.group
         })
 
+        let plus: number, mult: number
+
         if (isActive) {
             const power = calc(weapon, activeSkillList)
 
-            result.plus = (orgPower - power) | 0
-            result.mult = orgPower / power
+            plus = (orgPower - power) | 0
+            mult = orgPower / power
         } else {
-            activeSkillList.push(item)
+            const power = calc(weapon, activeSkillList.concat([item]))
 
-            const power = calc(weapon, activeSkillList)
-
-            result.plus = (power - orgPower) | 0
-            result.mult = power / orgPower
+            plus = (power - orgPower) | 0
+            mult = power / orgPower
         }
 
-        return result
+        return {
+            name: item.name,
+            isActive,
+            disappearance: (activeSkill[item.group] && !isActive) ? activeSkill[item.group] : null,
+            plus, mult, index
+        }
     }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index).map((v, i) => (v.index = i, v))
 }
 

@@ -5,7 +5,7 @@ namespace SkillBox {
     export interface Props extends React.ClassAttributes<null> {
         name: string
         value: string | null
-        action: () => void
+        action: (skillName: string) => void
         skillButtonList: SkillData.item[]
     }
 }

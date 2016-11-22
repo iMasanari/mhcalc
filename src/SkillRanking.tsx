@@ -9,7 +9,7 @@ namespace SkillRanking {
         weapon: WeaponData
     }
     export interface State {
-        rowOrder: string[]
+        prevSkillRanking: CalcData[]
         isAnimationEnd: boolean
     }
 }
@@ -22,17 +22,34 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
     )
 
     state: SkillRanking.State = {
-        rowOrder: skillNameList.map(v => v.name),
+        prevSkillRanking: getRanking(this.props.weapon, this.props.activeSkill),
         isAnimationEnd: true
     }
 
     render() {
-        if (this.props.weapon.power === 0) return null
+        let skillRanking: CalcData[]
+        const isAnimationEnd = this.state.isAnimationEnd
 
-        const skillRanking = getRanking(this.props.weapon, this.props.activeSkill)
+        if (this.state.isAnimationEnd) {
+            this.state.isAnimationEnd = false
+            skillRanking = this.state.prevSkillRanking
+        }
+        else {
+            console.log('calc');
+            skillRanking = getRanking(this.props.weapon, this.props.activeSkill)
+
+            clearTimeout(this.animationTimer_!)
+            this.animationTimer_ = setTimeout(_ => {
+                this.setState({
+                    isAnimationEnd: true,
+                    prevSkillRanking: skillRanking
+                })
+            }, 200)
+        }
+
         const skillRankingHash = skillRanking.reduce((h, v) => (h[v.name] = v, h), {} as { [name: string]: CalcData })
 
-        const TableRows = this.state.rowOrder.map((skillName, i) => {
+        const TableRows = this.state.prevSkillRanking.map(({name: skillName}, i) => {
             const item = skillRankingHash[skillName]
 
             return <TableRow key={item.name}
@@ -41,22 +58,6 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
                 action={this.skillActionList_[item.name]}
                 />
         })
-
-        const isAnimationEnd = this.state.isAnimationEnd
-
-        if (this.state.isAnimationEnd) {
-            this.state.isAnimationEnd = false
-        }
-        else {
-            clearTimeout(this.animationTimer_!)
-            this.animationTimer_ = setTimeout(_ => {
-                this.setState({
-                    isAnimationEnd: true,
-                    rowOrder: skillRanking.map(v => v.name)
-                })
-            }, 200)
-        }
-
         return <div className={"SkillRanking" + (!isAnimationEnd ? ' animation' : '')}>
             <table style={{ height: 40 * (skillRanking.length + 1) }}>
                 <tr>
@@ -79,11 +80,9 @@ namespace TableRow {
 }
 
 const TableRow = (props: TableRow.Props) =>
-    <tr className={props.item.isActive ? 'checked' : ''}
+    <tr className={props.item.isActive ? 'checked' : undefined}
         onClick={props.action}
-        style={!props.rankUp ? {} : {
-            transform: `translateY(${props.rankUp * 40}px)`
-        }}
+        style={props.rankUp ? { transform: `translateY(${props.rankUp * 40}px)` } : undefined}
         >
         <SkillNameCell name={props.item.name} disappearance={props.item.disappearance} />
         <AddPowerCell power={props.item.plus} />
@@ -102,7 +101,7 @@ const SkillNameCell = (props: SkillNameCell.Props) =>
         <div className="skillName">
             <span>{props.name}</span>
             <span className={"disappearance" + (props.disappearance ? '' : ' opacity0')}>
-                {props.disappearance ? ' - ' + props.disappearance : ''}
+                {props.disappearance ? '- ' + props.disappearance : ''}
             </span>
         </div>
     </td>
