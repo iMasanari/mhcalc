@@ -1,4 +1,5 @@
-scripts/*.js.map
+scripts/*
+!scripts/lib
 
 # Created by https://www.gitignore.io/api/macos,node,visualstudiocode
 
