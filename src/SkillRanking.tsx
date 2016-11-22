@@ -59,7 +59,7 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
                 />
         })
         return <div className={"SkillRanking" + (!isAnimationEnd ? ' animation' : '')}>
-            <table style={{ height: 40 * (skillRanking.length + 1) }}>
+            <table>
                 <tr>
                     <th>スキル</th>
                     <th>上昇値</th>

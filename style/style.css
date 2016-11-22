@@ -40,9 +40,12 @@ a:hover {
 	text-decoration: underline;
 }
 table {
-	border-collapse: collapse;
+	border-collapse: separate;
+	border-spacing:0;
 	white-space: nowrap;
 	table-layout: fixed;
+	border: 1px solid #bbb;
+	background: #eee;
 }
 tr {
 	background-color: #fff;
@@ -53,21 +56,22 @@ tr:hover {
 th {
 	width: 150px;
 	padding: 5px 2px;
-	border-right: 1px solid #fff;
 	border-left: 1px solid #fff;
 	background: #84b2e0;
 	color: #fff;
 	text-align: center;
 }
 th:first-child {
-	border-left-color: #84b2e0;
-}
-th:last-child {
-	border-right-color: #84b2e0;
+	border-left: none;
 }
 td {
 	padding: 5px 8px;
-	border: 1px solid #bbb;
+	border-left: 1px solid #bbb;
+	border-top: 1px solid #bbb;
+	/*border: 1px solid #bbb;*/
+}
+td:first-child {
+	border-left: none;
 }
 
 header {
@@ -160,8 +164,7 @@ footer {
 	overflow: hidden;
 	height: 40px;
 }
-.SkillRanking th:first-child,
-.SkillRanking td:first-child {
+.SkillRanking th:first-child {
 	width: 324px;
 }
 .SkillRanking td:last-child {
