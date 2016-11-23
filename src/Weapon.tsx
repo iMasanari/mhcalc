@@ -23,6 +23,10 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         power: this.props.weapon.power,
         affinity: this.props.weapon.affinity
     }
+    refs: {
+        power: HTMLInputElement,
+        affinity: HTMLInputElement
+    }
 
     toggleLastOnly = () => {
         const isLastOnly = !this.state.isLastOnly
@@ -46,24 +50,19 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         this.props.setWeapon({ type, power, affinity })
     }
     changePower = (e: React.FormEvent<HTMLInputElement>) => {
-        this.setPower(e.currentTarget.value, (this.refs['affinity'] as HTMLInputElement).value)
+        const value = e.currentTarget.value
+
+        this.setState({ power: value } as Weapon.State)
+        this.setPower(+value, +this.state.affinity)
     }
     changeAffinity = (e: React.FormEvent<HTMLInputElement>) => {
-        this.setPower((this.refs['power'] as HTMLInputElement).value, e.currentTarget.value)
+        const value = e.currentTarget.value
+
+        this.setState({ affinity: value } as Weapon.State)
+        this.setPower(+this.state.power, +value)
     }
-    blurHandler = () => {
-        const power = +this.state.power || 200
-        const affinity = +this.state.affinity || 0
-
-        if (this.state.power === power && this.state.affinity === affinity) return
-
-        this.setState({ power, affinity } as Weapon.State)
-        this.props.setWeapon({ type: this.props.weapon.type, power, affinity } as WeaponData)
-    }
-    setPower(power: string | number, affinity: string | number) {
-        const name = this.searchWeapon(+power, +affinity)
-
-        this.setState({ name, power, affinity } as Weapon.State)
+    setPower(power: number, affinity: number) {
+        this.setState({ name: this.searchWeapon(power, affinity) } as Weapon.State)
 
         // 計算を遅らせる
         clearTimeout(this.timer)
@@ -71,10 +70,28 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         this.timer = setTimeout(() => {
             this.props.setWeapon({
                 type: this.props.weapon.type,
-                power: +this.state.power || 0,
-                affinity: +this.state.affinity || 0
+                power: validateNumberInput(this.refs.power, this.props.weapon.power, true),
+                affinity: validateNumberInput(this.refs.affinity, this.props.weapon.affinity, true)
             })
         }, 500);
+    }
+    keydownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.keyCode === 13) {
+            this.blurHandler()
+        }
+    }
+    blurHandler = () => {
+        clearTimeout(this.timer)
+
+        const power = validateNumberInput(this.refs.power, this.props.weapon.power, true)
+        const affinity = validateNumberInput(this.refs.affinity, this.props.weapon.affinity, true)
+
+        if (+this.state.power === power && +this.state.affinity === affinity) return
+
+        const name = this.searchWeapon(power, affinity)
+
+        this.setState({ name, power, affinity } as Weapon.State)
+        this.props.setWeapon({ type: this.props.weapon.type, power, affinity } as WeaponData)
     }
     searchWeapon(power: number, affinity: number) {
         for (const isLast of [true, false]) {
@@ -118,14 +135,16 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
                 </label>
             </p>
             <p>
-                <input ref="power" type="number" pattern="[0-9]*" placeholder="200" step="10" max="1000" min="10"
+                <input ref="power" type="number" pattern="[0-9]*" step="10" max="1000" min="10"
                     value={(this.refs['power'] === document.activeElement) ? this.state.power : this.props.weapon.power}
                     onChange={this.changePower}
+                    onKeyDown={this.keydownHandler}
                     onBlur={this.blurHandler} />
                 /
-                <input ref="affinity" type="number" pattern="-?[0-9]*" placeholder="0" step="5" max="100" min="-100"
+                <input ref="affinity" type="number" pattern="-?[0-9]*" step="5" max="100" min="-100"
                     value={(this.refs['affinity'] === document.activeElement) ? this.state.affinity : this.props.weapon.affinity}
                     onChange={this.changeAffinity}
+                    onKeyDown={this.keydownHandler}
                     onBlur={this.blurHandler} />
                 %
             </p>
@@ -134,4 +153,23 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             </p>
         </section>
     }
+}
+
+function validateNumberInput<T>(input: HTMLInputElement, defaultValue: number | T, step?: boolean) {
+    if (input.value === '' || input.pattern && !new RegExp(`^${input.pattern}$`).test(input.value)) {
+        return defaultValue
+    }
+
+    const value = +input.value
+
+    const minAttr = input.getAttribute('min')
+    if (minAttr !== null && value < +minAttr) return +minAttr
+
+    const maxAttr = input.getAttribute('max')
+    if (maxAttr !== null && value > +maxAttr) return +maxAttr
+
+    const stepNum = +input.getAttribute('step')
+    if (step && stepNum) return Math.round(value / stepNum) * stepNum
+
+    return value
 }
