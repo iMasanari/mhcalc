@@ -8,6 +8,7 @@ interface Skill {
 interface SkillData {
     name: string
     group: string
+    isArmorSkill?: boolean,
     effect: (skill: Skill, value: any) => void
     item: SkillData.item[]
 }
@@ -67,6 +68,7 @@ const skillList = [{
 }, {
     name: '攻撃力UP',
     group: '攻撃力UP',
+    isArmorSkill: true,
     effect: attackUp,
     item: [
         { label: '【小】', value: 10 },
@@ -76,6 +78,7 @@ const skillList = [{
 }, {
     name: '見切り',
     group: '見切り',
+    isArmorSkill: true,
     effect: affinityUp,
     item: [
         { label: '+1', value: 10 },
@@ -84,6 +87,7 @@ const skillList = [{
     ]
 }, {
     name: '弱点特効',
+    isArmorSkill: true,
     effect: affinityUp,
     item: [
         { value: 50 }
@@ -91,6 +95,7 @@ const skillList = [{
 }, {
     name: '力の解放',
     group: '腕が光るスキル',
+    isArmorSkill: true,
     effect: affinityUp,
     item: [
         { label: '+1', value: 30 },
@@ -99,6 +104,7 @@ const skillList = [{
 }, {
     name: '挑戦者',
     group: '腕が光るスキル',
+    isArmorSkill: true,
     effect: (skill: Skill, [powor, affinity]: [number, number]) =>
         attackUp(affinityUp(skill, affinity), powor),
     item: [
@@ -108,6 +114,7 @@ const skillList = [{
 }, {
     name: 'フルチャージ',
     group: '腕が光るスキル',
+    isArmorSkill: true,
     effect: attackUp,
     item: [
         { value: 20 }
@@ -115,12 +122,14 @@ const skillList = [{
 }, {
     name: '火事場',
     group: '火事場',
+    isArmorSkill: true,
     effect: attackMult,
     item: [
         { label: '+2', value: 1.3 }
     ]
 }, {
     name: '不屈',
+    isArmorSkill: true,
     effect: attackMult,
     item: [
         { label: '1乙', value: 1.1 },
@@ -128,24 +137,28 @@ const skillList = [{
     ]
 }, {
     name: '逆恨み',
+    isArmorSkill: true,
     effect: attackUp,
     item: [
         { value: 20 }
     ]
 }, {
     name: '死中に活',
+    isArmorSkill: true,
     effect: attackUp,
     item: [
         { value: 20 }
     ]
 }, {
     name: '北風/南風の狩人',
+    isArmorSkill: true,
     effect: attackUp,
     item: [
         { value: 15 }
     ]
 }, {
     name: '研磨術',
+    isArmorSkill: true,
     effect: multValue,
     item: [
         { value: { criticalUp: 1 } }
@@ -153,6 +166,7 @@ const skillList = [{
 }, {
     name: '弾強化（通常 貫通 重撃）',
     group: '弾強化',
+    isArmorSkill: true,
     effect: attackMult,
     item: [
         { value: 1.1 }
@@ -160,18 +174,21 @@ const skillList = [{
 }, {
     name: '弾強化（散弾）',
     group: '弾強化',
+    isArmorSkill: true,
     effect: attackMult,
     item: [
         { value: 1.2 }
     ]
 }, {
     name: '変則射撃',
+    isArmorSkill: true,
     effect: attackMult,
     item: [
         { value: 1.2 }
     ]
 }, {
     name: '連撃の心得',
+    isArmorSkill: true,
     effect: affinityUp,
     item: [
         { label: '2hit~', value: 25 },
@@ -179,6 +196,7 @@ const skillList = [{
     ]
 }, {
     name: '超会心',
+    isArmorSkill: true,
     effect: multValue,
     item: [
         { value: { superAffinity: 1.4 } }
@@ -305,6 +323,7 @@ const skillList = [{
 }, {
     name: '攻撃力DOWN',
     group: '攻撃力UP',
+    isArmorSkill: true,
     effect: attackUp,
     item: [
         { label: '【小】', value: -5 },
@@ -314,6 +333,7 @@ const skillList = [{
 }, {
     name: '見切り',
     group: '見切り',
+    isArmorSkill: true,
     effect: affinityUp,
     item: [
         { label: '-1', value: -5 },
@@ -323,17 +343,18 @@ const skillList = [{
 }, {
     name: '心配性',
     group: '火事場',
+    isArmorSkill: true,
     effect: attackMult,
     item: [
         { value: 0.7 }
     ]
 }] as SkillData[]
 
-interface  SkillNameList {
+interface SkillNameList {
     name: string
     group: string
-    value: any
-    effect: (skill: Skill, value: any) => void
+    isArmorSkill: boolean
+    effect: (skill: Skill) => void
 }
 
 const skillNameList: SkillNameList[] = []
@@ -348,8 +369,8 @@ for (const skill of skillList) {
         skillNameList.push({
             name: item.name,
             group: skill.group,
-            value: item.value,
-            effect: skill.effect
+            isArmorSkill: skill.isArmorSkill || false,
+            effect: (s) => { skill.effect(s, item.value) }
         })
     }
 }

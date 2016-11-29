@@ -9,7 +9,7 @@ function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
     }
 
     activeSkillList.forEach(item => {
-        item.effect(skill, item.value)
+        item.effect(skill)
     })
 
     return getAttackPower(weapon, skill)
@@ -24,14 +24,11 @@ interface CalcData {
     index: number
 }
 
-function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: string }) {
-    const activeSkillList = skillNameList.filter(item => {
-        return activeSkill[item.group] === item.name
-    })
-
+function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: string }, isAllSkill: boolean) {
+    const activeSkillList = skillNameList.filter(item => activeSkill[item.group] === item.name)
     const orgPower = calc(weapon, activeSkillList).power
 
-    return skillNameList.map((item, index): CalcData => {
+    return (isAllSkill ? skillNameList : skillNameList.filter(v => v.isArmorSkill)).map((item, index): CalcData => {
         const isActive = activeSkill[item.group] === item.name
 
         const activeSkillList = skillNameList.filter(simulateItem => {
