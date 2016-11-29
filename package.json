@@ -9,7 +9,8 @@
   "scripts": {
     "build": "tsc -p .",
     "build:w": "tsc -w -p .",
-    "minify": "uglifyjs ./scripts/bundle.js -o ./scripts/bundle.js -m -c -e"
+    "build:min": "npm run build && npm run min",
+    "min": "uglifyjs ./scripts/bundle.js -o ./scripts/bundle.js -m -c -e"
   },
   "devDependencies": {
     "typescript": "2.0.6",

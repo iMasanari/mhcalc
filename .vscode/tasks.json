@@ -9,6 +9,7 @@
             "taskName": "build:w",
             "args": ["build:w"],
             "problemMatcher": "$tsc-watch",
+            "isWatching": true,
             "isBuildCommand": true
         },
         {
@@ -17,8 +18,13 @@
             "args": ["build"]
         },
         {
-            "taskName": "uglify",
-            "args": ["uglify"]
+            "taskName": "build:min",
+            "problemMatcher": "$tsc",
+            "args": ["build:min"]
+        },
+        {
+            "taskName": "min",
+            "args": ["min"]
         }
     ]
 }
