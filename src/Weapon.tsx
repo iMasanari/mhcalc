@@ -10,8 +10,8 @@ namespace Weapon {
     export interface State {
         isLastOnly: boolean
         name: string
-        power: string | number
-        affinity: string | number
+        powerText: string
+        affinityText: string
     }
 }
 
@@ -20,8 +20,8 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
     state: Weapon.State = {
         isLastOnly: true,
         name: initValue.name,
-        power: this.props.weapon.power,
-        affinity: this.props.weapon.affinity
+        powerText: '' + this.props.weapon.power,
+        affinityText: '' + this.props.weapon.affinity
     }
     refs: {
         power: HTMLInputElement,
@@ -29,16 +29,14 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
     }
 
     toggleLastOnly = () => {
-        const isLastOnly = !this.state.isLastOnly
-
-        this.setState({ isLastOnly } as Weapon.State)
+        this.setState({ isLastOnly: !this.state.isLastOnly } as Weapon.State)
     }
     changeType = (e: React.FormEvent<HTMLSelectElement>) => {
         const type = e.currentTarget.value as wepnonType
         const name = getWeaponList(type, this.state.isLastOnly)[0]
         const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, power, affinity } as Weapon.State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as Weapon.State)
         this.props.setWeapon({ type, power, affinity })
     }
     changeName = (e: React.FormEvent<HTMLSelectElement>) => {
@@ -46,20 +44,20 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         const name = e.currentTarget.value
         const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, power, affinity } as Weapon.State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as Weapon.State)
         this.props.setWeapon({ type, power, affinity })
     }
     changePower = (e: React.FormEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value
+        const powerText = e.currentTarget.value
 
-        this.setState({ power: value } as Weapon.State)
-        this.setPower(+value, +this.state.affinity)
+        this.setState({ powerText } as Weapon.State)
+        this.setPower(+powerText, +this.state.affinityText)
     }
     changeAffinity = (e: React.FormEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value
+        const affinityText = e.currentTarget.value
 
-        this.setState({ affinity: value } as Weapon.State)
-        this.setPower(+this.state.power, +value)
+        this.setState({ affinityText } as Weapon.State)
+        this.setPower(+this.state.powerText, +affinityText)
     }
     setPower(power: number, affinity: number) {
         this.setState({ name: this.searchWeapon(power, affinity) } as Weapon.State)
@@ -86,11 +84,11 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         const power = validateNumberInput(this.refs.power, this.props.weapon.power, true)
         const affinity = validateNumberInput(this.refs.affinity, this.props.weapon.affinity, true)
 
-        if (+this.state.power === power && +this.state.affinity === affinity) return
+        if (this.state.powerText === '' + power && this.state.affinityText === '' + affinity) return
 
         const name = this.searchWeapon(power, affinity)
 
-        this.setState({ name, power, affinity } as Weapon.State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as Weapon.State)
         this.props.setWeapon({ type: this.props.weapon.type, power, affinity } as WeaponData)
     }
     searchWeapon(power: number, affinity: number) {
@@ -136,20 +134,20 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
             </p>
             <p>
                 <input ref="power" type="number" pattern="[0-9]*" step="10" max="1000" min="10"
-                    value={(this.refs['power'] === document.activeElement) ? this.state.power : this.props.weapon.power}
+                    value={(this.refs['power'] === document.activeElement) ? this.state.powerText : this.props.weapon.power}
                     onChange={this.changePower}
                     onKeyDown={this.keydownHandler}
                     onBlur={this.blurHandler} />
                 /
                 <input ref="affinity" type="number" pattern="-?[0-9]*" step="5" max="100" min="-100"
-                    value={(this.refs['affinity'] === document.activeElement) ? this.state.affinity : this.props.weapon.affinity}
+                    value={(this.refs['affinity'] === document.activeElement) ? this.state.affinityText : this.props.weapon.affinity}
                     onChange={this.changeAffinity}
                     onKeyDown={this.keydownHandler}
                     onBlur={this.blurHandler} />
                 %
             </p>
             <p>
-                {weapon.power | 0}/ {weapon.affinity}% => {power | 0}
+                {weapon.power | 0} / {weapon.affinity}% => {power | 0}
             </p>
         </section>
     }
