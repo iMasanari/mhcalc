@@ -1,20 +1,19 @@
-/// <reference path="weaponList/lightbowgun.ts" />
-/// <reference path="weaponList/heavybowgun.ts" />
+import * as weaponList from './weaponList/index'
 
-type wepnonType = 'lightbowgun' | 'heavybowgun'
+export type wepnonType = 'lightbowgun' | 'heavybowgun'
 
-interface WeaponData {
+export interface WeaponData {
 	type: wepnonType
 	power: number
 	affinity: number
 }
 
-interface WeaponsData {
+export interface WeaponsData {
 	typeMult: number
 	list: { [name: string]: weaponList.Weapon }
 }
 
-const weaponsData: { [name: string]: WeaponsData } = {
+export const weaponsData: { [name: string]: WeaponsData } = {
 	lightbowgun: {
 		typeMult: 1.3,
 		list: weaponList.lightbowgun
@@ -25,13 +24,13 @@ const weaponsData: { [name: string]: WeaponsData } = {
 	}
 }
 
-function getWeaponList(type: wepnonType, filter: boolean | ((skill: weaponList.Weapon) => boolean)) {
+export function getWeaponList(type: wepnonType, filter: boolean | ((skill: weaponList.Weapon) => boolean)) {
 	const ref = weaponsData[type].list
 	const list = Object.keys(ref)
 
 	return filter ? list.filter((filter === true) ? v => ref[v].isLast : v => filter(ref[v])) : list
 }
 
-function getWeapon(type: wepnonType, name: string) {
+export function getWeapon(type: wepnonType, name: string) {
 	return weaponsData[type].list[name]
 }

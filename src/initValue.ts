@@ -1,4 +1,2 @@
-const initValue = {
-    type: 'lightbowgun',
-    name: 'サージュバレット LV8'
-}
+export const type = 'lightbowgun'
+export const name = 'サージュバレット LV8'

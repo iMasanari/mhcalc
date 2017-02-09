@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outFile": "./scripts/bundle.js",
+        "outDir": "./scripts/",
         "sourceMap": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
@@ -9,6 +9,7 @@
         "noUnusedParameters": true,
         "noUnusedLocals": true,
         "target": "es5",
+        "module": "es6",
         "jsx": "react"
     },
     "files": [

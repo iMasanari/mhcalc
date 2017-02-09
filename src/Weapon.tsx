@@ -1,23 +1,25 @@
-/// <reference path="weaponData.ts" />
-/// <reference path="initValue.ts" />
+import * as React from 'react'
+import { WeaponData, getWeapon, getWeaponList, wepnonType } from './weaponData'
+import * as initValue from './initValue'
+import { skillNameList } from './skillData'
+import { calc } from './calc'
 
-namespace Weapon {
-    export interface Props extends React.ClassAttributes<Weapon> {
-        weapon: WeaponData
-        setWeapon: (weapon: WeaponData) => void
-        activeSkill: { [skillGroup: string]: string }
-    }
-    export interface State {
-        isLastOnly: boolean
-        name: string
-        powerText: string
-        affinityText: string
-    }
+interface Props extends React.ClassAttributes<Weapon> {
+    weapon: WeaponData
+    setWeapon: (weapon: WeaponData) => void
+    activeSkill: { [skillGroup: string]: string }
 }
 
-class Weapon extends React.Component<Weapon.Props, Weapon.State> {
+interface State {
+    isLastOnly: boolean
+    name: string
+    powerText: string
+    affinityText: string
+}
+
+export default class Weapon extends React.Component<Props, State> {
     timer: number
-    state: Weapon.State = {
+    state: State = {
         isLastOnly: true,
         name: initValue.name,
         powerText: '' + this.props.weapon.power,
@@ -29,14 +31,14 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
     }
 
     toggleLastOnly = () => {
-        this.setState({ isLastOnly: !this.state.isLastOnly } as Weapon.State)
+        this.setState({ isLastOnly: !this.state.isLastOnly } as State)
     }
     changeType = (e: React.FormEvent<HTMLSelectElement>) => {
         const type = e.currentTarget.value as wepnonType
         const name = getWeaponList(type, this.state.isLastOnly)[0]
         const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as Weapon.State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as State)
         this.props.setWeapon({ type, power, affinity })
     }
     changeName = (e: React.FormEvent<HTMLSelectElement>) => {
@@ -44,23 +46,23 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
         const name = e.currentTarget.value
         const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as Weapon.State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as State)
         this.props.setWeapon({ type, power, affinity })
     }
     changePower = (e: React.FormEvent<HTMLInputElement>) => {
         const powerText = e.currentTarget.value
 
-        this.setState({ powerText } as Weapon.State)
+        this.setState({ powerText } as State)
         this.setPower(+powerText, +this.state.affinityText)
     }
     changeAffinity = (e: React.FormEvent<HTMLInputElement>) => {
         const affinityText = e.currentTarget.value
 
-        this.setState({ affinityText } as Weapon.State)
+        this.setState({ affinityText } as State)
         this.setPower(+this.state.powerText, +affinityText)
     }
     setPower(power: number, affinity: number) {
-        this.setState({ name: this.searchWeapon(power, affinity) } as Weapon.State)
+        this.setState({ name: this.searchWeapon(power, affinity) } as State)
 
         // 計算を遅らせる
         clearTimeout(this.timer)
@@ -88,7 +90,7 @@ class Weapon extends React.Component<Weapon.Props, Weapon.State> {
 
         const name = this.searchWeapon(power, affinity)
 
-        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as Weapon.State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as State)
         this.props.setWeapon({ type: this.props.weapon.type, power, affinity } as WeaponData)
     }
     searchWeapon(power: number, affinity: number) {

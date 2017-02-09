@@ -1,7 +1,7 @@
-/// <reference path="skillData.ts" />
-/// <reference path="weaponData.ts" />
+import { skillNameList, Skill } from './skillData'
+import { WeaponData } from './weaponData'
 
-function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
+export function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
     const skill: Skill = {
         power: 0,
         mult: 1,
@@ -15,7 +15,7 @@ function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
     return getAttackPower(weapon, skill)
 }
 
-interface CalcData {
+export interface CalcData {
     name: string
     isActive: boolean
     disappearance: string | null
@@ -24,7 +24,7 @@ interface CalcData {
     index: number
 }
 
-function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: string }, isAllSkill: boolean) {
+export function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: string }, isAllSkill: boolean) {
     const activeSkillList = skillNameList.filter(item => activeSkill[item.group] === item.name)
     const orgPower = calc(weapon, activeSkillList).power
 
@@ -58,7 +58,7 @@ function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: stri
     }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index).map((v, i) => (v.index = i, v))
 }
 
-function getAttackPower(weapon: WeaponData, skill: Skill) {
+export function getAttackPower(weapon: WeaponData, skill: Skill) {
     let power = weapon.power + skill.power,
         mult = skill.mult,
         affinity = Math.min(Math.max(weapon.affinity + skill.affinity, -100), 100),

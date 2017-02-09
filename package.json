@@ -7,14 +7,17 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p .",
-    "build:w": "tsc -w -p .",
+    "build": "rollup -c",
+    "build:w": "rollup -c -w",
     "build:min": "npm run build && npm run min",
     "min": "uglifyjs ./scripts/bundle.js -o ./scripts/bundle.js -m -c -e"
   },
   "devDependencies": {
-    "typescript": "2.0.6",
     "@types/react": "^0.14.41",
-    "@types/react-dom": "^0.14.18"
+    "@types/react-dom": "^0.14.18",
+    "rollup": "^0.41.4",
+    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-watch": "^3.2.2",
+    "typescript": "2.0.6"
   }
 }

@@ -1,20 +1,20 @@
-/// <reference path="skillData.ts" />
-/// <reference path="weaponData.ts" />
-/// <reference path="calc.ts" />
+import * as React from 'react'
+import { skillNameList } from './skillData'
+import { WeaponData } from './weaponData'
+import { CalcData, getRanking } from './calc'
 
-namespace SkillRanking {
-    export interface Props extends React.ClassAttributes<SkillRanking> {
-        activeSkill: { [skillGroup: string]: string }
-        setActiveSkill: (skillGroup: string, skillName: string) => void
-        weapon: WeaponData
-    }
-    export interface State {
-        isAllSkill: boolean
-        prevSkillRanking: CalcData[]
-    }
+interface Props extends React.ClassAttributes<SkillRanking> {
+    activeSkill: { [skillGroup: string]: string }
+    setActiveSkill: (skillGroup: string, skillName: string) => void
+    weapon: WeaponData
 }
 
-class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.State> {
+interface State {
+    isAllSkill: boolean
+    prevSkillRanking: CalcData[]
+}
+
+export default class SkillRanking extends React.Component<Props, State> {
     private isAnimationEnd = true
     private animationTimer_: number | undefined
     private skillActionList_ = skillNameList.reduce(
@@ -22,13 +22,13 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
         {} as { [skillName: string]: () => void }
     )
 
-    state: SkillRanking.State = {
+    state: State = {
         isAllSkill: false,
         prevSkillRanking: getRanking(this.props.weapon, this.props.activeSkill, false)
     }
 
     toggleFilter = (e: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ isAllSkill: !e.currentTarget.checked } as SkillRanking.State)
+        this.setState({ isAllSkill: !e.currentTarget.checked } as State)
     }
 
     getTableRows(skillRanking: CalcData[]) {
@@ -42,9 +42,9 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
                 rankUp={item.index - i}
                 action={this.skillActionList_[item.name]}
                 isHide={!skillRankingHash[skill.name]}
-                />
+            />
         })
-     }
+    }
 
     render() {
         let skillRanking: CalcData[]
@@ -62,7 +62,7 @@ class SkillRanking extends React.Component<SkillRanking.Props, SkillRanking.Stat
                 this.isAnimationEnd = true
                 this.setState({
                     prevSkillRanking: skillRanking
-                } as SkillRanking.State)
+                } as State)
             }, 200)
         }
 
@@ -98,7 +98,7 @@ const TableRow = (props: TableRow.Props) =>
     <tr className={props.isHide ? 'opacity0' : props.item.isActive ? 'checked' : undefined}
         onClick={props.action}
         style={props.rankUp ? { transform: `translateY(${props.rankUp * 40}px)` } : undefined}
-        >
+    >
         <SkillNameCell name={props.item.name} disappearance={props.item.disappearance} />
         <AddPowerCell power={props.item.plus} />
         <td>{props.item.mult.toFixed(3)}</td>
@@ -134,7 +134,7 @@ const AddPowerCell = (props: AddPowerCell.Props) => {
         <div className="AddPower">
             <span className={"AddPower-graph" + (props.power < 0 ? ' minus' : '')}
                 style={{ transform: `scaleX(${value / 100})` }}
-                />
+            />
             <span className='AddPower-value' style={{ transform: `translateX(${value - 92}px)` }}>
                 {props.power}
             </span>

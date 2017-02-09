@@ -1,16 +1,15 @@
-/// <reference path="SkillButton.tsx" />
-/// <reference path="SkillData.ts" />
+import * as React from 'react'
+import SkillButton from './SkillButton'
+import { SkillItem } from './skillData'
 
-namespace SkillBox {
-    export interface Props extends React.ClassAttributes<null> {
-        name: string
-        value: string | null
-        action: (skillName: string) => void
-        skillButtonList: SkillData.item[]
-    }
+interface Props extends React.ClassAttributes<null> {
+    name: string
+    value: string | null
+    action: (skillName: string) => void
+    skillButtonList: SkillItem[]
 }
 
-const SkillBox = (props: SkillBox.Props) =>
+export default (props: Props) =>
     <div className="SkillBox">
         <span>{props.name}</span>
         <ul className="SkillBox-ul">
@@ -19,7 +18,7 @@ const SkillBox = (props: SkillBox.Props) =>
                     name={skillButton.label}
                     isChecked={props.value == skillButton.name}
                     action={props.action.bind(null, skillButton.name)}
-                    />
+                />
             )}
         </ul>
     </div>

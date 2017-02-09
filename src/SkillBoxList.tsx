@@ -1,14 +1,13 @@
-/// <reference path="SkillBox.tsx" />
-/// <reference path="skillData.ts" />
+import * as React from 'react'
+import { skillList } from './skillData'
+import SkillBox from './SkillBox'
 
-namespace SkillBoxList {
-    export interface Props extends React.ClassAttributes<null> {
-        activeSkill: { [skillGroup: string]: string }
-        setActiveSkill: (skillGroup: string, skillName: string) => void
-    }
+interface Props extends React.ClassAttributes<null> {
+    activeSkill: { [skillGroup: string]: string }
+    setActiveSkill: (skillGroup: string, skillName: string) => void
 }
 
-const SkillBoxList = (props: SkillBoxList.Props) =>
+export default (props: Props) =>
     <ul className='SkillBoxList'>
         {skillList.map(skill =>
             <li className='SkillBoxList-li'>
@@ -17,7 +16,7 @@ const SkillBoxList = (props: SkillBoxList.Props) =>
                     value={props.activeSkill[skill.group] || null}
                     action={props.setActiveSkill.bind(null, skill.group)}
                     skillButtonList={skill.item}
-                    />
+                />
             </li>
         )}
     </ul>

@@ -1,4 +1,4 @@
-interface Skill {
+export interface Skill {
     power: number
     affinity: number
     mult: number
@@ -10,15 +10,13 @@ interface SkillData {
     group: string
     isArmorSkill?: boolean,
     effect: (skill: Skill, value: any) => void
-    item: SkillData.item[]
+    item: SkillItem[]
 }
 
-namespace SkillData {
-    export interface item {
-        name: string
-        label: string
-        value: any
-    }
+export interface SkillItem {
+    name: string
+    label: string
+    value: any
 }
 
 const attackUp = (skill: Skill, value: number) => {
@@ -47,7 +45,7 @@ const multValue = (skill: Skill, value: { [skillName: string]: any }) => {
     return skill
 }
 
-const skillList = [{
+export const skillList = [{
     name: 'ロング/パワーバレル',
     effect: multValue,
     item: [
@@ -357,7 +355,7 @@ interface SkillNameList {
     effect: (skill: Skill) => void
 }
 
-const skillNameList: SkillNameList[] = []
+export const skillNameList: SkillNameList[] = []
 
 for (const skill of skillList) {
     skill.group = skill.group || skill.name
