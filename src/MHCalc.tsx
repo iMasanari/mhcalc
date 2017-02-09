@@ -23,7 +23,7 @@ export default class MHCalc extends React.Component<Props, State> {
     }
 
     setWeapon = (weapon: WeaponData) => {
-        this.setState({ weapon } as State)
+        this.setState({ weapon })
     }
     setActiveSkill = (skillGroup: string, skillName: string) => {
         let activeSkill = this.state.activeSkill
@@ -34,7 +34,7 @@ export default class MHCalc extends React.Component<Props, State> {
             activeSkill[skillGroup] = skillName
         }
 
-        this.setState({ activeSkill } as State)
+        this.setState({ activeSkill })
     }
 
     render() {

@@ -28,7 +28,7 @@ export default class SkillRanking extends React.Component<Props, State> {
     }
 
     toggleFilter = (e: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ isAllSkill: !e.currentTarget.checked } as State)
+        this.setState({ isAllSkill: !e.currentTarget.checked })
     }
 
     getTableRows(skillRanking: CalcData[]) {
@@ -62,7 +62,7 @@ export default class SkillRanking extends React.Component<Props, State> {
                 this.isAnimationEnd = true
                 this.setState({
                     prevSkillRanking: skillRanking
-                } as State)
+                })
             }, 200)
         }
 

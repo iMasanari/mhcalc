@@ -31,14 +31,14 @@ export default class Weapon extends React.Component<Props, State> {
     }
 
     toggleLastOnly = () => {
-        this.setState({ isLastOnly: !this.state.isLastOnly } as State)
+        this.setState({ isLastOnly: !this.state.isLastOnly })
     }
     changeType = (e: React.FormEvent<HTMLSelectElement>) => {
         const type = e.currentTarget.value as wepnonType
         const name = getWeaponList(type, this.state.isLastOnly)[0]
         const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity })
         this.props.setWeapon({ type, power, affinity })
     }
     changeName = (e: React.FormEvent<HTMLSelectElement>) => {
@@ -46,23 +46,23 @@ export default class Weapon extends React.Component<Props, State> {
         const name = e.currentTarget.value
         const {power, affinity} = getWeapon(type, name)
 
-        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity })
         this.props.setWeapon({ type, power, affinity })
     }
     changePower = (e: React.FormEvent<HTMLInputElement>) => {
         const powerText = e.currentTarget.value
 
-        this.setState({ powerText } as State)
+        this.setState({ powerText })
         this.setPower(+powerText, +this.state.affinityText)
     }
     changeAffinity = (e: React.FormEvent<HTMLInputElement>) => {
         const affinityText = e.currentTarget.value
 
-        this.setState({ affinityText } as State)
+        this.setState({ affinityText })
         this.setPower(+this.state.powerText, +affinityText)
     }
     setPower(power: number, affinity: number) {
-        this.setState({ name: this.searchWeapon(power, affinity) } as State)
+        this.setState({ name: this.searchWeapon(power, affinity) })
 
         // 計算を遅らせる
         clearTimeout(this.timer)
@@ -90,7 +90,7 @@ export default class Weapon extends React.Component<Props, State> {
 
         const name = this.searchWeapon(power, affinity)
 
-        this.setState({ name, powerText: '' + power, affinityText: '' + affinity } as State)
+        this.setState({ name, powerText: '' + power, affinityText: '' + affinity })
         this.props.setWeapon({ type: this.props.weapon.type, power, affinity } as WeaponData)
     }
     searchWeapon(power: number, affinity: number) {

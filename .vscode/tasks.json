@@ -9,7 +9,7 @@
             "taskName": "build:w",
             "args": ["build:w"],
             "problemMatcher": "$tsc-watch",
-            "isWatching": true,
+            "isBackground": true,
             "isBuildCommand": true
         },
         {
