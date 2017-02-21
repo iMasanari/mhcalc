@@ -1,23 +1,4 @@
-export interface Skill {
-    power: number
-    affinity: number
-    mult: number
-    [skillName: string]: number
-}
-
-interface SkillData {
-    name: string
-    group: string
-    isArmorSkill?: boolean,
-    effect: (skill: Skill, value: any) => void
-    item: SkillItem[]
-}
-
-export interface SkillItem {
-    name: string
-    label: string
-    value: any
-}
+import { Skill, SkillData } from './'
 
 const attackUp = (skill: Skill, value: number) => {
     skill.power += value
@@ -35,17 +16,20 @@ const affinityUp = (skill: Skill, value: number) => {
 }
 
 const multValue = (skill: Skill, value: { [skillName: string]: any }) => {
-    for (const key in value) if (value.hasOwnProperty(key)) {
+    for (const key in value) {
+        if (!value.hasOwnProperty(key)) continue
+
         if (skill[key]) {
             skill[key] *= value[key]
         } else {
             skill[key] = value[key]
         }
     }
+
     return skill
 }
 
-export const skillList = [{
+export default [{
     name: 'ロング/パワーバレル',
     effect: multValue,
     item: [
@@ -347,28 +331,3 @@ export const skillList = [{
         { value: 0.7 }
     ]
 }] as SkillData[]
-
-interface SkillNameList {
-    name: string
-    group: string
-    isArmorSkill: boolean
-    effect: (skill: Skill) => void
-}
-
-export const skillNameList: SkillNameList[] = []
-
-for (const skill of skillList) {
-    skill.group = skill.group || skill.name
-
-    for (const item of skill.item) {
-        item.name = item.name || skill.name + (item.label || '')
-        item.label = item.label || 'on'
-
-        skillNameList.push({
-            name: item.name,
-            group: skill.group,
-            isArmorSkill: skill.isArmorSkill || false,
-            effect: (s) => { skill.effect(s, item.value) }
-        })
-    }
-}

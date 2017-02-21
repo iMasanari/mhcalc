@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { skillList } from './skillData'
+import { skillList } from '../skillData'
 import SkillBox from './SkillBox'
 
-interface Props extends React.ClassAttributes<null> {
+interface Props {
     activeSkill: { [skillGroup: string]: string }
     setActiveSkill: (skillGroup: string, skillName: string) => void
 }

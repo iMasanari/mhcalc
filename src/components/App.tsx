@@ -2,10 +2,9 @@ import * as React from 'react'
 import SkillBoxList from './SkillBoxList'
 import SkillRanking from './SkillRanking'
 import Weapon from './Weapon'
-import * as initValue from './initValue'
-import { WeaponData, getWeapon } from './weaponData'
+import { WeaponData, getWeapon } from '../weaponData'
 
-interface Props extends React.ClassAttributes<MHCalc> {
+interface Props {
 }
 
 interface State {
@@ -13,11 +12,16 @@ interface State {
     activeSkill: { [skillGroup: string]: string }
 }
 
+export const initWeapon = {
+    type: 'lightbowgun' as 'lightbowgun',
+    name: 'サージュバレット LV8'
+}
+
 export default class MHCalc extends React.Component<Props, State> {
     state: State = {
         weapon: {
-            ...getWeapon(initValue.type, initValue.name),
-            type: initValue.type
+            ...getWeapon(initWeapon.type, initWeapon.name),
+            type: initWeapon.type
         },
         activeSkill: {}
     }

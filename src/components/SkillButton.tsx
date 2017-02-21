@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-interface Props extends React.ClassAttributes<null> {
+interface Props {
     name: string
     isChecked: boolean
     action: () => void

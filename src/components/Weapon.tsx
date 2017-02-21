@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { WeaponData, getWeapon, getWeaponList, wepnonType } from './weaponData'
-import * as initValue from './initValue'
-import { skillNameList } from './skillData'
-import { calc } from './calc'
+import { WeaponData, getWeapon, getWeaponList, wepnonType } from '../weaponData'
+import { initWeapon } from './App'
+import { skillNameList } from '../skillData'
+import { calc } from '../calc'
 
-interface Props extends React.ClassAttributes<Weapon> {
+interface Props {
     weapon: WeaponData
     setWeapon: (weapon: WeaponData) => void
     activeSkill: { [skillGroup: string]: string }
@@ -21,7 +21,7 @@ export default class Weapon extends React.Component<Props, State> {
     timer: number
     state: State = {
         isLastOnly: true,
-        name: initValue.name,
+        name: initWeapon.name,
         powerText: '' + this.props.weapon.power,
         affinityText: '' + this.props.weapon.affinity
     }

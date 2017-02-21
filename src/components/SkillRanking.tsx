@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { skillNameList } from './skillData'
-import { WeaponData } from './weaponData'
-import { CalcData, getRanking } from './calc'
+import { skillNameList } from '../skillData'
+import { WeaponData } from '../weaponData'
+import { CalcData, getRanking } from '../calc'
 
-interface Props extends React.ClassAttributes<SkillRanking> {
+interface Props {
     activeSkill: { [skillGroup: string]: string }
     setActiveSkill: (skillGroup: string, skillName: string) => void
     weapon: WeaponData

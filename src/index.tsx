@@ -1,8 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import MHCalc from './MHCalc'
+import App from './components/App'
 
 ReactDOM.render(
-    <MHCalc />,
+    <App />,
     document.getElementById('reactroot')
 )

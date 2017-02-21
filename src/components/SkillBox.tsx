@@ -1,8 +1,8 @@
 import * as React from 'react'
 import SkillButton from './SkillButton'
-import { SkillItem } from './skillData'
+import { SkillItem } from '../skillData'
 
-interface Props extends React.ClassAttributes<null> {
+interface Props {
     name: string
     value: string | null
     action: (skillName: string) => void
