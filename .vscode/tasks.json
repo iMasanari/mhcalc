@@ -6,25 +6,20 @@
     "args": ["run"],
     "tasks": [
         {
-            "taskName": "build:w",
-            "args": ["build:w"],
-            "problemMatcher": "$tsc-watch",
-            "isBackground": true,
-            "isBuildCommand": true
-        },
-        {
             "taskName": "build",
             "problemMatcher": "$tsc",
             "args": ["build"]
         },
         {
+            "taskName": "build:w",
+            "args": ["build:w"],
+            "problemMatcher": "$tsc-watch",
+            "isBackground": true
+        },
+        {
             "taskName": "build:min",
             "problemMatcher": "$tsc",
             "args": ["build:min"]
-        },
-        {
-            "taskName": "min",
-            "args": ["min"]
         }
     ]
 }

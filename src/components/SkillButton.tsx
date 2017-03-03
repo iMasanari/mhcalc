@@ -1,6 +1,6 @@
-import * as React from 'react'
+import * as preact from 'preact'
 
-interface Props {
+interface Props extends preact.ComponentProps {
     name: string
     isChecked: boolean
     action: () => void

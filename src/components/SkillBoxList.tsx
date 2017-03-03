@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as preact from 'preact'
 import { skillList } from '../skillData'
 import SkillBox from './SkillBox'
 

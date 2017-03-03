@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as preact from 'preact'
 import SkillBoxList from './SkillBoxList'
 import SkillRanking from './SkillRanking'
 import Weapon from './Weapon'
@@ -17,7 +17,7 @@ export const initWeapon = {
     name: 'サージュバレット LV8'
 }
 
-export default class MHCalc extends React.Component<Props, State> {
+export default class App extends preact.Component<Props, Partial<State>> {
     state: State = {
         weapon: {
             ...getWeapon(initWeapon.type, initWeapon.name),

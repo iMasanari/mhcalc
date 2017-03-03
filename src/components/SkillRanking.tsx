@@ -1,7 +1,8 @@
-import * as React from 'react'
+import * as preact from 'preact'
 import { skillNameList } from '../skillData'
 import { WeaponData } from '../weaponData'
 import { CalcData, getRanking } from '../calc'
+import EventFrom from '../EventFrom'
 
 interface Props {
     activeSkill: { [skillGroup: string]: string }
@@ -14,7 +15,7 @@ interface State {
     prevSkillRanking: CalcData[]
 }
 
-export default class SkillRanking extends React.Component<Props, State> {
+export default class SkillRanking extends preact.Component<Props, Partial<State>> {
     private isAnimationEnd = true
     private animationTimer_: number | undefined
     private skillActionList_ = skillNameList.reduce(
@@ -27,7 +28,7 @@ export default class SkillRanking extends React.Component<Props, State> {
         prevSkillRanking: getRanking(this.props.weapon, this.props.activeSkill, false)
     }
 
-    toggleFilter = (e: React.FormEvent<HTMLInputElement>) => {
+    toggleFilter = (e: EventFrom<HTMLInputElement>) => {
         this.setState({ isAllSkill: !e.currentTarget.checked })
     }
 
@@ -85,17 +86,15 @@ export default class SkillRanking extends React.Component<Props, State> {
     }
 }
 
-namespace TableRow {
-    export interface Props extends React.ClassAttributes<null> {
-        item: CalcData
-        action: () => void
-        rankUp: number
-        isHide?: boolean
-    }
+export interface TableRowProps extends preact.ComponentProps {
+    item: CalcData
+    action: () => void
+    rankUp: number
+    isHide?: boolean
 }
 
-const TableRow = (props: TableRow.Props) =>
-    <tr className={props.isHide ? 'opacity0' : props.item.isActive ? 'checked' : undefined}
+const TableRow = (props: TableRowProps) =>
+    <tr key={props.key} className={props.isHide ? 'opacity0' : props.item.isActive ? 'checked' : undefined}
         onClick={props.action}
         style={props.rankUp ? { transform: `translateY(${props.rankUp * 40}px)` } : undefined}
     >
@@ -104,14 +103,12 @@ const TableRow = (props: TableRow.Props) =>
         <td>{props.item.mult.toFixed(3)}</td>
     </tr>
 
-namespace SkillNameCell {
-    export interface Props extends React.ClassAttributes<null> {
-        name: string
-        disappearance: string | null
-    }
+interface SkillNameCellProps {
+    name: string
+    disappearance: string | null
 }
 
-const SkillNameCell = (props: SkillNameCell.Props) =>
+const SkillNameCell = (props: SkillNameCellProps) =>
     <td>
         <div className="skillName">
             <span>{props.name}</span>
@@ -121,13 +118,12 @@ const SkillNameCell = (props: SkillNameCell.Props) =>
         </div>
     </td>
 
-namespace AddPowerCell {
-    export interface Props extends React.ClassAttributes<null> {
-        power: number
-    }
+interface AddPowerCellProps {
+    power: number
 }
 
-const AddPowerCell = (props: AddPowerCell.Props) => {
+
+const AddPowerCell = (props: AddPowerCellProps) => {
     const value = Math.min(Math.abs(props.power), 100)
 
     return <td>
@@ -141,3 +137,24 @@ const AddPowerCell = (props: AddPowerCell.Props) => {
         </div>
     </td>
 }
+
+// function shallowEqual(objA: any, objB: any) {
+//     if (objA === objB) {
+//         return true;
+//     }
+//     var key;
+//     // Test for A's keys different from B.
+//     for (key in objA) {
+//         if (objA.hasOwnProperty(key) &&
+//             (!objB.hasOwnProperty(key) || objA[key] !== objB[key])) {
+//             return false;
+//         }
+//     }
+//     // Test for B's keys missing from A.
+//     for (key in objB) {
+//         if (objB.hasOwnProperty(key) && !objA.hasOwnProperty(key)) {
+//             return false;
+//         }
+//     }
+//     return true;
+// }

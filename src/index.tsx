@@ -1,8 +1,7 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import * as preact from 'preact'
 import App from './components/App'
 
-ReactDOM.render(
+preact.render(
     <App />,
-    document.getElementById('reactroot')
+    document.getElementById('app')!
 )

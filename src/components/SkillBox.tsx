@@ -1,8 +1,8 @@
-import * as React from 'react'
+import * as preact from 'preact'
 import SkillButton from './SkillButton'
 import { SkillItem } from '../skillData'
 
-interface Props {
+interface Props extends preact.ComponentProps {
     name: string
     value: string | null
     action: (skillName: string) => void
