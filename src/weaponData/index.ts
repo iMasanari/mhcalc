@@ -3,7 +3,7 @@ import heavybowgun from './heavybowgun'
 
 export type WeponRawData = [string, string, [number, number][]][]
 
-export type wepnonType = 'lightbowgun' | 'heavybowgun'
+export type wepnonType = string
 
 export interface WeaponData {
 	type: wepnonType

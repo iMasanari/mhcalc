@@ -17,6 +17,7 @@ export function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)
 
 export interface CalcData {
     name: string
+    group: string
     isActive: boolean
     disappearance: string | null
     plus: number
@@ -51,6 +52,7 @@ export function getRanking(weapon: WeaponData, activeSkill: { [skillName: string
 
         return {
             name: item.name,
+            group: item.group,
             isActive,
             disappearance: (activeSkill[item.group] && !isActive) ? activeSkill[item.group] : null,
             plus, mult, index

@@ -26,6 +26,7 @@ export interface SkillItem {
 
 interface SkillNameList {
     name: string
+    label: string
     group: string
     isArmorSkill: boolean
     effect: (skill: Skill) => void
@@ -42,9 +43,15 @@ for (const skill of skillList) {
 
         skillNameList.push({
             name: item.name,
+            label: item.label,
             group: skill.group,
             isArmorSkill: skill.isArmorSkill || false,
             effect: (s) => { skill.effect(s, item.value) }
         })
     }
 }
+
+export const skillNameHash = skillNameList.reduce((hash, value) => {
+    hash[value.name] = value
+    return hash
+}, {} as {[name: string]: SkillNameList})
