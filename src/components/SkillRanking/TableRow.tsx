@@ -12,11 +12,12 @@ export interface Props {
 
 const mapStateToProps = (_state: State, ownProps: Props) => ownProps
 
-const mapDispatchToProps = (dispatch: any, ownProps: Props) => ({
-    toggleSkill: () => {
-        dispatch(toggleSkill(ownProps.item.group, ownProps.item.name))
-    }
-})
+const mapDispatchToProps = (dispatch: any, ownProps: Props) =>
+    ({
+        toggleSkill: () => {
+            dispatch(toggleSkill(ownProps.item.name))
+        }
+    })
 
 export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(props =>
     <tr className={props.isHide ? 'opacity0' : props.item.isActive ? 'checked' : undefined}

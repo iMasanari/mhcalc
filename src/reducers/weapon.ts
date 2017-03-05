@@ -56,7 +56,7 @@ export interface State {
 const initState: State = {
     type: 'lightbowgun',
     name: 'サージュバレット LV8',
-    power: 200,
+    power: 210,
     affinity: 0,
     isLastOnly: true,
 }

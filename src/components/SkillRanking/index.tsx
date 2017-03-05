@@ -8,7 +8,7 @@ import { toggleSkillFilter } from '../../reducers/ranking'
 const mapStateToProps = (state: State) => ({
     ...state.ranking,
     weapon: state.weapon,
-    activeSkill: state.skill.active,
+    skill: state.skill,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -21,7 +21,7 @@ type RankingState = State['ranking']
 
 interface Props extends RankingState {
     weapon: State['weapon']
-    activeSkill: State['skill']['active']
+    skill: State['skill']
     toggleSkillFilter: () => void
 }
 
@@ -35,7 +35,7 @@ export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
         private animationTimer: number | undefined
 
         state: ClassState = {
-            prevSkillRanking: getRanking(this.props.weapon, this.props.activeSkill, false)
+            prevSkillRanking: getRanking(this.props.weapon, this.props.skill, false)
         }
 
         render(props: Props) {
@@ -47,7 +47,7 @@ export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
                 skillRanking = this.state.prevSkillRanking
             }
             else {
-                skillRanking = getRanking(props.weapon, props.activeSkill, props.skillFilter)
+                skillRanking = getRanking(props.weapon, props.skill, props.skillFilter)
 
                 clearTimeout(this.animationTimer!)
                 this.animationTimer = setTimeout(() => {

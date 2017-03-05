@@ -1,18 +1,18 @@
-import { skillNameList, Skill } from './skillData'
+import { skillNameList, Skill, skillNameHash } from './skillData'
 import { WeaponData } from './weaponData'
+import { State as SkillState, ActiveSkills } from './reducers/skill'
 
-export function calc(weapon: WeaponData, activeSkillList: (typeof skillNameList)) {
+export function mapSkill(activeSkill: ActiveSkills) {
+    const list = Object.keys(activeSkill).filter(v => activeSkill[v])
     const skill: Skill = {
         power: 0,
         mult: 1,
         affinity: 0
     }
 
-    activeSkillList.forEach(item => {
-        item.effect(skill)
-    })
-
-    return getAttackPower(weapon, skill)
+    return list.reduce((mapSkill, group) =>
+        skillNameHash[activeSkill[group]!].effect(mapSkill)
+        , skill)
 }
 
 export interface CalcData {
@@ -25,27 +25,29 @@ export interface CalcData {
     index: number
 }
 
-export function getRanking(weapon: WeaponData, activeSkill: { [skillName: string]: string }, isAllSkill: boolean) {
-    const activeSkillList = skillNameList.filter(item => activeSkill[item.group] === item.name)
-    const orgPower = calc(weapon, activeSkillList).power
+export function getRanking(weapon: WeaponData, skill: SkillState, isAllSkill: boolean) {
+    const list = isAllSkill ? skillNameList : skillNameList.filter(v => v.isArmorSkill)
+    const orgPower = getAttackPower(weapon, skill.value).power
 
-    return (isAllSkill ? skillNameList : skillNameList.filter(v => v.isArmorSkill)).map((item, index): CalcData => {
-        const isActive = activeSkill[item.group] === item.name
+    return list.map((item, index): CalcData => {
+        const isActive = skill.active[item.group] === item.name
 
-        const activeSkillList = skillNameList.filter(simulateItem => {
-            return activeSkill[simulateItem.group] === simulateItem.name && simulateItem.group !== item.group
-        })
+        const skillValue = skill.active[item.group] == null ?
+            item.effect({ ...skill.value })
+            :
+            mapSkill({
+                ...skill.active,
+                [item.group]: !isActive ? item.name : null
+            })
 
-        let plus: number, mult: number
+        const power = getAttackPower(weapon, skillValue).power
+        let plus: number
+        let mult: number
 
         if (isActive) {
-            const power = calc(weapon, activeSkillList).power
-
             plus = (orgPower - power) | 0
             mult = orgPower / power
         } else {
-            const power = calc(weapon, activeSkillList.concat([item])).power
-
             plus = (power - orgPower) | 0
             mult = power / orgPower
         }
@@ -54,10 +56,12 @@ export function getRanking(weapon: WeaponData, activeSkill: { [skillName: string
             name: item.name,
             group: item.group,
             isActive,
-            disappearance: (activeSkill[item.group] && !isActive) ? activeSkill[item.group] : null,
+            disappearance: (skill.active[item.group] && !isActive) ? skill.active[item.group] : null,
             plus, mult, index
         }
-    }).sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index).map((v, i) => (v.index = i, v))
+    })
+        .sort((a, b) => b.plus - a.plus || b.mult - a.mult || a.index - b.index)
+        .map((v, i) => (v.index = i, v))
 }
 
 export function getAttackPower(weapon: WeaponData, skill: Skill) {

@@ -3,33 +3,34 @@ import preactRedux from 'preact-redux'
 import { State } from '../../reducers'
 import { setWeaponType, setWeaponName, setPower, setAffinity, toggleLastOnly } from '../../reducers/weapon'
 import { getWeaponList } from '../../weaponData'
-import { skillNameList } from '../../skillData'
 import DelayInput from './DelayInput'
 import EventFrom from '../../units/EventFrom'
-import { calc } from "../../calc"
+import { getAttackPower } from "../../calc"
 
-const mapStateToProps = (state: State) => ({
-    ...state.weapon,
-    activeSkill: state.skill.active
-})
+const mapStateToProps = (state: State) =>
+    ({
+        ...state.weapon,
+        skillValue: state.skill.value,
+    })
 
-const mapDispatchToProps = (dispatch: any) => ({
-    setWeaponType: (e: EventFrom<HTMLInputElement>) => {
-        dispatch(setWeaponType(e.currentTarget.value))
-    },
-    setWeaponName: (e: EventFrom<HTMLInputElement>) => {
-        dispatch(setWeaponName(e.currentTarget.value))
-    },
-    setPower: (textValue: string) => {
-        dispatch(setPower(+textValue))
-    },
-    setAffinity: (textValue: string) => {
-        dispatch(setAffinity(+textValue))
-    },
-    toggleLastOnly: () => {
-        dispatch(toggleLastOnly())
-    },
-})
+const mapDispatchToProps = (dispatch: any) =>
+    ({
+        setWeaponType: (e: EventFrom<HTMLInputElement>) => {
+            dispatch(setWeaponType(e.currentTarget.value))
+        },
+        setWeaponName: (e: EventFrom<HTMLInputElement>) => {
+            dispatch(setWeaponName(e.currentTarget.value))
+        },
+        setPower: (textValue: string) => {
+            dispatch(setPower(+textValue))
+        },
+        setAffinity: (textValue: string) => {
+            dispatch(setAffinity(+textValue))
+        },
+        toggleLastOnly: () => {
+            dispatch(toggleLastOnly())
+        },
+    })
 
 export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(props => {
     const weaponList = getWeaponList(props.type, props.isLastOnly)
@@ -39,8 +40,7 @@ export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(props =>
         weaponOptions.unshift(<option value={props.name}>{`（${props.name}）`}</option>)
     }
 
-    const activeSkillList = skillNameList.filter(item => props.activeSkill[item.group] === item.name)
-    const { power, weapon } = calc(props, activeSkillList)
+    const { power, weapon } = getAttackPower({ power: props.power, affinity: props.affinity, type: props.type }, props.skillValue)
 
     return <section className="Weapon">
         <h2>Choose a Weapon</h2>

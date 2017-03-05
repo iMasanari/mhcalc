@@ -1,11 +1,10 @@
 import * as preact from 'preact'
 import SkillButton from './SkillButton'
-import { SkillItem } from '../skillData'
 
 interface Props extends preact.ComponentProps {
     name: string
     group: string
-    items: SkillItem[]
+    items: string[]
 }
 
 export default (props: Props) =>
@@ -13,7 +12,7 @@ export default (props: Props) =>
         <span>{props.name}</span>
         <ul className="SkillBox-ul">
             {props.items.map(item =>
-                <SkillButton key={item.name} name={item.name} />
+                <SkillButton key={item} name={item} />
             )}
         </ul>
     </div>

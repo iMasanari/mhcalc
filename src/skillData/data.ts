@@ -1,4 +1,18 @@
-import { Skill, SkillData } from './'
+import { Skill } from './'
+
+interface SkillItem {
+    name: string
+    label: string
+    value: any
+}
+
+interface SkillData {
+    name: string
+    group: string
+    isArmorSkill?: boolean,
+    effect: (skill: Skill, value: any) => Skill
+    item: SkillItem[]
+}
 
 const attackUp = (skill: Skill, value: number) => {
     skill.power += value

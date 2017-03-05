@@ -9,7 +9,7 @@ interface Props {
 }
 
 const mapStateToProps = (state: State, ownProps: Props) => {
-    const {label, group} = skillNameHash[ownProps.name]
+    const { label, group } = skillNameHash[ownProps.name]
 
     return {
         label: label,
@@ -17,11 +17,12 @@ const mapStateToProps = (state: State, ownProps: Props) => {
     }
 }
 
-const mapDispatchToProps = (dispatch: any, ownProps: Props) => ({
-    onClick: () => {
-        dispatch(toggleSkill(skillNameHash[ownProps.name].group, ownProps.name))
-    }
-})
+const mapDispatchToProps = (dispatch: any, ownProps: Props) =>
+    ({
+        onClick: () => {
+            dispatch(toggleSkill(ownProps.name))
+        }
+    })
 
 export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(props =>
     <div className={'SkillButton' + (props.isActive ? ' checked' : '')} onClick={props.onClick}>

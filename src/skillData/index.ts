@@ -9,27 +9,12 @@ export interface Skill {
     [skillName: string]: number
 }
 
-export interface SkillData {
-    name: string
-    group: string
-    isArmorSkill?: boolean,
-    effect: (skill: Skill, value: any) => void
-    item: SkillItem[]
-}
-
-export interface SkillItem {
-    name: string
-    label: string
-    value: any
-}
-
-
 interface SkillNameList {
     name: string
     label: string
     group: string
     isArmorSkill: boolean
-    effect: (skill: Skill) => void
+    effect: (skill: Skill) => Skill
 }
 
 export const skillNameList: SkillNameList[] = []
@@ -46,7 +31,7 @@ for (const skill of skillList) {
             label: item.label,
             group: skill.group,
             isArmorSkill: skill.isArmorSkill || false,
-            effect: (s) => { skill.effect(s, item.value) }
+            effect: (s) => skill.effect(s, item.value)
         })
     }
 }
