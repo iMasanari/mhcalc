@@ -9,14 +9,20 @@
   "scripts": {
     "build": "rollup -c",
     "build:w": "npm run build -- -w",
-    "build:min": "NODE_ENV=production npm run build"
+    "build:min": "NODE_ENV=production npm run build",
+    "build:html": "rollup -c ./buildHTML/rollup.config.js && node ./buildHTML/build"
   },
   "devDependencies": {
+    "@types/ejs": "^2.3.33",
+    "@types/node": "^7.0.5",
+    "ejs": "^2.5.6",
     "preact": "^7.2.0",
     "preact-redux": "^2.0.0",
+    "preact-render-to-string": "^3.6.0",
     "redux": "^3.6.0",
     "rollup": "^0.41.4",
     "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-typescript": "^0.8.1",

@@ -32,7 +32,7 @@ interface ClassState {
 export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
     class SkillRanking extends preact.Component<Props, ClassState> {
         private isAnimation = false
-        private animationTimer: number | undefined
+        private animationTimer: NodeJS.Timer | undefined
 
         state: ClassState = {
             prevSkillRanking: getRanking(this.props.weapon, this.props.skill, false)

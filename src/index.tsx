@@ -9,10 +9,13 @@ import App from './components/App'
 const { Provider } = preactRedux
 const store = createStore(reducer)
 
+const target = document.getElementById('app')!
+
 preact.render(
     <Provider store={store}>
         <App />
     </Provider>,
-    document.getElementById('app')!
+    target,
+    target.lastElementChild!
 )
 

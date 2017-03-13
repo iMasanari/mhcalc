@@ -20,6 +20,10 @@
             "taskName": "build:min",
             "problemMatcher": "$tsc",
             "args": ["build:min"]
+        },
+        {
+            "taskName": "build:html",
+            "args": ["build:html"]
         }
     ]
 }
