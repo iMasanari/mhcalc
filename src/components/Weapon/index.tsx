@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import preactRedux from '../../units/preact-redux'
 import { State } from '../../reducers'
 import { setWeaponType, setWeaponName, setPower, setAffinity, toggleLastOnly } from '../../reducers/weapon'
 import { getWeaponList } from '../../weaponData'

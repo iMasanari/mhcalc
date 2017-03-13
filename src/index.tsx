@@ -1,8 +1,6 @@
-/// <reference path="./preact-redux.d.ts" />
-
 import * as preact from 'preact'
 import { createStore } from 'redux'
-import preactRedux from 'preact-redux'
+import preactRedux from './units/preact-redux'
 import reducer from './reducers'
 import App from './components/App'
 

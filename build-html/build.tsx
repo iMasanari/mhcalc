@@ -1,11 +1,9 @@
-/// <reference path="../src/preact-redux.d.ts" />
-
 import * as preact from 'preact'
 import { createStore } from 'redux'
-import preactRedux from 'preact-redux'
-import render from 'preact-render-to-string'
-import fs from 'fs'
-import ejs from 'ejs'
+import preactRedux from '../src/units/preact-redux'
+import * as render from 'preact-render-to-string'
+import * as fs from 'fs'
+import * as ejs from 'ejs'
 import reducer from '../src/reducers'
 import App from '../src/components/App'
 
@@ -18,7 +16,7 @@ const html = render(
     </Provider>
 )
 
-ejs.renderFile('buildHTML/index.ejs', { html }, {}, (err, str) => {
+ejs.renderFile('build-html/index.ejs', { html }, {}, (_err, str) => {
     var outputFile = fs.createWriteStream('index.html')
     outputFile.write(str)
 });

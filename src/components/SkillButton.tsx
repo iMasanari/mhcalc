@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import preactRedux from '../units/preact-redux'
 import { State } from '../reducers'
 import { toggleSkill } from '../reducers/skill'
 import { skillNameHash } from '../skillData'

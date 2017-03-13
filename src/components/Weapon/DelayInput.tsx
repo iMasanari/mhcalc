@@ -10,9 +10,13 @@ interface State {
     value: string
 }
 
+// node.js
+declare var document: Document
+var document = document || {}
+
 export default class DelayInput extends preact.Component<Props, State> {
     refs = {} as { input: HTMLInputElement }
-    timer: number
+    timer: NodeJS.Timer
 
     update = () => {
         this.props.update(this.state.value)

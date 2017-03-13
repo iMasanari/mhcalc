@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import preactRedux from '../../units/preact-redux'
 import { State } from '../../reducers'
 import TableRow from './TableRow'
 import { getRanking, CalcData } from '../../calc'
@@ -32,7 +32,7 @@ interface ClassState {
 export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
     class SkillRanking extends preact.Component<Props, ClassState> {
         private isAnimation = false
-        private animationTimer: NodeJS.Timer | undefined
+        private animationTimer: NodeJS.Timer
 
         state: ClassState = {
             prevSkillRanking: getRanking(this.props.weapon, this.props.skill, false)
@@ -49,7 +49,7 @@ export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
             else {
                 skillRanking = getRanking(props.weapon, props.skill, props.skillFilter)
 
-                clearTimeout(this.animationTimer!)
+                clearTimeout(this.animationTimer)
                 this.animationTimer = setTimeout(() => {
                     this.isAnimation = false
                     this.setState({ prevSkillRanking: skillRanking })

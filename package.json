@@ -10,11 +10,11 @@
     "build": "rollup -c",
     "build:w": "npm run build -- -w",
     "build:min": "NODE_ENV=production npm run build",
-    "build:html": "rollup -c ./buildHTML/rollup.config.js && node ./buildHTML/build"
+    "build:html": "ts-node --project build-html/tsconfig.json build-html/build.tsx"
   },
   "devDependencies": {
     "@types/ejs": "^2.3.33",
-    "@types/node": "^7.0.5",
+    "@types/node": "^7.0.8",
     "ejs": "^2.5.6",
     "preact": "^7.2.0",
     "preact-redux": "^2.0.0",
@@ -28,6 +28,7 @@
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-uglify": "^1.0.1",
     "rollup-watch": "^3.2.2",
+    "ts-node": "^2.1.0",
     "typescript": "^2.1.6"
   }
 }
