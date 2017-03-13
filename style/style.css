@@ -133,6 +133,7 @@ footer {
 	border-right: 1px solid #bbb;
 	text-align: center;
 	color: #bbb;
+	cursor: pointer;
 }
 .SkillButton:hover {
 	background: #ddd;
@@ -163,6 +164,7 @@ footer {
 	box-sizing: border-box;
 	overflow: hidden;
 	height: 40px;
+	cursor: default;
 }
 .SkillRanking th:first-child {
 	width: 324px;
