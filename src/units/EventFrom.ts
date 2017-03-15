@@ -1,5 +1,5 @@
 interface EventFrom<T extends EventTarget> extends Event {
-    currentTarget: T
+	currentTarget: T
 }
 
 export default EventFrom

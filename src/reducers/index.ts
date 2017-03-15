@@ -4,13 +4,13 @@ import ranking, { State as RankingState } from './ranking'
 import weapon, { State as WeaponState } from './weapon'
 
 export interface State {
-    skill: SkillState
-    ranking: RankingState
-    weapon: WeaponState
+  skill: SkillState
+  ranking: RankingState
+  weapon: WeaponState
 }
 
 export default combineReducers({
-    skill,
-    ranking,
-    weapon,
+  skill,
+  ranking,
+  weapon,
 })

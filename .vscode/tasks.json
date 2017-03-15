@@ -1,25 +1,25 @@
 {
-    "version": "0.1.0",
-    "command": "npm",
-    "isShellCommand": true,
-    "suppressTaskName": true,
-    "args": ["run"],
-    "tasks": [
-        {
-            "taskName": "build",
-            "problemMatcher": "$tsc",
-            "args": ["build"]
-        },
-        {
-            "taskName": "build:w",
-            "args": ["build:w"],
-            "problemMatcher": "$tsc-watch",
-            "isBackground": true
-        },
-        {
-            "taskName": "build:min",
-            "problemMatcher": "$tsc",
-            "args": ["build:min"]
-        }
-    ]
+  "version": "0.1.0",
+  "command": "npm",
+  "isShellCommand": true,
+  "suppressTaskName": true,
+  "args": ["run"],
+  "tasks": [
+    {
+      "taskName": "build",
+      "problemMatcher": "$tsc",
+      "args": ["build"]
+    },
+    {
+      "taskName": "build:w",
+      "args": ["build:w"],
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true
+    },
+    {
+      "taskName": "build:min",
+      "problemMatcher": "$tsc",
+      "args": ["build:min"]
+    }
+  ]
 }

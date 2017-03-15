@@ -10,9 +10,8 @@ const { Provider } = preactRedux
 const store = createStore(reducer)
 
 preact.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('app')!
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('app')!
 )
-
