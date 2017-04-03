@@ -1,6 +1,6 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { State } from '../../reducers'
+import { StoreState } from '../../reducers'
 import { toggleSkill } from '../../reducers/skill'
 import { CalcData } from '../../calc'
 
@@ -10,7 +10,7 @@ export interface Props {
   isHide: boolean
 }
 
-const mapStateToProps = (_state: State, ownProps: Props) => ownProps
+const mapStateToProps = (_state: StoreState, ownProps: Props) => ownProps
 
 const mapDispatchToProps = (dispatch: any, ownProps: Props) =>
   ({

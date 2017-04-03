@@ -1,4 +1,7 @@
 export default returnTypes
+export { returnTypes }
+
+export const noBuild = (undefined as any) as true
 
 function returnTypes<R1>(
   f1: (...args: any[]) => R1,
@@ -81,4 +84,5 @@ function returnTypes<R1, R2, R3, R4, R5, R6, R7, R8, R9>(
   _?: undefined,
 ): R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | R9
 
-function returnTypes(..._args: any[]) { return null as any }
+function returnTypes(..._args: any[]) {
+}

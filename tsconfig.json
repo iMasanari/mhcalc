@@ -15,6 +15,7 @@
     "jsxFactory": "preact.h"
   },
   "files": [
-    "./src/index.tsx"
+    "./src/index.tsx",
+    "./src/preact-redux.d.ts"
   ]
 }

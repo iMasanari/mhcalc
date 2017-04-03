@@ -1,6 +1,6 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { State } from '../reducers'
+import { StoreState } from '../reducers'
 import { toggleSkill } from '../reducers/skill'
 import { skillNameHash } from '../skillData'
 
@@ -8,7 +8,7 @@ interface Props {
   name: string
 }
 
-const mapStateToProps = (state: State, ownProps: Props) => {
+const mapStateToProps = (state: StoreState, ownProps: Props) => {
   const { label, group } = skillNameHash[ownProps.name]
 
   return {

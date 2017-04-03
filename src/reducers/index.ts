@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
-import skill, { State as SkillState } from './skill'
-import ranking, { State as RankingState } from './ranking'
-import weapon, { State as WeaponState } from './weapon'
+import skill, { SkillState } from './skill'
+import ranking, { RankingState } from './ranking'
+import weapon, { WeaponState } from './weapon'
 
-export interface State {
+export interface StoreState {
   skill: SkillState
   ranking: RankingState
   weapon: WeaponState

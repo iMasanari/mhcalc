@@ -1,20 +1,20 @@
-import returnTypes from '../units/retrunTypes'
+import { returnTypes, noBuild } from '../units/retrunTypes'
 
 const TOGGLE_SKILL_FILTER = 'TOGGLE_SKILL_FILTER'
 
 export const toggleSkillFilter = () =>
   ({
-    type: TOGGLE_SKILL_FILTER as typeof TOGGLE_SKILL_FILTER
+    type: TOGGLE_SKILL_FILTER as (typeof TOGGLE_SKILL_FILTER)
   })
 
-const Actions = (false as true) && returnTypes(toggleSkillFilter)
+const Actions = noBuild && returnTypes(toggleSkillFilter)
 type Actions = typeof Actions
 
-export interface State {
+export interface RankingState {
   skillFilter: boolean
 }
 
-const initState: State = {
+const initState: RankingState = {
   skillFilter: false
 }
 

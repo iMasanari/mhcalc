@@ -1,6 +1,6 @@
 import { skillNameList, Skill, skillNameHash } from './skillData'
 import { WeaponData } from './weaponData'
-import { State as SkillState, ActiveSkills } from './reducers/skill'
+import { SkillState, ActiveSkills } from './reducers/skill'
 
 export function mapSkill(activeSkill: ActiveSkills) {
   const list = Object.keys(activeSkill).filter(v => activeSkill[v])

@@ -1,5 +1,3 @@
-/// <reference path="./preact-redux.d.ts" />
-
 import * as preact from 'preact'
 import { createStore } from 'redux'
 import preactRedux from 'preact-redux'

@@ -1,13 +1,13 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { State } from '../../reducers'
+import { StoreState } from '../../reducers'
 import { setWeaponType, setWeaponName, setPower, setAffinity, toggleLastOnly } from '../../reducers/weapon'
 import { getWeaponList } from '../../weaponData'
 import DelayInput from './DelayInput'
 import EventFrom from '../../units/EventFrom'
 import { getAttackPower } from "../../calc"
 
-const mapStateToProps = (state: State) =>
+const mapStateToProps = (state: StoreState) =>
   ({
     ...state.weapon,
     skillValue: state.skill.value,

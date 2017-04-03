@@ -1,5 +1,5 @@
 import { getWeapon, getWeaponList } from '../weaponData'
-import returnTypes from '../units/retrunTypes'
+import { returnTypes, noBuild } from '../units/retrunTypes'
 
 const SET_WEAPON_TYPE = 'SET_WEAPON_TYPE'
 const SET_WEAPON_NAME = 'SET_WEAPON_NAME'
@@ -9,34 +9,34 @@ const TOGGLE_LAST_ONLY = 'TOGGLE_LAST_ONLY'
 
 export const setWeaponType = (payload: string) =>
   ({
-    type: SET_WEAPON_TYPE as typeof SET_WEAPON_TYPE,
+    type: SET_WEAPON_TYPE as (typeof SET_WEAPON_TYPE),
     payload,
   })
 
 export const setWeaponName = (payload: string) =>
   ({
-    type: SET_WEAPON_NAME as typeof SET_WEAPON_NAME,
+    type: SET_WEAPON_NAME as (typeof SET_WEAPON_NAME),
     payload,
   })
 
 export const setPower = (payload: number) =>
   ({
-    type: SET_POWER as typeof SET_POWER,
+    type: SET_POWER as (typeof SET_POWER),
     payload,
   })
 
 export const setAffinity = (payload: number) =>
   ({
-    type: SET_AFFINITY as typeof SET_AFFINITY,
+    type: SET_AFFINITY as (typeof SET_AFFINITY),
     payload,
   })
 
 export const toggleLastOnly = () =>
   ({
-    type: TOGGLE_LAST_ONLY as typeof TOGGLE_LAST_ONLY,
+    type: TOGGLE_LAST_ONLY as (typeof TOGGLE_LAST_ONLY),
   })
 
-const Actions = (false as true) && returnTypes(
+const Actions = noBuild && returnTypes(
   setWeaponType,
   setWeaponName,
   setPower,
@@ -45,7 +45,7 @@ const Actions = (false as true) && returnTypes(
 )
 type Actions = typeof Actions
 
-export interface State {
+export interface WeaponState {
   type: string
   name: string
   power: number
@@ -53,7 +53,7 @@ export interface State {
   isLastOnly: boolean
 }
 
-const initState: State = {
+const initState: WeaponState = {
   type: 'lightbowgun',
   name: 'サージュバレット LV8',
   power: 210,
@@ -95,8 +95,7 @@ export default (state = initState, action: Actions) => {
   return state
 }
 
-
-function setState(state: State, type: string, name: string) {
+function setState(state: WeaponState, type: string, name: string) {
   const { power, affinity } = getWeapon(type, name)
 
   return {

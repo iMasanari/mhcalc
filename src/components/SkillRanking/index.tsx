@@ -1,11 +1,14 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { State } from '../../reducers'
+import { StoreState } from '../../reducers'
+import { RankingState } from '../../reducers/ranking'
+import { WeaponState } from '../../reducers/weapon'
+import { SkillState } from '../../reducers/skill'
 import TableRow from './TableRow'
 import { getRanking, CalcData } from '../../calc'
 import { toggleSkillFilter } from '../../reducers/ranking'
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: StoreState) => ({
   ...state.ranking,
   weapon: state.weapon,
   skill: state.skill,
@@ -17,24 +20,22 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 })
 
-type RankingState = State['ranking']
-
-interface Props extends RankingState {
-  weapon: State['weapon']
-  skill: State['skill']
+type Props = RankingState & {
+  weapon: WeaponState
+  skill: SkillState
   toggleSkillFilter: () => void
 }
 
-interface ClassState {
+interface State {
   prevSkillRanking: CalcData[]
 }
 
 export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
-  class SkillRanking extends preact.Component<Props, ClassState> {
+  class SkillRanking extends preact.Component<Props, State> {
     private isAnimation = false
     private animationTimer: number | undefined
 
-    state: ClassState = {
+    state: State = {
       prevSkillRanking: getRanking(this.props.weapon, this.props.skill, false)
     }
 
