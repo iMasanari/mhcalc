@@ -51,6 +51,33 @@ export interface WeaponState {
   power: number
   affinity: number
   isLastOnly: boolean
+  list: string[]
+  update: (partialState: Partial<WeaponState>) => WeaponState
+}
+
+const updateState = (prevState: WeaponState, nextState: Partial<WeaponState>) => {
+    const state = {
+      ...prevState,
+      ...nextState,
+    }
+
+    if (nextState.isLastOnly !== null) {
+      state.list = getWeaponList(state.type, state.isLastOnly)
+    }
+
+    if (nextState.type) {
+      state.list = getWeaponList(state.type, state.isLastOnly)
+      state.name = state.list[0]
+    }
+
+    if (nextState.name !== 'カスタマイズ' && (nextState.type || nextState.name)) {
+      const { power, affinity } = getWeapon(state.type, state.name)
+
+      state.power = power
+      state.affinity = affinity
+    }
+
+    return state
 }
 
 const initState: WeaponState = {
@@ -59,52 +86,42 @@ const initState: WeaponState = {
   power: 210,
   affinity: 0,
   isLastOnly: true,
+  list: getWeaponList('lightbowgun', true),
+  update: function (nextState) {
+    return updateState(this, nextState)
+  },
 }
 
 export default (state = initState, action: Actions) => {
   switch (action.type) {
     case SET_WEAPON_TYPE:
-      return setState(state, action.payload, getWeaponList(action.payload, true)[0])
+      return state.update({
+        type: action.payload
+      })
 
     case SET_WEAPON_NAME:
-      return setState(state, state.type, action.payload)
+      return state.update({
+        name: action.payload
+      })
 
     case SET_POWER:
-      return {
-        ...state,
-        name: searchWeapon(state.type, action.payload!, state.affinity),
-        power: action.payload!
-      }
+      return state.update({
+        name: searchWeapon(state.type, action.payload, state.affinity),
+        power: action.payload
+      })
 
     case SET_AFFINITY:
-      return {
-        ...state,
-        name: searchWeapon(state.type, state.power, action.payload!),
-        affinity: action.payload!
-      }
+      return state.update({
+        name: searchWeapon(state.type, state.power, action.payload),
+        affinity: action.payload
+      })
 
     case TOGGLE_LAST_ONLY:
-      const newState = getWeapon(state.type, state.name) ?
-        state : setState(state, state.type, getWeaponList(state.type, true)[0])
-
-      return {
-        ...newState,
-        isLastOnly: !state.isLastOnly,
-      }
+      return state.update({
+        isLastOnly: !state.isLastOnly
+      })
   }
   return state
-}
-
-function setState(state: WeaponState, type: string, name: string) {
-  const { power, affinity } = getWeapon(type, name)
-
-  return {
-    ...state,
-    type,
-    name,
-    power,
-    affinity,
-  }
 }
 
 function searchWeapon(type: string, power: number, affinity: number) {

@@ -2,7 +2,6 @@ import * as preact from 'preact'
 import preactRedux from 'preact-redux'
 import { StoreState } from '../../reducers'
 import { setWeaponType, setWeaponName, setPower, setAffinity, toggleLastOnly } from '../../reducers/weapon'
-import { getWeaponList } from '../../weaponData'
 import DelayInput from './DelayInput'
 import EventFrom from '../../units/EventFrom'
 import { getAttackPower } from "../../calc"
@@ -33,7 +32,7 @@ const mapDispatchToProps = (dispatch: any) =>
   })
 
 export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(props => {
-  const weaponList = getWeaponList(props.type, props.isLastOnly)
+  const weaponList = props.list
   const weaponOptions = weaponList.map(value => <option value={value}>{value}</option>)
 
   if (weaponList.indexOf(props.name) === -1) {
