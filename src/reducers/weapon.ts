@@ -170,5 +170,8 @@ const searchWeapon = (type: string, power: number, affinity: number) => {
     return weapon.power === power && weapon.affinity === affinity
   }
 
-  return getWeaponList(type, true).find(findFn) || getWeaponList(type).find(findFn) || 'カスタマイズ'
+  // [].find のブラウザ対応が不安なので、filterで代用
+  return getWeaponList(type, true).filter(findFn)[0]
+    || getWeaponList(type).filter(findFn)[0]
+    || 'カスタマイズ'
 }
