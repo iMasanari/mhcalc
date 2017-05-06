@@ -1,17 +1,17 @@
 import { Skill, skillNameHash } from '../skillData'
 import { mapSkill } from "../calc"
-import { returnTypes, noBuild } from '../units/retrunTypes'
 
 export const TOGGLE_SKILL = 'TOGGLE_SKILL'
 
-export const toggleSkill = (name: string) =>
-  ({
-    type: TOGGLE_SKILL as (typeof TOGGLE_SKILL),
-    payload: name
-  })
+type Action = {
+  type: typeof TOGGLE_SKILL, payload: string
+}
 
-const Actions = noBuild && returnTypes(toggleSkill)
-type Actions = typeof Actions
+export const toggleSkill = (name: string): Action =>
+  ({
+    type: TOGGLE_SKILL,
+    payload: name,
+  })
 
 export interface ActiveSkills {
   [group: string]: string | null
@@ -31,7 +31,7 @@ const initState: SkillState = {
   },
 }
 
-export default (state = initState, action: Actions) => {
+export default (state = initState, action: Action) => {
   switch (action.type) {
     case TOGGLE_SKILL:
       const { name, group, effect } = skillNameHash[action.payload]

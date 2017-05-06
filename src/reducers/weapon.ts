@@ -1,4 +1,3 @@
-import { returnTypes, noBuild } from '../units/retrunTypes'
 import fetchWeapon from "../weaponData"
 
 const SET_WEAPON_TYPE = 'SET_WEAPON_TYPE'
@@ -29,9 +28,27 @@ const getWeapon = (type: string, name: string) => {
 
 // action
 
-const _setWeaponType = (payload: string) =>
+type Action =
+  {
+    type: typeof SET_WEAPON_TYPE,
+    payload: string,
+  } | {
+    type: typeof SET_WEAPON_NAME,
+    payload: string,
+  } | {
+    type: typeof SET_POWER,
+    payload: number,
+  } | {
+    type: typeof SET_AFFINITY,
+    payload: number,
+  } | {
+    type: typeof TOGGLE_LAST_ONLY,
+  }
+
+
+const _setWeaponType = (payload: string): Action =>
   ({
-    type: SET_WEAPON_TYPE as (typeof SET_WEAPON_TYPE),
+    type: SET_WEAPON_TYPE,
     payload,
   })
 
@@ -41,41 +58,33 @@ export const setWeaponType = (weaponType: string) =>
 
     if (!weaponData[weaponType]) {
       weaponData[weaponType] = await fetchWeapon(weaponType)
+
       dispatch(_setWeaponType(weaponType))
     }
   }
 
-export const setWeaponName = (payload: string) =>
+export const setWeaponName = (payload: string): Action =>
   ({
-    type: SET_WEAPON_NAME as (typeof SET_WEAPON_NAME),
+    type: SET_WEAPON_NAME,
     payload,
   })
 
-export const setPower = (payload: number) =>
+export const setPower = (payload: number): Action =>
   ({
-    type: SET_POWER as (typeof SET_POWER),
+    type: SET_POWER,
     payload,
   })
 
-export const setAffinity = (payload: number) =>
+export const setAffinity = (payload: number): Action =>
   ({
-    type: SET_AFFINITY as (typeof SET_AFFINITY),
+    type: SET_AFFINITY,
     payload,
   })
 
-export const toggleLastOnly = () =>
+export const toggleLastOnly = (): Action =>
   ({
-    type: TOGGLE_LAST_ONLY as (typeof TOGGLE_LAST_ONLY),
+    type: TOGGLE_LAST_ONLY,
   })
-
-const Actions = noBuild && returnTypes(
-  _setWeaponType,
-  setWeaponName,
-  setPower,
-  setAffinity,
-  toggleLastOnly,
-)
-type Actions = typeof Actions
 
 export interface WeaponState {
   type: string
@@ -123,7 +132,7 @@ const initState: WeaponState = {
   },
 }
 
-export default (state = initState, action: Actions) => {
+export default (state = initState, action: Action) => {
   switch (action.type) {
     case SET_WEAPON_TYPE:
       return state.update({
@@ -161,5 +170,5 @@ const searchWeapon = (type: string, power: number, affinity: number) => {
     return weapon.power === power && weapon.affinity === affinity
   }
 
-  return getWeaponList(type, true).find(findFn) || getWeaponList(type).find(findFn)|| 'カスタマイズ'
+  return getWeaponList(type, true).find(findFn) || getWeaponList(type).find(findFn) || 'カスタマイズ'
 }
