@@ -23,6 +23,7 @@ export default {
   entry: './src/index.tsx',
   dest: './scripts/bundle.js',
   format: 'iife',
+  context: 'this',
   sourceMap: !isProduction,
   plugins: isProduction ? prodPlugins : plugins,
 }
