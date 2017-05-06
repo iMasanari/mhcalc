@@ -1,8 +1,3 @@
-import lightbowgun from './lightbowgun'
-import heavybowgun from './heavybowgun'
-
-export type WeponRawData = [string, string, [number, number][]][]
-
 export type wepnonType = string
 
 export interface WeaponData {
@@ -22,36 +17,36 @@ export interface WeaponsData {
   list: { [name: string]: Weapon }
 }
 
-const translate = (data: WeponRawData) =>
-  data.reduce((hash, [name, lastName, list]) => {
-    const last = list.length - 1
+const loadCsv = (url: string) =>
+  new Promise<string[][]>((resolve) => {
+    const xhr = new XMLHttpRequest()
 
-    return list.reduce((hash, [power, affinity], i) => {
-      const isLast = (i === last)
+    xhr.onload = () => {
+      resolve(xhr.responseText.trim().split('\n').map(v => v.split(',')))
+    }
 
-      hash[`${isLast ? lastName : name} LV${i + 1}`] = { power, affinity, isLast }
-      return hash
-    }, hash)
-  }, {} as { [name: string]: Weapon })
+    xhr.open('GET', url)
+    xhr.send(null)
+  })
 
-export const weaponsData: { [name: string]: WeaponsData } = {
-  lightbowgun: {
-    typeMult: 1.3,
-    list: translate(lightbowgun)
-  },
-  heavybowgun: {
-    typeMult: 1.48,
-    list: translate(heavybowgun)
-  }
-}
+export default async (weaponType: string) => {
+  const csv = await loadCsv(`data/${weaponType}.csv`)
 
-export function getWeaponList(type: wepnonType, filter: boolean | ((skill: Weapon) => boolean)) {
-  const ref = weaponsData[type].list
-  const list = Object.keys(ref)
+  const { result } = csv.reduce((hash, value, i, array) => {
+    const name = value[0] || hash.prevName
+    const fullName = `${name} ${value[1]}`
+    const nextValue = array[i + 1]
+    const isLast = !nextValue || nextValue[1] === 'LV1'
 
-  return filter ? list.filter((filter === true) ? v => ref[v].isLast : v => filter(ref[v])) : list
-}
+    hash.prevName = name
+    hash.result[fullName] = {
+      power: +value[2],
+      affinity: +value[3],
+      isLast
+    }
 
-export function getWeapon(type: wepnonType, name: string) {
-  return weaponsData[type].list[name]
+    return hash
+  }, { prevName: '', result: {} as { [key: string]: Weapon } })
+
+  return result
 }

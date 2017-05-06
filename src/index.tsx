@@ -1,11 +1,12 @@
 import * as preact from 'preact'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import preactRedux from 'preact-redux'
+import thunk from 'redux-thunk'
 import reducer from './reducers'
 import App from './components/App'
 
 const { Provider } = preactRedux
-const store = createStore(reducer)
+const store = createStore(reducer, applyMiddleware(thunk))
 
 preact.render(
   <Provider store={store}>

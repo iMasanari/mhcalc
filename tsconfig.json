@@ -9,10 +9,15 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "target": "es5",
+    "lib": [
+      "dom", "es2015", "es2015.promise"
+    ],
     "module": "es6",
     "moduleResolution": "node",
     "jsx": "react",
-    "jsxFactory": "preact.h"
+    "jsxFactory": "preact.h",
+    "noEmitHelpers": true,
+    "importHelpers": true
   },
   "files": [
     "./src/index.tsx",

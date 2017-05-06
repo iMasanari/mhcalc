@@ -1,5 +1,5 @@
-import { getWeapon, getWeaponList } from '../weaponData'
 import { returnTypes, noBuild } from '../units/retrunTypes'
+import fetchWeapon from "../weaponData"
 
 const SET_WEAPON_TYPE = 'SET_WEAPON_TYPE'
 const SET_WEAPON_NAME = 'SET_WEAPON_NAME'
@@ -7,11 +7,43 @@ const SET_POWER = 'SET_POWER'
 const SET_AFFINITY = 'SET_AFFINITY'
 const TOGGLE_LAST_ONLY = 'TOGGLE_LAST_ONLY'
 
-export const setWeaponType = (payload: string) =>
+
+// fetchした武器データの保存オブジェ
+
+const weaponData = {} as any
+
+const getWeaponList = (type: string, filter?: boolean) => {
+  if (!weaponData[type]) {
+    return []
+  }
+
+  const ref = weaponData[type]
+  const list = Object.keys(ref)
+
+  return filter ? list.filter(v => ref[v].isLast) : list
+}
+
+const getWeapon = (type: string, name: string) => {
+  return weaponData[type][name]
+}
+
+// action
+
+const _setWeaponType = (payload: string) =>
   ({
     type: SET_WEAPON_TYPE as (typeof SET_WEAPON_TYPE),
     payload,
   })
+
+export const setWeaponType = (weaponType: string) =>
+  async (dispatch: any) => {
+    dispatch(_setWeaponType(weaponType))
+
+    if (!weaponData[weaponType]) {
+      weaponData[weaponType] = await fetchWeapon(weaponType)
+      dispatch(_setWeaponType(weaponType))
+    }
+  }
 
 export const setWeaponName = (payload: string) =>
   ({
@@ -37,7 +69,7 @@ export const toggleLastOnly = () =>
   })
 
 const Actions = noBuild && returnTypes(
-  setWeaponType,
+  _setWeaponType,
   setWeaponName,
   setPower,
   setAffinity,
@@ -56,37 +88,36 @@ export interface WeaponState {
 }
 
 const updateState = (prevState: WeaponState, nextState: Partial<WeaponState>) => {
-    const state = {
-      ...prevState,
-      ...nextState,
-    }
+  const state = {
+    ...prevState,
+    ...nextState,
+  }
 
-    if (nextState.isLastOnly !== null) {
-      state.list = getWeaponList(state.type, state.isLastOnly)
-    }
+  if (nextState.type) {
+    state.list = getWeaponList(state.type, state.isLastOnly)
+    state.name = state.list[0] || 'カスタマイズ'
+  }
+  else if (nextState.isLastOnly !== null) {
+    state.list = getWeaponList(state.type, state.isLastOnly)
+  }
 
-    if (nextState.type) {
-      state.list = getWeaponList(state.type, state.isLastOnly)
-      state.name = state.list[0]
-    }
+  if (state.name !== 'カスタマイズ' && (nextState.type || nextState.name)) {
+    const { power, affinity } = getWeapon(state.type, state.name)
 
-    if (nextState.name !== 'カスタマイズ' && (nextState.type || nextState.name)) {
-      const { power, affinity } = getWeapon(state.type, state.name)
+    state.power = power
+    state.affinity = affinity
+  }
 
-      state.power = power
-      state.affinity = affinity
-    }
-
-    return state
+  return state
 }
 
 const initState: WeaponState = {
   type: 'lightbowgun',
-  name: 'サージュバレット LV8',
-  power: 210,
+  name: 'カスタマイズ',
+  power: 330,
   affinity: 0,
   isLastOnly: true,
-  list: getWeaponList('lightbowgun', true),
+  list: [],
   update: function (nextState) {
     return updateState(this, nextState)
   },
@@ -124,16 +155,11 @@ export default (state = initState, action: Actions) => {
   return state
 }
 
-function searchWeapon(type: string, power: number, affinity: number) {
-  for (const isLast of [true, false]) {
-    for (const name of getWeaponList(type, v => v.isLast === isLast)) {
-      const weapon = getWeapon(type, name)
-
-      if (weapon.power === power && weapon.affinity === affinity) {
-        return name
-      }
-    }
+const searchWeapon = (type: string, power: number, affinity: number) => {
+  const findFn = (name: string) => {
+    const weapon = getWeapon(type, name)
+    return weapon.power === power && weapon.affinity === affinity
   }
 
-  return 'カスタマイズ'
+  return getWeaponList(type, true).find(findFn) || getWeaponList(type).find(findFn)|| 'カスタマイズ'
 }

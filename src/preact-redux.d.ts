@@ -31,7 +31,7 @@ declare module "preact-redux" {
    * @param options
    */
   export function connect<TStateProps, TDispatchProps, TOwnProps>(
-    mapStateToProps: FuncOrSelf<MapStateToProps<TStateProps, TOwnProps>>,
+    mapStateToProps?: FuncOrSelf<MapStateToProps<TStateProps, TOwnProps>>,
     mapDispatchToProps?: FuncOrSelf<MapDispatchToPropsFunction<TDispatchProps, TOwnProps> | MapDispatchToPropsObject>
   ): ComponentDecorator<TStateProps & TDispatchProps, TOwnProps>;
 
