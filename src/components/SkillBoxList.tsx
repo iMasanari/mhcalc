@@ -8,7 +8,6 @@ export default () =>
       <li className='SkillBoxList-li'>
         <SkillBox key={skill.name}
           name={skill.name}
-          group={skill.group}
           items={skill.item.map(v => v.name)}
         />
       </li>

@@ -3,7 +3,6 @@ import SkillButton from './SkillButton'
 
 interface Props extends preact.ComponentProps {
   name: string
-  group: string
   items: string[]
 }
 
