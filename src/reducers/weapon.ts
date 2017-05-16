@@ -63,6 +63,9 @@ export const setWeaponType = (weaponType: string) =>
     }
   }
 
+export const initWeaponType = () =>
+  setWeaponType(initState.type)
+
 export const setWeaponName = (payload: string): Action =>
   ({
     type: SET_WEAPON_NAME,

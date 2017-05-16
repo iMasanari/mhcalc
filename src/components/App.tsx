@@ -3,19 +3,13 @@ import preactRedux from 'preact-redux'
 import SkillBoxList from './SkillBoxList'
 import SkillRanking from './SkillRanking'
 import Weapon from './Weapon'
-import { setWeaponType } from '../reducers/weapon'
-import { StoreState } from '../reducers'
+import { initWeaponType } from '../reducers/weapon'
 
-const mapStateToProps = (state: StoreState) =>
-  ({
-    weaponType: state.weapon.type
-  })
-
-export default preactRedux.connect(mapStateToProps)(
-  class extends preact.Component<{ dispatch: any, weaponType: string }, {}> {
+export default preactRedux.connect()(
+  class extends preact.Component<{ dispatch: any }, {}> {
     componentDidMount() {
       // 非同期データの初期化
-      this.props.dispatch(setWeaponType(this.props.weaponType))
+      this.props.dispatch(initWeaponType())
     }
     render() {
       return <div className="MHCalc">
