@@ -1,7 +1,7 @@
 import * as preact from 'preact'
 import SkillButton from './SkillButton'
 
-interface Props extends preact.ComponentProps {
+interface Props {
   name: string
   items: string[]
 }
