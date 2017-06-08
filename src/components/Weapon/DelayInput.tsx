@@ -40,7 +40,7 @@ export default class DelayInput extends preact.Component<Props, State> {
     // this.props.onBlur && this.props.onBlur(e)
   }
   render() {
-    return <input {...this.props} ref={input => this.refs.input = input as any}
+    return <input {...this.props as any} ref={input => this.refs.input = input as any}
       value={(this.refs.input === document.activeElement) ? this.state.value : this.props.value}
       onInput={this.onInput}
       onChange={this.onChange}

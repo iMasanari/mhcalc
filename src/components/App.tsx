@@ -6,7 +6,7 @@ import Weapon from './Weapon'
 import { initWeaponType } from '../reducers/weapon'
 
 export default preactRedux.connect()(
-  class extends preact.Component<{ dispatch: any }, {}> {
+  class extends preact.Component<{ dispatch?: any }, {}> {
     componentDidMount() {
       // 非同期データの初期化
       this.props.dispatch(initWeaponType())
