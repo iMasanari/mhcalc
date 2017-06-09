@@ -12,16 +12,18 @@ export default preactRedux.connect()(
       this.props.dispatch(initWeaponType())
     }
     render() {
-      return <div className="MHCalc">
-        <Weapon />
-        <section>
-          <h2>Skill Ranking</h2>
-          <div className="skill">
-            <SkillBoxList />
-            <SkillRanking />
-          </div>
-        </section>
-      </div>
+      return (
+        <div className="MHCalc">
+          <Weapon />
+          <section>
+            <h2>Skill Ranking</h2>
+            <div className="skill">
+              <SkillBoxList />
+              <SkillRanking />
+            </div>
+          </section>
+        </div>
+      )
     }
   }
 )

@@ -11,7 +11,7 @@ interface State {
 }
 
 export default class DelayInput extends preact.Component<Props, State> {
-  refs = {} as { input: HTMLInputElement }
+  input: HTMLInputElement
   timer: number
 
   update = () => {
@@ -40,8 +40,8 @@ export default class DelayInput extends preact.Component<Props, State> {
     // this.props.onBlur && this.props.onBlur(e)
   }
   render() {
-    return <input {...this.props as any} ref={input => this.refs.input = input as any}
-      value={(this.refs.input === document.activeElement) ? this.state.value : this.props.value}
+    return <input {...this.props as any} ref={input => this.input = input as any}
+      value={(this.input === document.activeElement) ? this.state.value : this.props.value}
       onInput={this.onInput}
       onChange={this.onChange}
       onBlur={this.onBlur} />

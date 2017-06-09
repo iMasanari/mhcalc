@@ -9,7 +9,7 @@ import { getRanking, CalcData } from '../../calc'
 import { toggleSkillFilter } from '../../reducers/ranking'
 
 const mapStateToProps = (state: StoreState) => ({
-  ...state.ranking,
+  skillFilter: state.ranking.skillFilter,
   weapon: state.weapon,
   skill: state.skill,
 })
@@ -59,30 +59,34 @@ export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
 
       const skillRankingHash = skillRanking.reduce((h, v) => (h[v.name] = v, h), {} as { [name: string]: CalcData })
 
-      return <div className={'SkillRanking' + (isAnimation ? ' animation' : '')}>
-        <table>
-          <tr>
-            <th>
-              スキル<br />
-              <label>
-                <input type="checkbox" checked={!props.skillFilter} onChange={props.toggleSkillFilter} />
-                <small>防具スキルのみ</small>
-              </label>
-            </th>
-            <th>上昇値</th>
-            <th>上昇率</th>
-          </tr>
-          {this.state.prevSkillRanking.map((skill, i) => {
-            const item = skillRankingHash[skill.name] || skill
+      return (
+        <div className={'SkillRanking' + (isAnimation ? ' animation' : '')}>
+          <table>
+            <tbody>
+              <tr>
+                <th>
+                  スキル<br />
+                  <label>
+                    <input type="checkbox" checked={!props.skillFilter} onChange={props.toggleSkillFilter} />
+                    <small>防具スキルのみ</small>
+                  </label>
+                </th>
+                <th>上昇値</th>
+                <th>上昇率</th>
+              </tr>
+              {this.state.prevSkillRanking.map((skill, i) => {
+                const item = skillRankingHash[skill.name] || skill
 
-            return <TableRow key={item.name}
-              item={item}
-              rankUp={item.index - i}
-              isHide={!skillRankingHash[skill.name]}
-            />
-          })}
-        </table>
-      </div>
+                return <TableRow key={item.name}
+                  item={item}
+                  rankUp={item.index - i}
+                  isHide={!skillRankingHash[skill.name]}
+                />
+              })}
+            </tbody>
+          </table>
+        </div>
+      )
     }
   }
 )

@@ -24,8 +24,13 @@ const mapDispatchToProps = (dispatch: any, ownProps: Props) =>
     }
   })
 
-export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(props =>
-  <div className={'SkillButton' + (props.isActive ? ' checked' : '')} onClick={props.onClick}>
-    {props.label}
-  </div>
+export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
+  props =>
+    <div
+      className={'SkillButton' + (props.isActive ? ' checked' : '')}
+      onClick={props.onClick}
+      title={props.name}
+    >
+      {props.label}
+    </div>
 )

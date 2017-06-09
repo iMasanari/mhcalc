@@ -310,18 +310,16 @@ export default [{
     { label: 'UP2', value: 15 }
   ]
 }, {
-  name: '【操虫棍】広域エキス',
-  group: '【操虫棍】広域エキス 赤',
+  name: '【操虫棍】広域エキス 赤',
   effect: attackUp,
   item: [
-    { label: '赤', value: 5 }
+    { value: 5 }
   ]
 }, {
-  name: '【操虫棍】広域エキス',
-  group: '【操虫棍】広域エキス 白',
+  name: '【操虫棍】広域エキス 白',
   effect: affinityUp,
   item: [
-    { label: '白', value: 10 }
+    { value: 10 }
   ]
 }, {
   name: '【ボウガン】鬼人弾',
@@ -343,14 +341,14 @@ export default [{
     { label: '【大】', value: -15 }
   ]
 }, {
-  name: '見切り',
+  name: '見切り ', // keyを見切り+と変えるため最後にスペース
   group: '見切り',
   isArmorSkill: true,
   effect: affinityUp,
   item: [
-    { label: '-1', value: -5 },
-    { label: '-2', value: -10 },
-    { label: '-3', value: -15 }
+    { name: '見切り-1', label: '-1', value: -5 },
+    { name: '見切り-2', label: '-2', value: -10 },
+    { name: '見切り-3', label: '-3', value: -15 }
   ]
 }, {
   name: '心配性',
