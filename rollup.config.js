@@ -21,7 +21,7 @@ const prodPlugins = [
 
 export default {
   entry: './src/index.tsx',
-  dest: './scripts/bundle.js',
+  dest: './app/dest/bundle.js',
   format: 'iife',
   context: 'this',
   sourceMap: !isProduction,

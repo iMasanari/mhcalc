@@ -1,5 +1,4 @@
-scripts/*
-!scripts/lib
+app/dest/*
 
 # Created by https://www.gitignore.io/api/macos,node,visualstudiocode
 

@@ -11,15 +11,20 @@
       "args": ["build"]
     },
     {
-      "taskName": "build:w",
-      "args": ["build:w"],
+      "taskName": "build:watch",
+      "args": ["build:watch"],
       "problemMatcher": "$tsc-watch",
       "isBackground": true
     },
     {
-      "taskName": "build:min",
+      "taskName": "build:production",
       "problemMatcher": "$tsc",
-      "args": ["build:min"]
+      "args": ["build:production"]
+    },
+    {
+      "taskName": "deploy",
+      "problemMatcher": "$tsc",
+      "args": ["deploy"]
     }
   ]
 }
