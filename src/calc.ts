@@ -65,10 +65,14 @@ export function getRanking(weapon: WeaponData, skill: SkillState, isAllSkill: bo
 }
 
 export function getAttackPower(weapon: WeaponData, skill: Skill) {
-  let power = weapon.power + skill.power,
-    mult = skill.mult,
-    affinity = Math.min(Math.max(weapon.affinity + skill.affinity, -100), 100),
-    superAffinity = (skill['superAffinity'] || 1.25) - 1
+  let power = weapon.power + skill.power
+  let mult = skill.mult
+
+  const affinity = Math.min(Math.max(weapon.affinity + skill.affinity, -100), 100)
+
+  // 会心期待値（超、裏会心時は0.25が変化）: power * (1 + 0.25 * affinity)
+  const affinityCoefficient = (affinity > 0 ? skill['superAffinity'] : skill['reverseAffinity']) || 0.25
+  const affinityMult = 1 + affinity / 100 * affinityCoefficient
 
   if (skill['parts']) {
     power += Math.floor(weapon.power * (skill['parts'] - 1))
@@ -79,7 +83,7 @@ export function getAttackPower(weapon: WeaponData, skill: Skill) {
   }
 
   return {
-    power: power * mult * (1 + affinity / 100 * superAffinity),
+    power: power * mult * affinityMult,
     weapon: {
       power: power * mult,
       affinity,

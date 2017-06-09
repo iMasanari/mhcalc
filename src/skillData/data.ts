@@ -195,7 +195,23 @@ export default [{
   isArmorSkill: true,
   effect: multValue,
   item: [
-    { value: { superAffinity: 1.4 } }
+    // 超会心期待値: power * (1 + 0.4 * affinity)
+    { value: { superAffinity: 0.4 } }
+  ]
+}, {
+  name: '裏会心',
+  isArmorSkill: true,
+  effect: multValue,
+  item: [
+    // 裏会心期待値: power * (1 + -0.0625 * affinity)
+    { value: { reverseAffinity: -0.0625 } }
+  ]
+}, {
+  name: '龍気活性',
+  isArmorSkill: true,
+  effect: attackMult,
+  item: [
+    { value: 1.1 }
   ]
 }, {
   name: 'ネコの射撃術',
