@@ -22,44 +22,46 @@ export default preactRedux.connect(null, mapDispatchToProps)(
       style={props.rankUp ? { transform: `translateY(${props.rankUp * 40}px)` } : undefined}
       onClick={props.toggleSkill}
     >
-      <SkillNameCell name={props.item.name} disappearance={props.item.disappearance} />
-      <AddPowerCell power={props.item.plus} />
-      <td>{props.item.mult.toFixed(3)}</td>
+      <td>
+        <SkillName name={props.item.name} disappearance={props.item.disappearance} />
+      </td>
+      <td>
+        <AddPower power={props.item.plus} />
+      </td>
+      <td>
+        {props.item.mult.toFixed(3)}
+      </td>
     </tr>
 )
 
-interface SkillNameCellProps {
+interface SkillNameProps {
   name: string
   disappearance: string | null
 }
 
-const SkillNameCell = (props: SkillNameCellProps) =>
-  <td>
-    <div className="skillName">
-      <span>{props.name}</span>
-      <span className={"disappearance" + (props.disappearance ? '' : ' opacity0')}>
-        {props.disappearance ? '- ' + props.disappearance : ''}
-      </span>
-    </div>
-  </td>
+const SkillName = (props: SkillNameProps) =>
+  <div className="skillName">
+    <span>{props.name}</span>
+    <span className={"disappearance" + (props.disappearance ? '' : ' opacity0')}>
+      {props.disappearance ? '- ' + props.disappearance : ''}
+    </span>
+  </div>
 
-interface AddPowerCellProps {
+interface AddPowerProps {
   power: number
 }
 
-const AddPowerCell = (props: AddPowerCellProps) => {
+const AddPower = (props: AddPowerProps) => {
   const value = Math.min(Math.abs(props.power), 100)
 
   return (
-    <td>
-      <div className="AddPower">
-        <span className={"AddPower-graph" + (props.power < 0 ? ' minus' : '')}
-          style={{ transform: `scaleX(${value / 100})` }}
-        />
-        <span className='AddPower-value' style={{ transform: `translateX(${value - 92}px)` }}>
-          {props.power}
-        </span>
-      </div>
-    </td>
+    <div className="AddPower">
+      <span className={"AddPower-graph" + (props.power < 0 ? ' minus' : '')}
+        style={{ transform: `scaleX(${value / 100})` }}
+      />
+      <span className='AddPower-value' style={{ transform: `translateX(${value - 92}px)` }}>
+        {props.power}
+      </span>
+    </div>
   )
 }
