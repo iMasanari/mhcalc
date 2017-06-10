@@ -1,8 +1,8 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { StoreState } from '../reducers'
-import { toggleSkill } from '../reducers/skill'
-import { skillNameHash } from '../skillData'
+import { StoreState } from '../../reducers'
+import { toggleSkill } from '../../reducers/skill'
+import { skillNameHash } from '../../skillData'
 
 interface Props {
   name: string

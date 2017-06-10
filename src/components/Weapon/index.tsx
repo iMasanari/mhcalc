@@ -4,7 +4,8 @@ import { StoreState } from '../../reducers'
 import { setWeaponType, setWeaponName, setPower, setAffinity, toggleLastOnly } from '../../reducers/weapon'
 import DelayInput from './DelayInput'
 import EventFrom from '../../units/EventFrom'
-import { getAttackPower } from "../../calc"
+import { getAttackPower } from '../../calc'
+import './style.css'
 
 const mapStateToProps = (state: StoreState) =>
   ({

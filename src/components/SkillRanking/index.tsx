@@ -7,6 +7,7 @@ import { SkillState } from '../../reducers/skill'
 import TableRow from './TableRow'
 import { getRanking, CalcData } from '../../calc'
 import { toggleSkillFilter } from '../../reducers/ranking'
+import './style.css'
 
 const mapStateToProps = (state: StoreState) => ({
   skillFilter: state.ranking.skillFilter,

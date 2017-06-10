@@ -1,0 +1,44 @@
+
+.SkillBoxList {
+  width: 320px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.SkillBoxList-li {
+  overflow: hidden;
+  padding: 0 16px;
+    line-height: 2;
+}
+
+.SkillBoxList-li:hover {
+  background: #eee;
+}
+
+.SkillBox-ul {
+  float: right;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.SkillButton {
+  float: left;
+  width: 50px;
+  border-right: 1px solid #bbb;
+  text-align: center;
+  color: #bbb;
+  cursor: pointer;
+}
+.SkillButton:hover {
+  background: #ddd;
+}
+
+.SkillButton:first-child {
+  border-left: 1px solid #bbb;
+}
+
+.SkillButton.checked {
+  background: #4aa3df;
+  color: #fff;
+}

@@ -1,0 +1,104 @@
+body, input, select {
+  font-family: "游ゴシック体", "Yu Gothic", YuGothic, sans-serif;
+  font-size: 16px;
+  color: #111;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+input[type=number] {
+  text-align: right;
+  width: 6em;
+}
+input[type=number], select {
+  -o-appearance: none;
+  -ms-appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  /*appearance: none;*/
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  margin: 0 2px;
+  padding: 2px 5px;
+  background: #fff;
+  vertical-align: middle;
+  font-size: inherit;
+  color: inherit;
+  box-sizing: content-box;
+}
+
+section {
+  margin-bottom: 32px;
+}
+
+a {
+  color: #84b2e0;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+table {
+  border-collapse: separate;
+  border-spacing:0;
+  white-space: nowrap;
+  table-layout: fixed;
+  border: 1px solid #bbb;
+  background: #eee;
+}
+tr {
+  background-color: #fff;
+}
+tr:hover {
+  background: #eee;
+}
+th {
+  width: 150px;
+  padding: 5px 2px;
+  border-left: 1px solid #fff;
+  background: #84b2e0;
+  color: #fff;
+  text-align: center;
+}
+th:first-child {
+  border-left: none;
+}
+td {
+  padding: 5px 8px;
+  border-left: 1px solid #bbb;
+  border-top: 1px solid #bbb;
+  /*border: 1px solid #bbb;*/
+}
+td:first-child {
+  border-left: none;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  padding: 0 16px;
+  border-bottom: 1px solid #84b2e0;
+}
+h1 {
+  font-size: 20px;
+}
+h2 {
+  font-size: 20px;
+  text-align: center;
+}
+
+footer {
+  border-top: 1px solid #84b2e0;
+  text-align: center;
+}
+.MHCalc {
+  width: 960px;
+  margin: 0 auto;
+}
+.skill {
+  display: flex;
+  justify-content: space-between;
+}

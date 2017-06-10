@@ -4,6 +4,7 @@ import SkillBoxList from './SkillBoxList'
 import SkillRanking from './SkillRanking'
 import Weapon from './Weapon'
 import { initWeaponType } from '../reducers/weapon'
+import './style.css'
 
 export default preactRedux.connect()(
   class extends preact.Component<{ dispatch?: any }, {}> {
