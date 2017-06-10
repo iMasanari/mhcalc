@@ -1,0 +1,14 @@
+.SkillNameCell {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.SkillNameCell-hide {
+  opacity: 0;
+}
+.SkillNameCell-disappearance {
+  font-size: 12px;
+  color: #bbb;
+  transition: opacity .2s ease-out;
+}

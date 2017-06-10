@@ -1,0 +1,20 @@
+.AddPowerCell {
+  display: inline-block;
+}
+.AddPowerCell-graph {
+  display: inline-block;
+  transform-origin: left center;
+  width: 100px;
+  height: 10px;
+  background: #84b2e0;
+  transition: transform .2s ease-out;
+}
+.AddPowerCell-value {
+  display: inline-block;
+  transition: transform .2s ease-out;
+}
+
+.TableRow-checked .AddPowerCell-graph,
+.AddPowerCell-graph.AddPowerCell-minus {
+  background: #bbb;
+}

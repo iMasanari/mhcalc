@@ -1,0 +1,12 @@
+.RankingTable {
+  position: relative;
+  /*display: block;*/
+  width: 100%;
+  
+  border-collapse: separate;
+  border-spacing:0;
+  white-space: nowrap;
+  table-layout: fixed;
+  border: 1px solid #bbb;
+  background: #eee;
+}

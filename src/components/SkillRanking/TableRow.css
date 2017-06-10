@@ -1,0 +1,50 @@
+.TableRow {
+  position: relative;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 40px;
+  cursor: default;
+}
+.TableRow:hover {
+  background: #eee;
+}
+.TableRow-th {
+  width: 150px;
+  padding: 5px 2px;
+  border-left: 1px solid #fff;
+  background: #84b2e0;
+  color: #fff;
+  text-align: center;
+}
+.TableRow-th:first-child {
+  width: 324px;
+  border-left: none;
+}
+
+.TableRow-td {
+  padding: 5px 8px;
+  border-left: 1px solid #bbb;
+  border-top: 1px solid #bbb;
+}
+.TableRow-td:first-child {
+  border-left: none;
+}
+
+.TableRow-td:last-child {
+  text-align: right;
+}
+
+.TableRow-animation {
+  transition: transform .2s ease-out;
+}
+.TableRow-hide {
+  opacity: 0;
+}
+.TableRow-checked {
+  color: #bbb;
+}
+
+.TableRow-checked .SkillNameCell {
+  color: #4aa3df;
+}
