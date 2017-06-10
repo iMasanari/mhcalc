@@ -11,15 +11,12 @@ const mapStateToProps = (state: StoreState) =>
     skillValue: state.skill.value,
   })
 
-
 export default preactRedux.connect(mapStateToProps)(
   (props) => {
     const { power, weapon } = getAttackPower({ power: props.power, affinity: props.affinity, type: props.type }, props.skillValue)
 
     return (
-      <p>
-        {weapon.power | 0} / {weapon.affinity}% => {power | 0}
-      </p>
+      <p>{weapon.power | 0} / {weapon.affinity}% ({power | 0})</p>
     )
   }
 )

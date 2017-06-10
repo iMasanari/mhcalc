@@ -1,8 +1,9 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { StoreState } from '../../reducers'
-import { setWeaponName } from '../../reducers/weapon'
-import EventFrom from '../../units/EventFrom'
+import { StoreState } from '../../../reducers'
+import { setWeaponName } from '../../../reducers/weapon'
+import EventFrom from '../../../units/EventFrom'
+import './WeaponNameSelect.css'
 
 const mapStateToProps = (state: StoreState) =>
   ({
@@ -26,7 +27,7 @@ export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
     }
 
     return (
-      <select className="weapon-name" value={props.name} onChange={props.setWeaponName}>
+      <select className="WeaponNameSelect input-area" value={props.name} onChange={props.setWeaponName}>
         {weaponOptions}
       </select>
     )
