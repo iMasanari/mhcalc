@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import { skillList } from '../../skillData'
+import { skillList } from '@/skillData'
 import SkillBox from './SkillBox'
 import './style.css'
 

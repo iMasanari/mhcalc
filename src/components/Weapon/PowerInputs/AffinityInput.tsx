@@ -1,7 +1,7 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { StoreState } from '../../../reducers'
-import { setPower, setAffinity } from '../../../reducers/weapon'
+import { StoreState } from '@/reducers'
+import { setAffinity } from '@/reducers/weapon'
 import DelayInput from './DelayInput'
 import './index.css'
 

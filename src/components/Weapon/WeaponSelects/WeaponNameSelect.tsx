@@ -1,8 +1,8 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { StoreState } from '../../../reducers'
-import { setWeaponName } from '../../../reducers/weapon'
-import EventFrom from '../../../units/EventFrom'
+import { StoreState } from '@/reducers'
+import { setWeaponName } from '@/reducers/weapon'
+import EventFrom from '@/units/EventFrom'
 import './WeaponNameSelect.css'
 
 const mapStateToProps = (state: StoreState) =>

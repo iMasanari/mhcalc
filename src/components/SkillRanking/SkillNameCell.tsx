@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import classNames from '../../units/classNames'
+import classNames from '@/units/classNames'
 import './SkillNameCell.css'
 
 interface Props {

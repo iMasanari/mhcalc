@@ -1,7 +1,7 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { StoreState } from '../../../reducers'
-import { toggleLastOnly } from '../../../reducers/weapon'
+import { StoreState } from '@/reducers'
+import { toggleLastOnly } from '@/reducers/weapon'
 
 const mapStateToProps = (state: StoreState) =>
   ({ isLastOnly: state.weapon.isLastOnly })

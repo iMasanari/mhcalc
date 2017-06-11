@@ -3,7 +3,7 @@ import preactRedux from 'preact-redux'
 import SkillBoxList from './SkillBoxList'
 import SkillRanking from './SkillRanking'
 import Weapon from './Weapon'
-import { initWeaponType } from '../reducers/weapon'
+import { initWeaponType } from '@/reducers/weapon'
 import './style.css'
 
 export default preactRedux.connect()(

@@ -1,5 +1,5 @@
-import { Skill, skillNameHash } from '../skillData'
-import { mapSkill } from "../calc"
+import { Skill, skillNameHash } from '@/skillData'
+import { mapSkill } from "@/calc"
 
 export const TOGGLE_SKILL = 'TOGGLE_SKILL'
 

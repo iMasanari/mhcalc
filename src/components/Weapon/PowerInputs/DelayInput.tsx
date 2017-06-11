@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import EventFrom from '../../../units/EventFrom'
+import EventFrom from '@/units/EventFrom'
 
 interface Props extends JSX.HTMLAttributes {
   value: string

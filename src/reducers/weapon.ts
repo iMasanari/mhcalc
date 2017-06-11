@@ -1,4 +1,4 @@
-import fetchWeapon from "../weaponData"
+import fetchWeapon from "@/weaponData"
 
 const SET_WEAPON_TYPE = 'SET_WEAPON_TYPE'
 const SET_WEAPON_NAME = 'SET_WEAPON_NAME'

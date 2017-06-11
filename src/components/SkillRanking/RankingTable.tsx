@@ -1,12 +1,12 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { StoreState } from '../../reducers'
-import { RankingState } from '../../reducers/ranking'
-import { WeaponState } from '../../reducers/weapon'
-import { SkillState } from '../../reducers/skill'
+import { StoreState } from '@/reducers'
+import { RankingState } from '@/reducers/ranking'
+import { WeaponState } from '@/reducers/weapon'
+import { SkillState } from '@/reducers/skill'
+import { getRanking, CalcData } from '@/calc'
 import TableHeader from './TableHeader'
 import TableRow from './TableRow'
-import { getRanking, CalcData } from '../../calc'
 import './RankingTable.css'
 
 const mapStateToProps = (state: StoreState) => ({

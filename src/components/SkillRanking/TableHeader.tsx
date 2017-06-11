@@ -1,8 +1,7 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { toggleSkill } from '../../reducers/skill'
-import { StoreState } from '../../reducers'
-import { toggleSkillFilter } from '../../reducers/ranking'
+import { StoreState } from '@/reducers'
+import { toggleSkillFilter } from '@/reducers/ranking'
 import './TableRow.css'
 
 const mapStateToProps = (state: StoreState) =>

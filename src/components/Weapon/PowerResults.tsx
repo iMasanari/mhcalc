@@ -1,7 +1,7 @@
 import * as preact from 'preact'
 import preactRedux from 'preact-redux'
-import { StoreState } from '../../reducers'
-import { getAttackPower } from '../../calc'
+import { StoreState } from '@/reducers'
+import { getAttackPower } from '@/calc'
 
 const mapStateToProps = (state: StoreState) =>
   ({
