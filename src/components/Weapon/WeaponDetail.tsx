@@ -19,9 +19,9 @@ export default preactRedux.connect(mapStateToProps)(
     return (
       <p>
         攻撃力: {power | 0} ({weapon.power | 0} / {weapon.affinity}%)
-        <br/>
+        <br />
         スロット: {displaySlot(weaponData.slot)}
-        <br/>
+        <br />
         {weaponData.reload} / {weaponData.recoil} ブレ{weaponData.deviation}
       </p>
     )
@@ -29,5 +29,4 @@ export default preactRedux.connect(mapStateToProps)(
 )
 
 const displaySlot = (slot: number) =>
-  ('◯' as any).repeat(slot) + ('―' as any).repeat(3 - slot)
-  
+  ['―――', '◯――', '◯◯―', '◯◯◯'][slot]
