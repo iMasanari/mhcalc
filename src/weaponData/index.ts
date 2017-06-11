@@ -1,3 +1,5 @@
+const csvVersion = 1.1
+
 export type wepnonType = string
 
 export interface WeaponData {
@@ -7,14 +9,13 @@ export interface WeaponData {
 }
 
 export interface Weapon {
-  power: number,
-  affinity: number,
+  power: number
+  affinity: number
+  reload: string
+  recoil: string
+  deviation: string
+  slot: number
   isLast: boolean
-}
-
-export interface WeaponsData {
-  typeMult: number
-  list: { [name: string]: Weapon }
 }
 
 const loadCsv = (url: string) =>
@@ -29,19 +30,26 @@ const loadCsv = (url: string) =>
     xhr.send(null)
   })
 
+
 export default async (weaponType: string) => {
-  const csv = await loadCsv(`data/${weaponType}.csv`)
+  const csv = await loadCsv(`data/${weaponType}.csv?v${csvVersion}`)
 
   const { result } = csv.reduce((hash, value, i, array) => {
-    const name = value[0] || hash.prevName
-    const fullName = `${name} ${value[1]}`
+    const [_name, lv, power, affinity, slot, reload, recoil, deviation] = value
+
+    const name = _name || hash.prevName
+    const fullName = `${name} ${lv}`
     const nextValue = array[i + 1]
     const isLast = !nextValue || nextValue[1] === 'LV1'
 
     hash.prevName = name
     hash.result[fullName] = {
-      power: +value[2],
-      affinity: +value[3],
+      power: +power,
+      affinity: +affinity,
+      slot: +slot,
+      reload,
+      recoil,
+      deviation,
       isLast
     }
 
