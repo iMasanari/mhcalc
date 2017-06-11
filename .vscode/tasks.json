@@ -17,9 +17,9 @@
       "isBackground": true
     },
     {
-      "taskName": "build:production",
+      "taskName": "build:prod",
       "problemMatcher": "$tsc",
-      "args": ["build:production"]
+      "args": ["build:prod"]
     },
     {
       "taskName": "deploy",

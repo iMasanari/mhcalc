@@ -10,7 +10,7 @@ import CleanCSS from 'clean-css'
 import tsc from 'typescript'
 
 const isProduction = process.env.NODE_ENV === 'production'
-const dest = './app/dest'
+const dest = './public/dest'
 
 const minifyCss = (styles, styleNodes) => {
   fs.writeFileSync(`${dest}/bundle.css`, new CleanCSS().minify(styles).styles)

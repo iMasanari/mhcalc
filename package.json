@@ -1,16 +1,15 @@
 {
-  "name": "mhx",
+  "name": "mhxx",
   "version": "1.0.0",
   "private": true,
-  "description": "",
-  "main": "app.js",
-  "author": "",
   "license": "MIT",
   "scripts": {
+    "clean": "rm public/dest/*",
     "build": "rollup -c",
     "build:watch": "npm run build -- -w",
-    "build:production": "NODE_ENV=production npm run build",
-    "deploy": "npm run build:production && gh-pages -d app"
+    "build:prod": "npm run clean && NODE_ENV=production npm run build",
+    "gh-pages": "gh-pages -d public",
+    "deploy": "npm run build:prod && npm run gh-pages"
   },
   "devDependencies": {
     "clean-css": "^4.1.3",
