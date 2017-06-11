@@ -1,6 +1,7 @@
 import typescript from 'rollup-plugin-typescript'
 import css from 'rollup-plugin-css-only'
 import nodeResolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
 import replace from "rollup-plugin-replace"
 import buble from 'rollup-plugin-buble'
 import uglify from 'rollup-plugin-uglify'
@@ -19,6 +20,7 @@ const plugins = [
   typescript({ typescript: tsc }),
   css({ output: isProduction ? minifyCss : `${dest}/bundle.css` }),
   nodeResolve({ jsnext: true }),
+  commonjs(),
   replace({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) }),
 ]
 

@@ -1,3 +1,6 @@
+// polyfill
+import 'es6-promise/auto'
+
 import * as preact from 'preact'
 import { createStore, applyMiddleware } from 'redux'
 import preactRedux from 'preact-redux'
