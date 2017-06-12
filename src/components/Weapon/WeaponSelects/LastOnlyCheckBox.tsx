@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { toggleLastOnly } from '@/reducers/weapon'
 
@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch: any) =>
     }
   })
 
-export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   (props) =>
     <label>
       <input type="checkbox" checked={props.isLastOnly} onChange={props.toggleLastOnly} />

@@ -24,7 +24,6 @@
     "importHelpers": true
   },
   "files": [
-    "./src/index.tsx",
-    "./src/preact-redux.d.ts"
+    "./src/index.tsx"
   ]
 }

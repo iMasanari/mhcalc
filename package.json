@@ -16,7 +16,7 @@
     "es6-promise": "^4.1.0",
     "gh-pages": "^1.0.0",
     "preact": "^8.1.0",
-    "preact-redux": "^2.0.1",
+    "preact-redux": "https://github.com/iMasanari/preact-redux#dist",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "rollup": "^0.42.0",

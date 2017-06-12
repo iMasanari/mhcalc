@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { setWeaponType } from '@/reducers/weapon'
 import EventFrom from '@/units/EventFrom'
@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch: any) =>
     }
   })
 
-export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   (props) =>
     <select className="WeaponTypeSelect input-area" value={props.type} onChange={props.setWeaponType}>
       <option value="lightbowgun">ライト</option>

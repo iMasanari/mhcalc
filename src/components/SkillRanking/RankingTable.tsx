@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { RankingState } from '@/reducers/ranking'
 import { WeaponState } from '@/reducers/weapon'
@@ -24,7 +24,7 @@ interface State {
   prevSkillRanking: CalcData[]
 }
 
-export default preactRedux.connect(mapStateToProps)(
+export default connect(mapStateToProps)(
   class SkillRanking extends preact.Component<Props, State> {
     private isAnimation = false
     private animationTimer: number | undefined

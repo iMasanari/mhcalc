@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { setWeaponName } from '@/reducers/weapon'
 import EventFrom from '@/units/EventFrom'
@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch: any) =>
     }
   })
 
-export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   (props) => {
     const weaponOptions = props.list.map(value => <option value={value}>{value}</option>)
 

@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { toggleSkill } from '@/reducers/skill'
 import { CalcData } from '@/calc'
 import classNames from '@/units/classNames'
@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: Props) =>
     }
   })
 
-export default preactRedux.connect(null, mapDispatchToProps)(
+export default connect(null, mapDispatchToProps)(
   (props) =>
     <tr className={classNames({
       'TableRow': true,

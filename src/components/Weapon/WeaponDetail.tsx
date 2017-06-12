@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { getAttackPower } from '@/calc'
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state: StoreState) =>
     skillValue: state.skill.value,
   })
 
-export default preactRedux.connect(mapStateToProps)(
+export default connect(mapStateToProps)(
   (props) => {
     const { power, weapon } = getAttackPower({ power: props.power, affinity: props.affinity, type: props.type }, props.skillValue)
     const weaponData = props.weaponData! || {}

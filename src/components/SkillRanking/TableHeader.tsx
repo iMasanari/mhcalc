@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { toggleSkillFilter } from '@/reducers/ranking'
 import './TableRow.css'
@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch: any) =>
     }
   })
 
-export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   (props) =>
     <tr>
       <th className="TableRow-th">

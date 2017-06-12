@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { setPower } from '@/reducers/weapon'
 import DelayInput from './DelayInput'
@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch: any) =>
     }
   })
 
-export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, mapDispatchToProps)(
   (props) =>
     <DelayInput className="PowerInputs-input input-area"
       type="number" pattern="[0-9]*" step="10" max="1000" min="10"

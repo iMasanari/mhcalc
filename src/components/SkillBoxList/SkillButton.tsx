@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import preactRedux from 'preact-redux'
+import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { toggleSkill } from '@/reducers/skill'
 import { skillNameHash } from '@/skillData'
@@ -24,8 +24,8 @@ const mapDispatchToProps = (dispatch: any, ownProps: Props) =>
     }
   })
 
-export default preactRedux.connect(mapStateToProps, mapDispatchToProps)(
-  props =>
+export default connect(mapStateToProps, mapDispatchToProps)(
+  (props) =>
     <div
       className={'SkillButton' + (props.isActive ? ' checked' : '')}
       onClick={props.onClick}
