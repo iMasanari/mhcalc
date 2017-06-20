@@ -6,6 +6,7 @@ body, input, select {
 body {
   padding: 0;
   margin: 0;
+  min-width: 960px;
 }
 .input-area {
   -o-appearance: none;

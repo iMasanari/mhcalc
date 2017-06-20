@@ -10,6 +10,7 @@
   background: #eee;
 }
 .TableRow-th {
+  box-sizing: border-box;
   width: 150px;
   padding: 5px 2px;
   border-left: 1px solid #fff;
