@@ -500,9 +500,9 @@ THEデリュージュ,LV4,290,30,1,普通,中,なし,,HHIcCcEDcaaaAaaB___C___C__
 アモーレ＝アネッロ,LV1,290,0,2,やや遅い,やや小,左/大,,DCCcCDcEEBBBBBBB_CB__CB__C____
 リーヴェ＝キアーヴェ,LV2,310,0,2,やや遅い,やや小,左/大,,EDCcCEcEFCBBCBBB_CB__CB__C____
 リベラシオン＝アモル,LV3,330,0,2,やや遅い,やや小,左/大,,EECcDEcFFCCCCCCB_DC__DC__D____
-フェイスorバトライル,LV1,290,-30,2,やや遅い,やや小,右/大,,EEEDCCCCCAAAAAABB__AA_________
-セキュアorハザード,LV2,310,-30,2,やや遅い,やや小,右/大,,FEEDCCDDCBAABAABB__BA_________
-ジェネシスorデマイズ,LV3,340,-30,2,やや遅い,やや小,右/大,,FFFEDDDDDBBBBBBBB__BB_________
+フェイスorバトライル,LV1,290,20,2,やや遅い,やや小,右/大,or会心:-30,EEEDCCCCCAAAAAABB__AA_________
+セキュアorハザード,LV2,310,20,2,やや遅い,やや小,右/大,or会心:-30,FEEDCCDDCBAABAABB__BA_________
+ジェネシスorデマイズ,LV3,340,20,2,やや遅い,やや小,右/大,or会心:-30,FFFEDDDDDBBBBBBBB__BB_________
 砕光の極砲,LV1,310,0,1,普通,やや小,なし,,DDEdEECDDBBAAAAB_AA____AAC____
 砕光のイラプシュライ,LV2,330,0,1,普通,やや小,なし,,EDEdEFDEEBBAAAAB_BA____BAC____
 砕光極彩砲ミェブラク,LV3,360,0,1,普通,やや小,なし,,FEFdFFEEFCCBBBBB_BA____BAD____

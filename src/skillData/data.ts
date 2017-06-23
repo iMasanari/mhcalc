@@ -289,10 +289,11 @@ export default [{
   ]
 }, {
   name: '狂竜症',
-  effect: affinityUp,
+  effect: (skill: Skill, [affinity, value]: [number, { virse: number }]) =>
+    affinityUp(multValue(skill, value), affinity),
   item: [
-    { label: '克服', value: 15 },
-    { name: '狂竜症克服（無我の境地）', label: '無我', value: 30 }
+    { label: '克服', value: [15, { virse: 1 }] },
+    { name: '狂竜症克服（無我の境地）', label: '無我', value: [30, { virse: 1 }] }
   ]
 }, {
   name: '【狩猟笛】攻撃力',

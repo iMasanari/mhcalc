@@ -5,20 +5,18 @@ import { getAttackPower } from '@/calc'
 
 const mapStateToProps = (state: StoreState) =>
   ({
-    power: state.weapon.power,
-    affinity: state.weapon.affinity,
-    weaponData: state.weapon.weaponData,
-    type: state.weapon.type,
+    weapon: state.weapon,
     skillValue: state.skill.value,
   })
 
 export default connect(mapStateToProps)(
   (props) => {
-    const { power, weapon } = getAttackPower({ power: props.power, affinity: props.affinity, type: props.type }, props.skillValue)
-    const weaponData = props.weaponData! || {}
+    const { power, weapon } = getAttackPower(props.weapon, props.skillValue)
+    const weaponData = props.weapon.weaponData! || {}
+    
     return (
       <p>
-        攻撃力: {power | 0} ({weapon.power | 0} / {weapon.affinity}%)
+        攻撃力: {power | 0} ({weapon.power | 0} {weapon.affinity})
         <br />
         スロット: {displaySlot(weaponData.slot)}
         <br />

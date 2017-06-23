@@ -553,9 +553,9 @@ THEヴァーチ,LV4,290,35,2,普通,中,なし,,GIIcCcFEdbbaBAAB___B___B_____C
 バレットフォックス,LV1,250,0,2,やや速い,中,なし,,IHHCCcCCcBAAAAABC_________C___
 速報隊専用弩【地狐】,LV2,290,0,2,やや速い,中,なし,,IIHCCcCCcBAAAAABC_________D___
 真・地狐弩,LV3,330,0,2,やや速い,中,なし,,IIIDDdDDdBBAAAABC_________D___
-インケントorオラクル,LV1,290,-20,3,やや遅い,やや小,右/大,,FFFdDDcDDBBBBBBBB______B_B____
-フォギブorパニッシュ,LV2,310,-20,3,やや遅い,やや小,右/大,,GGFdDDcDDBBBBBBBB______B_B____
-ヴァイスorヴァーチ,LV3,340,-20,3,やや遅い,やや小,右/大,,GGGdEEcEEBBBBBBBB______B_C____
+インケントorオラクル,LV1,290,10,3,やや遅い,やや小,右/大,or会心:-20,FFFdDDcDDBBBBBBBB______B_B____
+フォギブorパニッシュ,LV2,310,10,3,やや遅い,やや小,右/大,or会心:-20,GGFdDDcDDBBBBBBBB______B_B____
+ヴァイスorヴァーチ,LV3,340,10,3,やや遅い,やや小,右/大,or会心:-20,GGGdEEcEEBBBBBBBB______B_C____
 砕光の輝弩,LV1,320,0,0,極速,中,左/小,,DFGDEeCccAAAaAaB_________D____
 砕光のイラプタイト,LV2,330,0,0,極速,中,左/小,,DGHDEeCccAAAaAaB_________D____
 砕光輝捷弩ジーブラク,LV3,350,0,0,極速,中,左/小,,DHHDEeDccBAAaAaB_________D____

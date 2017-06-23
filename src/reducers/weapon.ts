@@ -94,6 +94,7 @@ export interface WeaponState {
   weaponData?: Weapon
   power: number
   affinity: number
+  orAffinity?: number | null
   isLastOnly: boolean
   list: string[]
   update: (partialState: Partial<WeaponState>) => WeaponState
@@ -108,19 +109,20 @@ const updateState = (prevState: WeaponState, nextState: Partial<WeaponState>) =>
   if (nextState.type) {
     state.list = getWeaponList(state.type, state.isLastOnly)
     state.name = state.list[0] || 'カスタマイズ'
+    state.weaponData = getWeapon(state.type, state.name)
   }
   else if (nextState.isLastOnly !== null) {
     state.list = getWeaponList(state.type, state.isLastOnly)
   }
 
   if (state.name !== 'カスタマイズ' && (nextState.type || nextState.name)) {
-    const { power, affinity } = getWeapon(state.type, state.name)!
+    const weaponData = getWeapon(state.type, state.name)!
 
-    state.power = power
-    state.affinity = affinity
+    state.power = weaponData.power
+    state.affinity = weaponData.affinity
+    state.orAffinity = weaponData.orAffinity
+    state.weaponData = weaponData
   }
-
-  state.weaponData = getWeapon(state.type, state.name)
 
   return state
 }
@@ -153,13 +155,15 @@ export default (state = initState, action: Action) => {
     case SET_POWER:
       return state.update({
         name: searchWeapon(state.type, action.payload, state.affinity),
-        power: action.payload
+        power: action.payload,
+        orAffinity: null,
       })
 
     case SET_AFFINITY:
       return state.update({
         name: searchWeapon(state.type, state.power, action.payload),
-        affinity: action.payload
+        affinity: action.payload,
+        orAffinity: null,
       })
 
     case TOGGLE_LAST_ONLY:
@@ -173,7 +177,7 @@ export default (state = initState, action: Action) => {
 const searchWeapon = (type: string, power: number, affinity: number) => {
   const findFn = (name: string) => {
     const weapon = getWeapon(type, name)!
-    return weapon.power === power && weapon.affinity === affinity
+    return weapon.power === power && weapon.affinity === affinity && !weapon.orAffinity
   }
 
   // [].find のブラウザ対応が不安なので、filterで代用
