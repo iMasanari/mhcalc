@@ -9,5 +9,5 @@ export default () =>
     <h2>Choose a Weapon</h2>
     <WeaponSelects />
     <PowerInputs />
-    <WeaponDetail/ >
+    <WeaponDetail />
   </section>

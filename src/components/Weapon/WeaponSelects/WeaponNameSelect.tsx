@@ -2,7 +2,7 @@ import * as preact from 'preact'
 import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { setWeaponName } from '@/reducers/weapon'
-import EventFrom from '@/units/EventFrom'
+import AutoComplete from './AutoComplete'
 import './WeaponNameSelect.css'
 
 const mapStateToProps = (state: StoreState) =>
@@ -13,23 +13,17 @@ const mapStateToProps = (state: StoreState) =>
 
 const mapDispatchToProps = (dispatch: any) =>
   ({
-    setWeaponName: (e: EventFrom<HTMLInputElement>) => {
-      dispatch(setWeaponName(e.currentTarget.value))
+    setWeaponName: (value: string) => {
+      dispatch(setWeaponName(value))
     }
   })
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  (props) => {
-    const weaponOptions = props.list.map(value => <option value={value}>{value}</option>)
-
-    if (props.list.indexOf(props.name) === -1) {
-      weaponOptions.unshift(<option key={props.name} value={props.name}>{`（${props.name}）`}</option>)
-    }
-
-    return (
-      <select className="WeaponNameSelect input-area" value={props.name} onChange={props.setWeaponName}>
-        {weaponOptions}
-      </select>
-    )
-  }
+  (props) =>
+    <AutoComplete
+      value={props.name}
+      dataList={props.list}
+      width={300}
+      update={props.setWeaponName}
+    />
 )

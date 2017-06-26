@@ -1,0 +1,25 @@
+.AutoComplete {
+  display: inline-block
+}
+.AutoComplete-input {
+  box-sizing: border-box;
+}
+.AutoComplete-ul {
+  position: absolute;
+  z-index: 1;
+  overflow: scroll;
+  box-sizing: border-box;
+  max-height: 50vh;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.AutoComplete-li {
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+.AutoComplete-li:hover {
+  background: #eee;
+}
