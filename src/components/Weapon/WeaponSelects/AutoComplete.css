@@ -14,6 +14,7 @@
   padding: 0;
   border: 1px solid #ddd;
   background: #fff;
+  -webkit-overflow-scrolling: touch;
 }
 .AutoComplete-li {
   height: 30px;
