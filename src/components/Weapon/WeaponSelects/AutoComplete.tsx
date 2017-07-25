@@ -1,5 +1,6 @@
 import * as preact from 'preact'
 import EventFrom from '@/units/EventFrom'
+import classNames from '@/units/classNames'
 import './AutoComplete.css'
 
 interface Props {
@@ -13,6 +14,7 @@ interface State {
   value?: string | null
   isFocus?: boolean
   isInputed?: boolean
+  selected?: number | null
 }
 
 const hiraganaToKatakana = (src: string) =>
@@ -24,37 +26,76 @@ export default class AutoComplete extends preact.Component<Props, State> {
   private input: HTMLInputElement
   private dataList = this.getDataList(this.props.dataList)
 
-  private onInput = (e: EventFrom<HTMLInputElement>) => {
+  private inputInput = (e: EventFrom<HTMLInputElement>) => {
     this.setState({
       value: e.currentTarget.value,
       isInputed: true,
+      selected: null,
     })
   }
 
   private blurInput = () => {
     if (!this.state.isFocus || document.activeElement === this.input) return
 
-    console.log(this.props.value, this.state.value, this.props.dataList.indexOf(this.state.value!))
     this.setState({
       isFocus: false,
       value: this.state.value != null ? this.props.value : this.state.value,
     })
   }
 
-  componentDidMount() {
-    const focus = () => {
-      this.setState({
-        isFocus: true,
-        isInputed: false,
-      })
+  private focusInput = () => {
+    this.setState({
+      isFocus: true,
+      isInputed: false,
+      selected: null,
+    })
 
-      if (this.input.selectionStart === this.input.selectionEnd) {
-        this.input.setSelectionRange(0, this.input.value.length)
+    if (this.input.selectionStart === this.input.selectionEnd) {
+      this.input.setSelectionRange(0, this.input.value.length)
+    }
+  }
+
+  private delayBlurInput = () => {
+    setTimeout(this.blurInput, 200)
+  }
+
+  private keyDownInput = (e: KeyboardEvent) => {
+    console.log(e.keyCode)
+    switch (e.keyCode) {
+      case 13: { // enter
+        const value = this.props.dataList[this.state.selected!]
+
+        if (value) {
+          e.preventDefault()
+          this.selectValue(value)
+          this.input.blur()
+        }
+
+        return
+      }
+      case 27: { // esc
+        e.preventDefault()
+        this.setState({ isFocus: false })
+        return
+      }
+      case 38: { // up
+        e.preventDefault()
+        this.setState({
+          selected: this.state.selected == null ? 0 : this.state.selected - 1
+        })
+        return
+      }
+      case 40: { // down
+        e.preventDefault()
+        this.setState({
+          selected: this.state.selected == null ? 0 : this.state.selected + 1
+        })
+        return
       }
     }
+  }
 
-    this.input.addEventListener('click', focus)
-    this.input.addEventListener('blur', () => { setTimeout(this.blurInput, 200) })
+  componentDidMount() {
     document.addEventListener('click', this.blurInput)
   }
 
@@ -111,7 +152,10 @@ export default class AutoComplete extends preact.Component<Props, State> {
         className="AutoComplete-input input-area"
         style={{ width: this.props.width }}
         value={this.state.value != null ? this.state.value : this.props.value}
-        onInput={this.onInput}
+        onClick={this.focusInput}
+        onInput={this.inputInput}
+        onKeyDown={this.keyDownInput}
+        onBlur={this.delayBlurInput}
       />
       {dataList &&
         <ul className="AutoComplete-ul"
@@ -120,10 +164,14 @@ export default class AutoComplete extends preact.Component<Props, State> {
             height: dataList.length * 30
           }}
         >
-          {dataList.map(name =>
+          {dataList.map((name, index) =>
             <li key={name}
-              className="AutoComplete-li"
-              onClick={() => this.selectValue(name)}
+              className={classNames({
+                "AutoComplete-li": true,
+                "AutoComplete-selected": index === this.state.selected,
+              })}
+              onClick={() => { this.selectValue(name) }}
+              onMouseOver={() => { this.setState({ selected: index }) }}
             >
               {name}
             </li>

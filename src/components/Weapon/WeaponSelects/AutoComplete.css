@@ -21,6 +21,10 @@
   line-height: 30px;
   cursor: pointer;
 }
+/*.AutoComplete-ul:not(:hover)>.AutoComplete-selected,
 .AutoComplete-li:hover {
+  background: #eee;
+}*/
+.AutoComplete-selected {
   background: #eee;
 }
