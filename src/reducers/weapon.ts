@@ -1,21 +1,14 @@
+import ActionReducer from 'action-reducer'
 import fetchWeapon, { Weapon } from "@/weaponData"
-
-const SET_WEAPON_TYPE = 'SET_WEAPON_TYPE'
-const SET_WEAPON_NAME = 'SET_WEAPON_NAME'
-const SET_POWER = 'SET_POWER'
-const SET_AFFINITY = 'SET_AFFINITY'
-const TOGGLE_LAST_ONLY = 'TOGGLE_LAST_ONLY'
-
 
 // fetchした武器データの保存オブジェ
 const weaponData = {} as { [type: string]: { [name: string]: Weapon } }
 
 const getWeaponList = (type: string, filter?: boolean) => {
-  if (!weaponData[type]) {
-    return []
-  }
-
   const ref = weaponData[type]
+
+  if (!ref) return []
+
   const list = Object.keys(ref)
 
   return filter ? list.filter(v => ref[v].isLast) : list
@@ -25,68 +18,17 @@ const getWeapon = (type: string, name: string) => {
   return weaponData[type] ? weaponData[type][name] : undefined
 }
 
-// action
-
-type Action =
-  {
-    type: typeof SET_WEAPON_TYPE,
-    payload: string,
-  } | {
-    type: typeof SET_WEAPON_NAME,
-    payload: string,
-  } | {
-    type: typeof SET_POWER,
-    payload: number,
-  } | {
-    type: typeof SET_AFFINITY,
-    payload: number,
-  } | {
-    type: typeof TOGGLE_LAST_ONLY,
+const searchWeapon = (type: string, power: number, affinity: number) => {
+  const findFn = (name: string) => {
+    const weapon = getWeapon(type, name)!
+    return weapon.power === power && weapon.affinity === affinity && !weapon.orAffinity
   }
 
-
-const _setWeaponType = (payload: string): Action =>
-  ({
-    type: SET_WEAPON_TYPE,
-    payload,
-  })
-
-export const setWeaponType = (weaponType: string) =>
-  async (dispatch: any) => {
-    dispatch(_setWeaponType(weaponType))
-
-    if (!weaponData[weaponType]) {
-      weaponData[weaponType] = await fetchWeapon(weaponType)
-
-      dispatch(_setWeaponType(weaponType))
-    }
-  }
-
-export const initWeaponType = () =>
-  setWeaponType(initState.type)
-
-export const setWeaponName = (payload: string): Action =>
-  ({
-    type: SET_WEAPON_NAME,
-    payload,
-  })
-
-export const setPower = (payload: number): Action =>
-  ({
-    type: SET_POWER,
-    payload,
-  })
-
-export const setAffinity = (payload: number): Action =>
-  ({
-    type: SET_AFFINITY,
-    payload,
-  })
-
-export const toggleLastOnly = (): Action =>
-  ({
-    type: TOGGLE_LAST_ONLY,
-  })
+  // [].find のブラウザ対応が不安なので、filterで代用
+  return getWeaponList(type, true).filter(findFn)[0]
+    || getWeaponList(type).filter(findFn)[0]
+    || 'カスタマイズ'
+}
 
 export interface WeaponState {
   type: string
@@ -140,48 +82,55 @@ const initState: WeaponState = {
   },
 }
 
-export default (state = initState, action: Action) => {
-  switch (action.type) {
-    case SET_WEAPON_TYPE:
-      return state.update({
-        type: action.payload
-      })
+const { createAction, reducer } = ActionReducer(initState)
 
-    case SET_WEAPON_NAME:
-      return state.update({
-        name: action.payload
-      })
 
-    case SET_POWER:
-      return state.update({
-        name: searchWeapon(state.type, action.payload, state.affinity),
-        power: action.payload,
-        orAffinity: null,
-      })
+// action
 
-    case SET_AFFINITY:
-      return state.update({
-        name: searchWeapon(state.type, state.power, action.payload),
-        affinity: action.payload,
-        orAffinity: null,
-      })
+const _setWeaponType = createAction(
+  (state, payload: string) =>
+    state.update({ type: payload })
+)
 
-    case TOGGLE_LAST_ONLY:
-      return state.update({
-        isLastOnly: !state.isLastOnly
-      })
-  }
-  return state
-}
+export const setWeaponType = (weaponType: string) =>
+  async (dispatch: any) => {
+    dispatch(_setWeaponType(weaponType))
 
-const searchWeapon = (type: string, power: number, affinity: number) => {
-  const findFn = (name: string) => {
-    const weapon = getWeapon(type, name)!
-    return weapon.power === power && weapon.affinity === affinity && !weapon.orAffinity
+    if (!weaponData[weaponType]) {
+      weaponData[weaponType] = await fetchWeapon(weaponType)
+
+      dispatch(_setWeaponType(weaponType))
+    }
   }
 
-  // [].find のブラウザ対応が不安なので、filterで代用
-  return getWeaponList(type, true).filter(findFn)[0]
-    || getWeaponList(type).filter(findFn)[0]
-    || 'カスタマイズ'
-}
+export const initWeaponType = () =>
+  setWeaponType(initState.type)
+
+export const setWeaponName = createAction(
+  (state, payload: string) =>
+    state.update({ name: payload })
+)
+
+export const setPower = createAction(
+  (state, payload: number) =>
+    state.update({
+      name: searchWeapon(state.type, payload, state.affinity),
+      power: payload,
+      orAffinity: null,
+    })
+)
+
+export const setAffinity = createAction(
+  (state, payload: number) =>
+    state.update({
+      name: searchWeapon(state.type, state.power, payload),
+      affinity: payload,
+      orAffinity: null,
+    })
+)
+
+export const toggleLastOnly = createAction((state) =>
+  state.update({ isLastOnly: !state.isLastOnly })
+)
+
+export default reducer

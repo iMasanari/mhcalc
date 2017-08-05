@@ -1,17 +1,6 @@
+import ActionReducer from 'action-reducer'
 import { Skill, skillNameHash } from '@/skillData'
 import { mapSkill } from "@/calc"
-
-export const TOGGLE_SKILL = 'TOGGLE_SKILL'
-
-type Action = {
-  type: typeof TOGGLE_SKILL, payload: string
-}
-
-export const toggleSkill = (name: string): Action =>
-  ({
-    type: TOGGLE_SKILL,
-    payload: name,
-  })
 
 export interface ActiveSkills {
   [group: string]: string | null
@@ -31,24 +20,22 @@ const initState: SkillState = {
   },
 }
 
-export default (state = initState, action: Action) => {
-  switch (action.type) {
-    case TOGGLE_SKILL:
-      const { name, group, effect } = skillNameHash[action.payload]
-      const prevSkillGroupValue = state.active[group]
+const { createAction, reducer } = ActionReducer(initState)
 
-      const active = {
-        ...state.active,
-        [group]: prevSkillGroupValue !== name ? name : null
-      }
+export const toggleSkill = createAction(
+  (state, payload: string) => {
+    const { name, group, effect } = skillNameHash[payload]
+    const prevSkillGroupValue = state.active[group]
 
-      const value = prevSkillGroupValue == null ? effect({ ...state.value }) : mapSkill(active)
+    const active = {
+      ...state.active,
+      [group]: prevSkillGroupValue !== name ? name : null
+    }
 
-      return {
-        ...state,
-        active,
-        value,
-      }
+    const value = prevSkillGroupValue == null ? effect({ ...state.value }) : mapSkill(active)
+
+    return { active, value }
   }
-  return state
-}
+)
+
+export default reducer

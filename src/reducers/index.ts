@@ -13,4 +13,5 @@ export default combineReducers({
   skill,
   ranking,
   weapon,
+  // log: (state = {}, action) => console.log(action.type)||  state
 })
