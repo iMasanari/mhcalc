@@ -1,29 +1,25 @@
 {
   "compilerOptions": {
-    "outDir": "./app/dest/",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "target": "es5",
     "lib": [
-      "dom", "es5", "es2015.promise"
+      "dom",
+      "es5",
+      "es2015.promise"
     ],
     "module": "es6",
     "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "jsx": "react",
     "jsxFactory": "preact.h",
-    "noEmitHelpers": true,
-    "importHelpers": true
-  },
-  "files": [
-    "./src/index.tsx"
-  ]
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "strict": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  }
 }
