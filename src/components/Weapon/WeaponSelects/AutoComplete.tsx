@@ -60,7 +60,6 @@ export default class AutoComplete extends preact.Component<Props, State> {
   }
 
   private keyDownInput = (e: KeyboardEvent) => {
-    console.log(e.keyCode)
     switch (e.keyCode) {
       case 13: { // enter
         const value = this.props.dataList[this.state.selected!]
