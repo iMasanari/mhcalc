@@ -68,7 +68,9 @@ export default class AutoComplete extends preact.Component<Props, State> {
         if (value) {
           e.preventDefault()
           this.selectValue(value)
+
           this.input.blur()
+          this.setState({ isFocus: false })
         }
 
         return
