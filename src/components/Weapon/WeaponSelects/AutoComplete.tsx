@@ -25,6 +25,7 @@ const hiraganaToKatakana = (src: string) =>
 export default class AutoComplete extends preact.Component<Props, State> {
   private input: HTMLInputElement
   private dataList = this.getDataList(this.props.dataList)
+  private filteredValueList = this.props.dataList
 
   private inputInput = (e: EventFrom<HTMLInputElement>) => {
     this.setState({
@@ -56,13 +57,13 @@ export default class AutoComplete extends preact.Component<Props, State> {
   }
 
   private delayBlurInput = () => {
-    setTimeout(this.blurInput, 200)
+    setTimeout(this.blurInput, 500)
   }
 
   private keyDownInput = (e: KeyboardEvent) => {
     switch (e.keyCode) {
       case 13: { // enter
-        const value = this.props.dataList[this.state.selected!]
+        const value = this.filteredValueList[this.state.selected!]
 
         if (value) {
           e.preventDefault()
@@ -124,7 +125,6 @@ export default class AutoComplete extends preact.Component<Props, State> {
   }
 
   render() {
-    let dataList: string[] | undefined
     const katakanaValue = hiraganaToKatakana(this.state.value || '')
 
     if (this.state.isFocus) {
@@ -136,13 +136,13 @@ export default class AutoComplete extends preact.Component<Props, State> {
           })
         )
 
-        dataList = [
+        this.filteredValueList = [
           ...matchIndexList.filter(data => data.index === 0),
           ...matchIndexList.filter(data => data.index > 0),
         ].map(data => data.value)
       }
       else {
-        dataList = this.dataList.map(data => data.value)
+        this.filteredValueList = this.dataList.map(data => data.value)
       }
     }
 
@@ -156,14 +156,14 @@ export default class AutoComplete extends preact.Component<Props, State> {
         onKeyDown={this.keyDownInput}
         onBlur={this.delayBlurInput}
       />
-      {dataList &&
+      {this.state.isFocus &&
         <ul className="AutoComplete-ul"
           style={{
             width: this.props.width,
-            height: dataList.length * 30
+            height: this.filteredValueList.length * 30
           }}
         >
-          {dataList.map((name, index) =>
+          {this.filteredValueList.map((name, index) =>
             <li key={name}
               className={classNames({
                 "AutoComplete-li": true,
