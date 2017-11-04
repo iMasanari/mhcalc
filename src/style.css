@@ -56,11 +56,3 @@ footer {
   border-top: 1px solid #84b2e0;
   text-align: center;
 }
-.MHCalc {
-  width: 960px;
-  margin: 0 auto;
-}
-.skill {
-  display: flex;
-  justify-content: space-between;
-}

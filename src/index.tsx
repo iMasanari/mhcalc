@@ -7,6 +7,7 @@ import { Provider } from 'preact-redux'
 import thunk from 'redux-thunk'
 import reducer from '@/reducers'
 import App from '@/components/App'
+import './style.css'
 
 const store = createStore(reducer, applyMiddleware(thunk))
 
