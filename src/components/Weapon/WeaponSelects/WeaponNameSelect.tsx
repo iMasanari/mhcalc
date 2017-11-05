@@ -3,7 +3,6 @@ import { connect } from 'preact-redux'
 import { StoreState } from '@/reducers'
 import { setWeaponName } from '@/reducers/weapon'
 import AutoComplete from './AutoComplete'
-import './WeaponNameSelect.css'
 
 const mapStateToProps = (state: StoreState) =>
   ({
