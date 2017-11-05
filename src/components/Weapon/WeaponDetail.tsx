@@ -13,6 +13,8 @@ export default connect(mapStateToProps)(
     
     return (
       <p>
+        攻撃力: {weapon.power} {displayAffinity(weapon.affinity, weapon.orAffinity)}
+        <br />
         スロット: {displaySlot(weapon.slot)}
         <br />
         {weapon.reload} / {weapon.recoil} ブレ{weapon.deviation}
@@ -20,6 +22,9 @@ export default connect(mapStateToProps)(
     )
   }
 )
+
+const displayAffinity = (affinity: number, orAffinity: number | null) =>
+ `${orAffinity ? `${orAffinity}/` : ''}${affinity}%`
 
 const displaySlot = (slot: number) =>
   ['―――', '◯――', '◯◯―', '◯◯◯'][slot]

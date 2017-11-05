@@ -1,5 +1,6 @@
 import ActionReducer from 'action-reducer'
 import fetchWeapon, { Weapon } from "@/weaponData"
+import { ThunkAction } from 'redux-thunk'
 
 // fetchした武器データの保存オブジェ
 const weaponData = {} as { [type: string]: { [name: string]: Weapon } }
@@ -18,18 +19,6 @@ const getWeapon = (type: string, name: string) => {
   return weaponData[type] ? weaponData[type][name] : undefined
 }
 
-const searchWeapon = (type: string, power: number, affinity: number) => {
-  const findFn = (name: string) => {
-    const weapon = getWeapon(type, name)!
-    return weapon.power === power && weapon.affinity === affinity && !weapon.orAffinity
-  }
-
-  // [].find のブラウザ対応が不安なので、filterで代用
-  return getWeaponList(type, true).filter(findFn)[0]
-    || getWeaponList(type).filter(findFn)[0]
-    || 'カスタマイズ'
-}
-
 export interface WeaponState {
   type: string
   name: string
@@ -39,47 +28,16 @@ export interface WeaponState {
   orAffinity?: number | null
   isLastOnly: boolean
   list: string[]
-  update: (partialState: Partial<WeaponState>) => WeaponState
-}
-
-const updateState = (prevState: WeaponState, nextState: Partial<WeaponState>) => {
-  const state = {
-    ...prevState,
-    ...nextState,
-  }
-
-  if (nextState.type) {
-    state.list = getWeaponList(state.type, state.isLastOnly)
-    state.name = state.list[0] || 'カスタマイズ'
-    state.weaponData = getWeapon(state.type, state.name)
-  }
-  else if (nextState.isLastOnly !== null) {
-    state.list = getWeaponList(state.type, state.isLastOnly)
-  }
-
-  if (state.name !== 'カスタマイズ' && (nextState.type || nextState.name)) {
-    const weaponData = getWeapon(state.type, state.name)!
-
-    state.power = weaponData.power
-    state.affinity = weaponData.affinity
-    state.orAffinity = weaponData.orAffinity
-    state.weaponData = weaponData
-  }
-
-  return state
 }
 
 const initState: WeaponState = {
   type: 'lightbowgun',
-  name: 'カスタマイズ',
+  name: 'ロード中…',
   weaponData: undefined,
   power: 330,
   affinity: 0,
   isLastOnly: true,
   list: [],
-  update: function (nextState) {
-    return updateState(this, nextState)
-  },
 }
 
 const { createAction, reducer } = ActionReducer(initState)
@@ -88,12 +46,26 @@ const { createAction, reducer } = ActionReducer(initState)
 // action
 
 const _setWeaponType = createAction(
-  (state, payload: string) =>
-    state.update({ type: payload })
+  (state, type: string) => {
+    const list = getWeaponList(type, state.isLastOnly)
+    const name = list[0] || 'ロード中…'
+    const weaponData = getWeapon(type, name)! || {}
+
+    return {
+      ...state,
+      type,
+      name,
+      list,
+      weaponData,
+      power: weaponData.power,
+      affinity: weaponData.affinity,
+      orAffinity: weaponData.orAffinity,
+    }
+  }
 )
 
-export const setWeaponType = (weaponType: string) =>
-  async (dispatch: any) => {
+export const setWeaponType = (weaponType: string): ThunkAction<void, WeaponState, void> =>
+  async (dispatch) => {
     dispatch(_setWeaponType(weaponType))
 
     if (!weaponData[weaponType]) {
@@ -107,30 +79,26 @@ export const initWeaponType = () =>
   setWeaponType(initState.type)
 
 export const setWeaponName = createAction(
-  (state, payload: string) =>
-    state.update({ name: payload })
-)
+  (state, name: string) => {
+    const weaponData = getWeapon(state.type, name)!
 
-export const setPower = createAction(
-  (state, payload: number) =>
-    state.update({
-      name: searchWeapon(state.type, payload, state.affinity),
-      power: payload,
-      orAffinity: null,
-    })
-)
-
-export const setAffinity = createAction(
-  (state, payload: number) =>
-    state.update({
-      name: searchWeapon(state.type, state.power, payload),
-      affinity: payload,
-      orAffinity: null,
-    })
+    return {
+      ...state,
+      name,
+      weaponData,
+      power: weaponData.power,
+      affinity: weaponData.affinity,
+      orAffinity: weaponData.orAffinity,
+    }
+  }
 )
 
 export const toggleLastOnly = createAction((state) =>
-  state.update({ isLastOnly: !state.isLastOnly })
+  ({
+    ...state,
+    isLastOnly: !state.isLastOnly,
+    list: getWeaponList(state.type, !state.isLastOnly),
+  })
 )
 
 export default reducer
