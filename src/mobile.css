@@ -12,12 +12,12 @@
     min-width: 320px;
   }
 
-  .App, .skill, .SkillBoxList, .SkillRanking, .TableRow-th {
+  .App, .skill, .SkillBoxList, .SkillRanking {
     width: initial;
   }
 
-  .TableRow-th:first-child {
-    width: 50%;
+  .TableRow-th {
+    width: 80px;
   }
 
   /* 横並びの解除、間隔の調整 */

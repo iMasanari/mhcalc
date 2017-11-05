@@ -23,7 +23,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     <AutoComplete
       value={props.name}
       dataList={props.list}
-      width={300}
+      width={280}
       update={props.setWeaponName}
     />
 )

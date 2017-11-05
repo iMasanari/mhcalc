@@ -26,11 +26,11 @@ const mapDispatchToProps = (dispatch: any, ownProps: Props) =>
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   (props) =>
-    <div
+    <li
       className={'SkillButton' + (props.isActive ? ' checked' : '')}
       onClick={props.onClick}
       title={props.name}
     >
       {props.label}
-    </div>
+    </li>
 )

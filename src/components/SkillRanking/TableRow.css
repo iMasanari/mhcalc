@@ -19,7 +19,7 @@
   text-align: center;
 }
 .TableRow-th:first-child {
-  width: 324px;
+  width: auto;
   border-left: none;
 }
 
