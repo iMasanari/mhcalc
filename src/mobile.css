@@ -22,7 +22,7 @@
 
   /* 横並びの解除、間隔の調整 */
   .skill {
-    display: initial;
+    display: block;
   }
 
   .SkillBoxList {

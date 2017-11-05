@@ -1,8 +1,9 @@
 import * as preact from 'preact'
 import { connect } from 'preact-redux'
+import Weapon from './Weapon'
 import SkillBoxList from './SkillBoxList'
 import SkillRanking from './SkillRanking'
-import Weapon from './Weapon'
+import SkillPower from './SkillPower'
 import { initWeaponType } from '@/reducers/weapon'
 import './App.css'
 
@@ -19,6 +20,7 @@ export default connect()(
           <Weapon />
           <section>
             <h2>Skill Ranking</h2>
+            <SkillPower />
             <div className="skill">
               <SkillBoxList />
               <SkillRanking />

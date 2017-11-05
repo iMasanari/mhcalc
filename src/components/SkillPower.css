@@ -1,0 +1,11 @@
+.SkillPower {
+  position: -webkit-sticky;
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  background: #fff;
+  text-align: center;
+  padding: 6px 0;
+  border-top: 1px solid #84b2e0;
+  border-bottom: 1px solid #84b2e0;
+}

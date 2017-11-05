@@ -8,7 +8,7 @@
 }
 .AutoComplete-ul {
   position: absolute;
-  z-index: 1;
+  z-index: 999;
   overflow: scroll;
   box-sizing: border-box;
   max-height: 50vh;
