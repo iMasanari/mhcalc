@@ -1,5 +1,20 @@
+/*
+Windowsで游ゴシックが細くかすれた状態で表示される問題への対応
+https://speakerdeck.com/tacamy/modanri-ben-yu-huontozhi-ding
+*/
+@font-face {
+	font-family: 'MyYuGothicM';
+	font-weight: normal;
+	src: local('YuGothic-Medium'), local('Yu Gothic Medium'), local('YuGothic-Regular');     /* 游ゴシックMediumが存在しないWindows8.1用 */
+}
+@font-face {
+	font-family: 'MyYuGothicM';
+	font-weight: bold;
+  src: local('YuGothic-Bold'), local('Yu Gothic');
+}
+
 body, input, select {
-  font-family: "游ゴシック体", "Yu Gothic", YuGothic, sans-serif;
+  font-family: MyYuGothicM, YuGothic, sans-serif;
   font-size: 16px;
   color: #111;
 }
