@@ -1,8 +1,10 @@
 .AutoComplete {
-  display: inline-block
+  display: inline-block;
+  margin: 0 2px;
 }
 .AutoComplete-input {
   box-sizing: border-box;
+  margin: 0;
 }
 .AutoComplete-ul {
   position: absolute;
