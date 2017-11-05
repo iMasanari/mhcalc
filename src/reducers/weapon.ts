@@ -2,6 +2,11 @@ import ActionReducer from 'action-reducer'
 import fetchWeapon, { Weapon } from "@/weaponData"
 import { ThunkAction } from 'redux-thunk'
 
+export type WeaponPartialData = {
+  power: number
+  affinity: number
+} & Partial<Weapon>
+
 // fetchした武器データの保存オブジェ
 const weaponData = {} as { [type: string]: { [name: string]: Weapon } }
 
@@ -15,17 +20,13 @@ const getWeaponList = (type: string, filter?: boolean) => {
   return filter ? list.filter(v => ref[v].isLast) : list
 }
 
-const getWeapon = (type: string, name: string) => {
-  return weaponData[type] ? weaponData[type][name] : undefined
-}
+const getWeapon = (type: string, name: string) =>
+  weaponData[type] && weaponData[type][name] ? weaponData[type][name] : { power: 0, affinity: 0 }
 
 export interface WeaponState {
   type: string
   name: string
-  weaponData?: Weapon
-  power: number
-  affinity: number
-  orAffinity?: number | null
+  data: WeaponPartialData
   isLastOnly: boolean
   list: string[]
 }
@@ -33,9 +34,7 @@ export interface WeaponState {
 const initState: WeaponState = {
   type: 'lightbowgun',
   name: 'ロード中…',
-  weaponData: undefined,
-  power: 330,
-  affinity: 0,
+  data: { power: 330, affinity: 0 },
   isLastOnly: true,
   list: [],
 }
@@ -49,17 +48,13 @@ const _setWeaponType = createAction(
   (state, type: string) => {
     const list = getWeaponList(type, state.isLastOnly)
     const name = list[0] || 'ロード中…'
-    const weaponData = getWeapon(type, name)! || {}
 
     return {
       ...state,
       type,
       name,
       list,
-      weaponData,
-      power: weaponData.power,
-      affinity: weaponData.affinity,
-      orAffinity: weaponData.orAffinity,
+      data: getWeapon(type, name),
     }
   }
 )
@@ -79,18 +74,12 @@ export const initWeaponType = () =>
   setWeaponType(initState.type)
 
 export const setWeaponName = createAction(
-  (state, name: string) => {
-    const weaponData = getWeapon(state.type, name)!
-
-    return {
+  (state, name: string) =>
+    ({
       ...state,
       name,
-      weaponData,
-      power: weaponData.power,
-      affinity: weaponData.affinity,
-      orAffinity: weaponData.orAffinity,
-    }
-  }
+      data: getWeapon(state.type, name),
+    })
 )
 
 export const toggleLastOnly = createAction((state) =>

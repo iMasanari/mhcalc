@@ -12,7 +12,7 @@ const mapStateToProps = (state: StoreState) =>
 
 export default connect(mapStateToProps)(
   (props) => {
-    const { power, weapon } = getAttackPower(props.weapon, props.skillValue)
+    const { power, weapon } = getAttackPower(props.weapon.data, props.skillValue)
 
     return (
       <div class="SkillPower">

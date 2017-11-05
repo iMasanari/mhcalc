@@ -1,5 +1,5 @@
 import { skillNameList, Skill, skillNameHash } from '@/skillData'
-import { WeaponState } from '@/reducers/weapon'
+import { WeaponPartialData } from '@/reducers/weapon'
 import { SkillState, ActiveSkills } from '@/reducers/skill'
 
 export function mapSkill(activeSkill: ActiveSkills) {
@@ -25,7 +25,7 @@ export interface CalcData {
   index: number
 }
 
-export function getRanking(weapon: WeaponState, skill: SkillState, isAllSkill: boolean) {
+export function getRanking(weapon: WeaponPartialData, skill: SkillState, isAllSkill: boolean) {
   const list = isAllSkill ? skillNameList : skillNameList.filter(v => v.isArmorSkill)
   const orgPower = getAttackPower(weapon, skill.value).power
 
@@ -64,7 +64,7 @@ export function getRanking(weapon: WeaponState, skill: SkillState, isAllSkill: b
     .map((v, i) => (v.index = i, v))
 }
 
-export function getAttackPower(weapon: WeaponState, skill: Skill) {
+export function getAttackPower(weapon: WeaponPartialData, skill: Skill) {
   let power = weapon.power + skill.power
   let mult = skill.mult
 
@@ -87,7 +87,7 @@ export function getAttackPower(weapon: WeaponState, skill: Skill) {
   }
 }
 
-function getAffinity(weapon: WeaponState, skill: Skill) {
+function getAffinity(weapon: WeaponPartialData, skill: Skill) {
   if (!weapon.orAffinity || skill['virse']) {
 
     let affinity = weapon.affinity

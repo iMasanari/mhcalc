@@ -30,7 +30,7 @@ export default connect(mapStateToProps)(
     private animationTimer: number | undefined
 
     state: State = {
-      prevSkillRanking: getRanking(this.props.weapon, this.props.skill, false)
+      prevSkillRanking: getRanking(this.props.weapon.data, this.props.skill, false)
     }
 
     render(props: Props) {
@@ -42,7 +42,7 @@ export default connect(mapStateToProps)(
         skillRanking = this.state.prevSkillRanking
       }
       else {
-        skillRanking = getRanking(props.weapon, props.skill, props.skillFilter)
+        skillRanking = getRanking(props.weapon.data, props.skill, props.skillFilter)
 
         clearTimeout(this.animationTimer!)
         this.animationTimer = setTimeout(() => {

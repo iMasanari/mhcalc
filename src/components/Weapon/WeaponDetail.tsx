@@ -9,13 +9,13 @@ const mapStateToProps = (state: StoreState) =>
 
 export default connect(mapStateToProps)(
   (props) => {
-    const weapon = props.weapon.weaponData! || {}
+    const weapon = props.weapon.data
     
     return (
       <p>
         攻撃力: {weapon.power} {displayAffinity(weapon.affinity, weapon.orAffinity)}
         <br />
-        スロット: {displaySlot(weapon.slot)}
+        スロット: {displaySlot(weapon.slot!)}
         <br />
         {weapon.reload} / {weapon.recoil} ブレ{weapon.deviation}
       </p>
@@ -23,7 +23,7 @@ export default connect(mapStateToProps)(
   }
 )
 
-const displayAffinity = (affinity: number, orAffinity: number | null) =>
+const displayAffinity = (affinity: number, orAffinity: number | null | undefined) =>
  `${orAffinity ? `${orAffinity}/` : ''}${affinity}%`
 
 const displaySlot = (slot: number) =>
